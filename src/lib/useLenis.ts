@@ -1,6 +1,13 @@
 import { useEffect } from "react";
 import Lenis from "lenis";
 
+let lenisInstance: Lenis | null = null;
+
+/** Access the shared Lenis instance (or null if not running). */
+export function getLenis() {
+  return lenisInstance;
+}
+
 /**
  * Buttery inertial smooth-scrolling, the kind you feel on
  * award-winning sites. Respects users who prefer reduced motion.
@@ -18,6 +25,7 @@ export function useLenis(enabled: boolean = true) {
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
     });
+    lenisInstance = lenis;
 
     let frame = 0;
     function raf(time: number) {
@@ -29,6 +37,7 @@ export function useLenis(enabled: boolean = true) {
     return () => {
       cancelAnimationFrame(frame);
       lenis.destroy();
+      lenisInstance = null;
     };
   }, [enabled]);
 }

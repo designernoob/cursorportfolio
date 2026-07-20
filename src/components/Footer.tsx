@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { site } from "../content";
 import { MaskedLines, Reveal } from "./Reveal";
 import Magnetic from "./Magnetic";
+import { scrollToTop } from "../lib/scroll";
 
 function useLocalTime() {
   const [time, setTime] = useState("");
@@ -113,9 +114,14 @@ export default function Footer() {
           <span>
             © {new Date().getFullYear()} {site.name}. Designed & built with care.
           </span>
-          <a href="#top" data-hover className="link-underline">
+          <button
+            type="button"
+            onClick={() => scrollToTop()}
+            data-hover
+            className="link-underline"
+          >
             Back to top ↑
-          </a>
+          </button>
         </div>
       </div>
     </footer>

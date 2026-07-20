@@ -1,4 +1,5 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 import { AnimatePresence, motion, useMotionValue, useSpring } from "framer-motion";
 import { projects, type Project } from "../content";
 import { Reveal } from "./Reveal";
@@ -84,14 +85,12 @@ function Row({
   active: boolean;
   onEnter: () => void;
 }) {
-  const ref = useRef<HTMLAnchorElement>(null);
   return (
     <Reveal delay={index * 0.05}>
-      <a
-        ref={ref}
-        href={project.href || "#work"}
+      <Link
+        to={`/work/${project.slug}`}
         data-hover
-        data-cursor="View"
+        data-cursor="View case"
         onMouseEnter={onEnter}
         className="group relative block border-b border-line py-8 md:py-10"
       >
@@ -155,7 +154,7 @@ function Row({
             </span>
           ))}
         </div>
-      </a>
+      </Link>
     </Reveal>
   );
 }

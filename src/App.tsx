@@ -1,36 +1,29 @@
 import { useState } from "react";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useLenis } from "./lib/useLenis";
 import Cursor from "./components/Cursor";
 import Grain from "./components/Grain";
 import Preloader from "./components/Preloader";
-import Nav from "./components/Nav";
-import Hero from "./components/Hero";
-import Marquee from "./components/Marquee";
-import Work from "./components/Work";
-import About from "./components/About";
-import Testimonials from "./components/Testimonials";
-import Footer from "./components/Footer";
+import ScrollToTop from "./components/ScrollToTop";
+import Home from "./pages/Home";
+import CaseStudy from "./pages/CaseStudy";
 
 export default function App() {
   const [loaded, setLoaded] = useState(false);
   useLenis(loaded);
 
   return (
-    <>
+    <BrowserRouter>
       <Grain />
       <Cursor />
       <Preloader onDone={() => setLoaded(true)} />
+      <ScrollToTop />
 
-      <Nav ready={loaded} />
-
-      <main>
-        <Hero ready={loaded} />
-        <Marquee />
-        <Work />
-        <About />
-        <Testimonials />
-        <Footer />
-      </main>
-    </>
+      <Routes>
+        <Route path="/" element={<Home ready={loaded} />} />
+        <Route path="/work/:slug" element={<CaseStudy />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
