@@ -65,12 +65,6 @@ function ProjectBlock({ project, index }: { project: Project; index: number }) {
             </div>
             <div>
               <dt className="font-sans text-[11px] uppercase tracking-widest text-muted">
-                Role
-              </dt>
-              <dd className="mt-1 font-sans text-sm text-ink">{project.role}</dd>
-            </div>
-            <div>
-              <dt className="font-sans text-[11px] uppercase tracking-widest text-muted">
                 Company
               </dt>
               <dd className="mt-1 font-sans text-sm text-ink">{project.company}</dd>
