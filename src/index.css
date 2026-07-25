@@ -112,6 +112,23 @@ a {
   color: var(--muted-soft);
 }
 
+/* Soft “paper document” panel used by Experience & Education */
+.experience-doc {
+  --doc-paper: #e8eef4;
+  --doc-ink: #1f2933;
+  --doc-ink-soft: #6b7785;
+  --doc-rule: rgba(31, 41, 51, 0.12);
+  --doc-mark: #f2d66b;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.55), transparent 42%),
+    var(--doc-paper);
+  color: var(--doc-ink);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.65) inset,
+    0 18px 50px rgba(31, 41, 51, 0.1),
+    0 2px 8px rgba(31, 41, 51, 0.06);
+}
+
 /* ── Utilities ──────────────────────────────────────────────── */
 .text-balance {
   text-wrap: balance;

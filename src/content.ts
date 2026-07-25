@@ -121,6 +121,55 @@ export const beyond = {
   ],
 };
 
+/* ─────────────────────────────────────────────────────────────
+ *  EXPERIENCE & EDUCATION
+ *  Document-like list of roles + school. Rename the kicker later.
+ *  kind: "Full-time" | "Intern" | "Education" (or whatever fits)
+ * ───────────────────────────────────────────────────────────── */
+export type ExperienceEntry = {
+  org: string;
+  duration: string;
+  kind: string;
+  note?: string; // optional role / degree under the org name
+};
+
+export const experience = {
+  kicker: "Experience & Education",
+  heading: "A short paper trail.",
+  entries: [
+    {
+      org: "Rubrik",
+      note: "Senior Product Designer",
+      duration: "2023 — Now",
+      kind: "Full-time",
+    },
+    {
+      org: "Sprinklr",
+      note: "UX Design Intern",
+      duration: "Jan ’22 — Jul ’22",
+      kind: "Intern",
+    },
+    {
+      org: "Nutanix",
+      note: "UX Design Intern",
+      duration: "Sep ’21 — Dec ’21",
+      kind: "Intern",
+    },
+    {
+      org: "UpGrad",
+      note: "Product Design Intern",
+      duration: "Jan ’21 — Aug ’21",
+      kind: "Intern",
+    },
+    {
+      org: "NID Ahmedabad",
+      note: "B.Des — Interaction Design",
+      duration: "2018 — 2022",
+      kind: "Education",
+    },
+  ] as ExperienceEntry[],
+};
+
 // The scrolling ticker between hero and work.
 export const marqueeItems = [
   "Product Design",
