@@ -11,11 +11,11 @@
 :root {
   --paper: #ffffff; /* pure white, matching elvinhu */
   --surface: #f2f4f5; /* soft cool gray panels */
-  --ink: #0e1010; /* near-black primary text */
+  --ink: #4e4e4e; /* exact Charmin / vemula.me hero text color */
   --muted: #6c7575; /* secondary text (elvinhu mid gray) */
   --muted-soft: #a1a1a1; /* tertiary / quieter gray */
   --line: rgba(14, 16, 16, 0.12);
-  --accent: #0e1010; /* charcoal accent on white */
+  --accent: #4e4e4e; /* match ink */
   --on-accent: #ffffff;
 }
 
