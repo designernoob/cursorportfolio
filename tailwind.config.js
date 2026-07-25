@@ -15,11 +15,10 @@ export default {
       fontFamily: {
         // secondary — body & UI
         sans: ["Hanken Grotesk", "ui-sans-serif", "system-ui", "sans-serif"],
-        // primary — display headlines. "Awesome Serif" is listed first so
-        // that, if you license & add it (see @font-face in index.css), it
-        // takes over automatically. Lora is the free fallback.
+        // primary — display (GT Alpina Condensed, same as elvinhu.com;
+        // Lora is the free fallback if the webfont fails to load)
         serif: [
-          "Awesome Serif",
+          "GT Alpina Condensed",
           "Lora",
           "ui-serif",
           "Georgia",

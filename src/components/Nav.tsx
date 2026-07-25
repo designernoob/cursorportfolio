@@ -64,7 +64,7 @@ export default function Nav({ ready = true }: { ready?: boolean }) {
                     href={l.href}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-ink px-4 py-2 font-sans text-sm font-medium text-paper transition-colors duration-300 hover:bg-accent md:text-[17px]"
+                    className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-surface px-4 py-2 font-sans text-sm font-medium text-ink transition-colors duration-300 hover:bg-ink hover:text-paper md:text-[17px]"
                   >
                     {l.label}
                     <span aria-hidden className="text-xs">↗</span>

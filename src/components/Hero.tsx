@@ -46,17 +46,11 @@ export default function Hero({ ready }: { ready: boolean }) {
     <section
       id="top"
       ref={ref}
-      className="relative flex min-h-[56svh] flex-col justify-start px-6 pb-8 pt-24 md:px-10 md:pb-10 md:pt-32"
+      className="relative flex min-h-[56svh] flex-col justify-start px-6 pb-8 pt-24 md:px-10 md:pb-10 md:pt-28"
     >
-      <div
-        aria-hidden
-        className="pointer-events-none absolute left-[6%] top-[18%] h-[34vw] w-[34vw] rounded-full opacity-[0.10] blur-[120px]"
-        style={{ background: "radial-gradient(circle,var(--accent),transparent 60%)" }}
-      />
-
       <motion.div style={{ y, opacity }} className="relative z-10">
         <motion.h1
-          className="max-w-[16ch] font-serif text-[8.5vw] font-medium leading-[1.07] tracking-tight text-ink md:max-w-[26ch] md:text-[5.1vw]"
+          className="hero-display max-w-[18ch] text-[9vw] text-ink md:max-w-[28ch] md:text-[4.2vw]"
           variants={container}
           initial="hidden"
           animate={ready ? "show" : "hidden"}
@@ -75,7 +69,7 @@ export default function Hero({ ready }: { ready: boolean }) {
                 <motion.span
                   key={key}
                   variants={atom}
-                  className="inline-block italic text-accent"
+                  className="inline-block text-[color:var(--muted)]"
                 >
                   {a.text}
                 </motion.span>
@@ -96,7 +90,7 @@ export default function Hero({ ready }: { ready: boolean }) {
           })}
         </motion.h1>
 
-        {/* CTA */}
+        {/* CTA — soft pill, elvinhu-adjacent */}
         <motion.div
           className="mt-10 md:mt-12"
           initial={{ opacity: 0, y: 16 }}
@@ -106,15 +100,15 @@ export default function Hero({ ready }: { ready: boolean }) {
           <motion.button
             type="button"
             onClick={() => scrollToId("work")}
-            whileHover={{ scale: 1.03 }}
+            whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             transition={{ type: "spring", stiffness: 400, damping: 22 }}
-            className="group inline-flex items-center gap-4 rounded-full bg-ink py-2.5 pl-6 pr-2.5 text-paper transition-colors duration-300 hover:bg-accent"
+            className="group inline-flex items-center gap-3 rounded-full bg-surface py-2.5 pl-5 pr-2.5 text-ink transition-colors duration-300 hover:bg-ink hover:text-paper"
           >
-            <span className="font-sans text-base font-medium">
+            <span className="font-sans text-[15px] font-medium">
               See selected work
             </span>
-            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-paper text-ink transition-transform duration-500 group-hover:translate-y-0.5">
+            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-paper text-ink transition-transform duration-500 group-hover:translate-y-0.5 group-hover:bg-surface">
               ↓
             </span>
           </motion.button>
@@ -187,7 +181,7 @@ function HoverWord({ token }: { token: Extract<HeroToken, { type: "hover" }> }) 
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      <span className="cursor-pointer border-b-2 border-dotted border-accent/60 text-accent transition-colors duration-300 hover:border-accent">
+      <span className="cursor-pointer border-b border-dotted border-[color:var(--muted)] text-[color:var(--muted)] transition-colors duration-300 hover:border-ink hover:text-ink">
         {token.text}
       </span>
 

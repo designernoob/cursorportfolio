@@ -3,35 +3,34 @@
 @tailwind utilities;
 
 /* ─────────────────────────────────────────────────────────────
-   OPTIONAL: exact vemula.me display font.
-   "Awesome Serif" is a paid font by Nicky Laatz. If you buy a
-   licence, drop the files in /public/fonts and uncomment this
-   block — the site will use it automatically (it's first in the
-   font stack). Until then we use Newsreader, a free lookalike.
+   COMPARISON BRANCH — elvinhu.com-inspired theme
 
-   @font-face {
-     font-family: "Awesome Serif";
-     src: url("/fonts/AwesomeSerif-Regular.woff2") format("woff2");
-     font-weight: 400; font-style: normal; font-display: swap;
-   }
-   @font-face {
-     font-family: "Awesome Serif";
-     src: url("/fonts/AwesomeSerif-SemiBold.woff2") format("woff2");
-     font-weight: 600; font-style: normal; font-display: swap;
-   }
+   Display font: GT Alpina Condensed Thin (same face Elvin uses).
+   Loaded from Framer's CDN for an accurate side-by-side preview.
+   GT Alpina is a commercial Grilli Type font — if you keep this
+   look for production, buy a licence from grillitype.com and
+   self-host the files under /public/fonts.
    ───────────────────────────────────────────────────────────── */
 
-/* ── Design tokens ──────────────────────────────────────────
-   Light "ink on paper" theme. Change --accent to re-skin the
-   whole site in one line.                                       */
+@font-face {
+  font-family: "GT Alpina Condensed";
+  src: url("https://framerusercontent.com/assets/4xM3IVwUzTWHyy47vcduyy2JeEs.woff2")
+    format("woff2");
+  font-weight: 100 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ── Design tokens — pure white + elvinhu ink palette ───────── */
 :root {
-  --paper: #f3f0e8; /* warm bone background */
-  --surface: #ffffff; /* raised panels */
-  --ink: #3a382f; /* soft warm charcoal (gentler than black, à la vemula) */
-  --muted: #8a8578; /* secondary text */
-  --line: rgba(58, 56, 47, 0.16); /* hairline borders */
-  --accent: #3b3fc4; /* softened indigo-blue accent (less neon) */
-  --on-accent: #f6f4ee; /* text sitting on the solid accent */
+  --paper: #ffffff; /* pure white, matching elvinhu */
+  --surface: #f2f4f5; /* soft cool gray panels */
+  --ink: #0e1010; /* near-black primary text */
+  --muted: #6c7575; /* secondary text (elvinhu mid gray) */
+  --muted-soft: #a1a1a1; /* tertiary / quieter gray */
+  --line: rgba(14, 16, 16, 0.12);
+  --accent: #0e1010; /* charcoal accent on white */
+  --on-accent: #ffffff;
 }
 
 * {
@@ -42,6 +41,7 @@
 
 html {
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
 }
 
@@ -57,12 +57,12 @@ html.lenis body {
 body {
   background: var(--paper);
   color: var(--ink);
-  font-family: "Instrument Sans", system-ui, sans-serif;
+  font-family: "Hanken Grotesk", system-ui, sans-serif;
   overflow-x: hidden;
 }
 
 ::selection {
-  background: var(--accent);
+  background: var(--ink);
   color: var(--on-accent);
 }
 
@@ -71,7 +71,7 @@ a {
   text-decoration: none;
 }
 
-/* ── Film grain overlay ─────────────────────────────────────── */
+/* ── Film grain overlay (very subtle on white) ──────────────── */
 .grain {
   position: fixed;
   inset: -200%;
@@ -79,18 +79,42 @@ a {
   height: 500%;
   pointer-events: none;
   z-index: 90;
-  opacity: 0.04;
+  opacity: 0.03;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   animation: grain 8s steps(6) infinite;
 }
 
 @keyframes grain {
-  0%, 100% { transform: translate(0, 0); }
-  10% { transform: translate(-5%, -10%); }
-  30% { transform: translate(3%, -15%); }
-  50% { transform: translate(-8%, 5%); }
-  70% { transform: translate(8%, 10%); }
-  90% { transform: translate(-3%, 12%); }
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  10% {
+    transform: translate(-5%, -10%);
+  }
+  30% {
+    transform: translate(3%, -15%);
+  }
+  50% {
+    transform: translate(-8%, 5%);
+  }
+  70% {
+    transform: translate(8%, 10%);
+  }
+  90% {
+    transform: translate(-3%, 12%);
+  }
+}
+
+/* Hero display: optically a touch heavier than raw Thin */
+.hero-display {
+  font-family: "GT Alpina Condensed", "Lora", ui-serif, Georgia, serif;
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 1.02;
+  /* Thin cuts read fragile at large sizes — thicken slightly */
+  -webkit-text-stroke: 0.55px currentColor;
+  paint-order: stroke fill;
 }
 
 /* ── Utilities ──────────────────────────────────────────────── */
