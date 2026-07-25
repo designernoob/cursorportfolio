@@ -14,7 +14,7 @@ export default {
       },
       fontFamily: {
         // secondary — body & UI
-        sans: ["Instrument Sans", "ui-sans-serif", "system-ui", "sans-serif"],
+        sans: ["Hanken Grotesk", "ui-sans-serif", "system-ui", "sans-serif"],
         // primary — display headlines. "Awesome Serif" is listed first so
         // that, if you license & add it (see @font-face in index.css), it
         // takes over automatically. Newsreader is the free fallback.
