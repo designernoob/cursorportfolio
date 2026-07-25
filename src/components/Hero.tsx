@@ -1,12 +1,12 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import {
   motion,
   useScroll,
   useTransform,
   AnimatePresence,
 } from "framer-motion";
-import { useRef } from "react";
 import { hero, type HeroToken } from "../content";
+import { scrollToId } from "../lib/scroll";
 
 /* A few tasteful placeholder gradients for inline media chips. */
 const MEDIA_GRADIENTS = [
@@ -22,18 +22,17 @@ export default function Hero({ ready }: { ready: boolean }) {
     target: ref,
     offset: ["start start", "end start"],
   });
-  const y = useTransform(scrollYProgress, [0, 1], [0, 140]);
-  const opacity = useTransform(scrollYProgress, [0, 0.85], [1, 0]);
+  const y = useTransform(scrollYProgress, [0, 1], [0, 90]);
+  const opacity = useTransform(scrollYProgress, [0, 0.9], [1, 0]);
 
-  // expand the token stream into per-word atoms for nice wrapping + stagger
   const atoms = expand(hero.statement);
 
   const container = {
     hidden: {},
-    show: { transition: { staggerChildren: 0.028, delayChildren: 0.15 } },
+    show: { transition: { staggerChildren: 0.026, delayChildren: 0.12 } },
   };
   const atom = {
-    hidden: { y: "0.35em", opacity: 0 },
+    hidden: { y: "0.3em", opacity: 0 },
     show: {
       y: "0em",
       opacity: 1,
@@ -47,40 +46,17 @@ export default function Hero({ ready }: { ready: boolean }) {
     <section
       id="top"
       ref={ref}
-      className="relative flex min-h-[100svh] flex-col justify-between px-6 pb-10 pt-28 md:px-10 md:pt-32"
+      className="relative flex min-h-[72svh] flex-col justify-start px-6 pb-16 pt-24 md:px-10 md:pb-24 md:pt-32"
     >
-      {/* soft accent glow */}
       <div
         aria-hidden
-        className="pointer-events-none absolute left-[-10%] top-[20%] h-[42vw] w-[42vw] rounded-full opacity-[0.12] blur-[120px]"
+        className="pointer-events-none absolute left-[6%] top-[18%] h-[34vw] w-[34vw] rounded-full opacity-[0.10] blur-[120px]"
         style={{ background: "radial-gradient(circle,var(--accent),transparent 60%)" }}
       />
 
-      {/* eyebrow */}
-      <motion.div
-        className="relative z-10 flex flex-wrap items-center justify-between gap-4"
-        initial={{ opacity: 0 }}
-        animate={ready ? { opacity: 1 } : {}}
-        transition={{ delay: 0.3, duration: 0.8 }}
-      >
-        <span className="font-mono text-xs uppercase tracking-[0.15em] text-muted">
-          {hero.name} — Portfolio ’26
-        </span>
-        <span className="inline-flex items-center gap-2 rounded-full border border-line px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.1em] text-ink">
-          <span className="relative flex h-1.5 w-1.5">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-75" />
-            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-accent" />
-          </span>
-          {hero.status}
-        </span>
-      </motion.div>
-
-      {/* statement */}
-      <motion.h1
-        style={{ y, opacity }}
-        className="relative z-10 mt-auto max-w-[16ch] font-serif text-[13vw] font-medium leading-[1.02] tracking-tighter2 text-ink md:max-w-[15ch] md:text-[7vw]"
-      >
-        <motion.span
+      <motion.div style={{ y, opacity }} className="relative z-10">
+        <motion.h1
+          className="max-w-[15ch] font-serif text-[8.5vw] font-medium leading-[1.08] tracking-tight text-ink md:max-w-[17ch] md:text-[4.7vw]"
           variants={container}
           initial="hidden"
           animate={ready ? "show" : "hidden"}
@@ -112,37 +88,37 @@ export default function Hero({ ready }: { ready: boolean }) {
                 </motion.span>
               );
             }
-            // hover word
             return (
               <motion.span key={key} variants={atom} className="inline-block">
                 <HoverWord token={a.token} />
               </motion.span>
             );
           })}
-        </motion.span>
-      </motion.h1>
+        </motion.h1>
 
-      {/* bottom row */}
-      <motion.div
-        className="relative z-10 mt-14 flex flex-col gap-6 border-t border-line pt-6 md:flex-row md:items-center md:justify-between"
-        initial={{ opacity: 0, y: 20 }}
-        animate={ready ? { opacity: 1, y: 0 } : {}}
-        transition={{ delay: 1, duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-      >
-        <p className="max-w-md font-sans text-sm leading-relaxed text-muted">
-          {hero.availability}. Previously at Sprinklr, Nutanix &amp; UpGrad —
-          CS engineer from BITS Pilani.
-        </p>
-        <div className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.15em] text-muted">
-          Scroll to explore
-          <motion.span
-            aria-hidden
-            animate={{ y: [0, 4, 0] }}
-            transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+        {/* CTA */}
+        <motion.div
+          className="mt-10 md:mt-12"
+          initial={{ opacity: 0, y: 16 }}
+          animate={ready ? { opacity: 1, y: 0 } : {}}
+          transition={{ delay: 0.9, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <motion.button
+            type="button"
+            onClick={() => scrollToId("work")}
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.98 }}
+            transition={{ type: "spring", stiffness: 400, damping: 22 }}
+            className="group inline-flex items-center gap-4 rounded-full bg-ink py-2.5 pl-6 pr-2.5 text-paper transition-colors duration-300 hover:bg-accent"
           >
-            ↓
-          </motion.span>
-        </div>
+            <span className="font-sans text-base font-medium">
+              See selected work
+            </span>
+            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-paper text-ink transition-transform duration-500 group-hover:translate-y-0.5">
+              ↓
+            </span>
+          </motion.button>
+        </motion.div>
       </motion.div>
     </section>
   );
@@ -169,13 +145,8 @@ function MediaChip({
     <motion.span
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      data-hover
-      data-cursor={token.src ? "Play" : "Media"}
-      className={`relative mx-[0.12em] inline-block translate-y-[0.1em] overflow-hidden border border-black/10 align-middle shadow-sm ${size}`}
-      animate={{
-        rotate: hovered ? -4 : 0,
-        scale: hovered ? 1.12 : 1,
-      }}
+      className={`relative mx-[0.12em] inline-block translate-y-[0.1em] cursor-pointer overflow-hidden border border-black/10 align-middle shadow-sm ${size}`}
+      animate={{ rotate: hovered ? -4 : 0, scale: hovered ? 1.12 : 1 }}
       transition={{ type: "spring", stiffness: 320, damping: 18 }}
       style={{ verticalAlign: "middle" }}
     >
@@ -208,11 +179,7 @@ function MediaChip({
 }
 
 /* ── Interactive word that reveals a floating media on hover ─── */
-function HoverWord({
-  token,
-}: {
-  token: Extract<HeroToken, { type: "hover" }>;
-}) {
+function HoverWord({ token }: { token: Extract<HeroToken, { type: "hover" }> }) {
   const [hovered, setHovered] = useState(false);
   return (
     <span
@@ -220,18 +187,14 @@ function HoverWord({
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      <span
-        data-hover
-        data-cursor="Peek"
-        className="cursor-none border-b-2 border-dotted border-accent/60 text-accent transition-colors duration-300 hover:border-accent"
-      >
+      <span className="cursor-pointer border-b-2 border-dotted border-accent/60 text-accent transition-colors duration-300 hover:border-accent">
         {token.text}
       </span>
 
       <AnimatePresence>
         {hovered && (
           <motion.span
-            className="pointer-events-none absolute bottom-[105%] left-1/2 z-20 block w-[46vw] -translate-x-1/2 overflow-hidden rounded-2xl border border-black/10 shadow-xl md:w-[16rem]"
+            className="pointer-events-none absolute bottom-[108%] left-1/2 z-20 block w-[44vw] -translate-x-1/2 overflow-hidden rounded-2xl border border-black/10 shadow-xl md:w-[15rem]"
             initial={{ opacity: 0, scale: 0.7, y: 12, rotate: -6 }}
             animate={{ opacity: 1, scale: 1, y: 0, rotate: -3 }}
             exit={{ opacity: 0, scale: 0.7, y: 12, rotate: -6 }}

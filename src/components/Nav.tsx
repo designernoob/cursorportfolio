@@ -1,8 +1,30 @@
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { site, navLinks } from "../content";
+import { navLinks } from "../content";
 import Magnetic from "./Magnetic";
 import { useSectionNav } from "../hooks/useSectionNav";
+
+/* A minimal, always-rotating spark used as the logo mark.
+   Placeholder for now — easy to swap for a custom icon later. */
+function LogoMark() {
+  return (
+    <motion.svg
+      width="26"
+      height="26"
+      viewBox="0 0 24 24"
+      fill="none"
+      className="text-ink"
+      animate={{ rotate: 360 }}
+      transition={{ duration: 14, repeat: Infinity, ease: "linear" }}
+      whileHover={{ scale: 1.15 }}
+    >
+      <path
+        d="M12 1c.6 5.2 2.8 7.4 8 8-5.2.6-7.4 2.8-8 8-.6-5.2-2.8-7.4-8-8 5.2-.6 7.4-2.8 8-8Z"
+        fill="currentColor"
+      />
+    </motion.svg>
+  );
+}
 
 export default function Nav({ ready = true }: { ready?: boolean }) {
   const goToSection = useSectionNav();
@@ -19,39 +41,33 @@ export default function Nav({ ready = true }: { ready?: boolean }) {
         <button
           type="button"
           onClick={() => navigate("/")}
-          className="flex items-center gap-2"
-          data-hover
+          aria-label="Home"
+          className="transition-transform duration-300 hover:rotate-12"
         >
-          <span className="h-2 w-2 rounded-full bg-accent" />
-          <span className="font-mono text-sm font-bold tracking-tight text-ink">
-            {site.name}
-            <span className="text-accent">.</span>
-          </span>
+          <LogoMark />
         </button>
 
-        <ul className="flex items-center gap-5 md:gap-9">
+        <ul className="flex items-center gap-4 sm:gap-6 md:gap-10">
           {navLinks.map((l) => (
             <li key={l.label}>
               {l.kind === "section" ? (
                 <button
                   type="button"
                   onClick={() => goToSection(l.target)}
-                  data-hover
-                  className="link-underline font-mono text-[11px] uppercase tracking-[0.12em] text-ink md:text-xs"
+                  className="link-underline whitespace-nowrap font-sans text-sm font-medium text-ink md:text-[17px]"
                 >
                   {l.label}
                 </button>
               ) : (
-                <Magnetic strength={0.4}>
+                <Magnetic strength={0.3}>
                   <a
                     href={l.href}
                     target="_blank"
                     rel="noreferrer"
-                    data-hover
-                    className="inline-flex items-center gap-1.5 rounded-full border border-ink/25 px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.12em] text-ink transition-colors duration-300 hover:border-accent hover:text-accent md:text-xs"
+                    className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-ink px-4 py-2 font-sans text-sm font-medium text-paper transition-colors duration-300 hover:bg-accent md:text-[17px]"
                   >
                     {l.label}
-                    <span aria-hidden>↗</span>
+                    <span aria-hidden className="text-xs">↗</span>
                   </a>
                 </Magnetic>
               )}

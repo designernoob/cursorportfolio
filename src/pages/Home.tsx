@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import Nav from "../components/Nav";
 import Hero from "../components/Hero";
-import Marquee from "../components/Marquee";
 import Work from "../components/Work";
 import About from "../components/About";
 import Beyond from "../components/Beyond";
@@ -27,7 +26,6 @@ export default function Home({ ready }: { ready: boolean }) {
       <Nav ready={ready} />
       <main>
         <Hero ready={ready} />
-        <Marquee />
         <Work />
         <About />
         <Beyond />

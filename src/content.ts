@@ -78,8 +78,6 @@ export type HeroToken =
   | { type: "hover"; text: string; label: string; src?: string };
 
 export const hero = {
-  name: "Pranav",
-  status: site.currentlyAt,
   // Read the tokens left-to-right — they form one big sentence.
   statement: [
     { type: "text", text: "I'm a product designer" },
@@ -94,7 +92,6 @@ export const hero = {
     { type: "hover", text: "human", label: "designed for real people" },
     { type: "text", text: "products." },
   ] as HeroToken[],
-  availability: "Open to select projects & conversations",
 };
 
 /* ─────────────────────────────────────────────────────────────

@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useLenis } from "./lib/useLenis";
-import Cursor from "./components/Cursor";
 import Grain from "./components/Grain";
 import Preloader from "./components/Preloader";
 import ScrollToTop from "./components/ScrollToTop";
@@ -15,7 +14,6 @@ export default function App() {
   return (
     <BrowserRouter>
       <Grain />
-      <Cursor />
       <Preloader onDone={() => setLoaded(true)} />
       <ScrollToTop />
 

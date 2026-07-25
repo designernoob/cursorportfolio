@@ -2,6 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ─────────────────────────────────────────────────────────────
+   OPTIONAL: exact vemula.me display font.
+   "Awesome Serif" is a paid font by Nicky Laatz. If you buy a
+   licence, drop the files in /public/fonts and uncomment this
+   block — the site will use it automatically (it's first in the
+   font stack). Until then we use Newsreader, a free lookalike.
+
+   @font-face {
+     font-family: "Awesome Serif";
+     src: url("/fonts/AwesomeSerif-Regular.woff2") format("woff2");
+     font-weight: 400; font-style: normal; font-display: swap;
+   }
+   @font-face {
+     font-family: "Awesome Serif";
+     src: url("/fonts/AwesomeSerif-SemiBold.woff2") format("woff2");
+     font-weight: 600; font-style: normal; font-display: swap;
+   }
+   ───────────────────────────────────────────────────────────── */
+
 /* ── Design tokens ──────────────────────────────────────────
    Light "ink on paper" theme. Change --accent to re-skin the
    whole site in one line.                                       */
@@ -40,13 +59,6 @@ body {
   color: var(--ink);
   font-family: "Instrument Sans", system-ui, sans-serif;
   overflow-x: hidden;
-  cursor: none;
-}
-
-@media (hover: none) {
-  body {
-    cursor: auto;
-  }
 }
 
 ::selection {
@@ -79,33 +91,6 @@ a {
   50% { transform: translate(-8%, 5%); }
   70% { transform: translate(8%, 10%); }
   90% { transform: translate(-3%, 12%); }
-}
-
-/* ── Custom cursor ──────────────────────────────────────────── */
-.cursor-dot,
-.cursor-ring {
-  position: fixed;
-  top: 0;
-  left: 0;
-  pointer-events: none;
-  z-index: 100;
-  border-radius: 999px;
-}
-.cursor-dot {
-  width: 7px;
-  height: 7px;
-  background: var(--ink);
-}
-.cursor-ring {
-  width: 42px;
-  height: 42px;
-  border: 1px solid var(--ink);
-}
-@media (hover: none) {
-  .cursor-dot,
-  .cursor-ring {
-    display: none;
-  }
 }
 
 /* ── Utilities ──────────────────────────────────────────────── */

@@ -15,8 +15,16 @@ export default {
       fontFamily: {
         // secondary — body & UI
         sans: ["Instrument Sans", "ui-sans-serif", "system-ui", "sans-serif"],
-        // primary — display headlines
-        serif: ["Fraunces", "ui-serif", "Georgia", "serif"],
+        // primary — display headlines. "Awesome Serif" is listed first so
+        // that, if you license & add it (see @font-face in index.css), it
+        // takes over automatically. Newsreader is the free fallback.
+        serif: [
+          "Awesome Serif",
+          "Newsreader",
+          "ui-serif",
+          "Georgia",
+          "serif",
+        ],
         // labels, eyebrows, meta
         mono: ["Space Mono", "ui-monospace", "SFMono-Regular", "monospace"],
       },
