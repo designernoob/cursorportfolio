@@ -92,6 +92,12 @@ export const hero = {
     { type: "hover", text: "human", label: "designed for real people" },
     { type: "text", text: "products." },
   ] as HeroToken[],
+  // Soft secondary line under the statement (elvinhu-style hierarchy)
+  role: {
+    before: "Senior Product Designer at ",
+    company: "Rubrik",
+    href: "https://www.rubrik.com",
+  },
 };
 
 /* ─────────────────────────────────────────────────────────────

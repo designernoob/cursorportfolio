@@ -90,9 +90,27 @@ export default function Hero({ ready }: { ready: boolean }) {
           })}
         </motion.h1>
 
+        {/* Soft role line — duller ink, lighter optical weight */}
+        <motion.p
+          className="hero-sub mt-5 max-w-[28ch] text-[6.5vw] md:mt-6 md:text-[2.6vw]"
+          initial={{ opacity: 0, y: 12 }}
+          animate={ready ? { opacity: 1, y: 0 } : {}}
+          transition={{ delay: 0.55, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+        >
+          {hero.role.before}
+          <a
+            href={hero.role.href}
+            target="_blank"
+            rel="noreferrer"
+            className="link-underline transition-colors duration-300 hover:text-ink"
+          >
+            {hero.role.company}
+          </a>
+        </motion.p>
+
         {/* CTA — soft pill, elvinhu-adjacent */}
         <motion.div
-          className="mt-10 md:mt-12"
+          className="mt-8 md:mt-10"
           initial={{ opacity: 0, y: 16 }}
           animate={ready ? { opacity: 1, y: 0 } : {}}
           transition={{ delay: 0.9, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}

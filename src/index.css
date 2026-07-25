@@ -103,6 +103,15 @@ a {
   paint-order: stroke fill;
 }
 
+/* Soft secondary line — same face, no stroke, duller ink */
+.hero-sub {
+  font-family: "Instrument Serif", ui-serif, Georgia, serif;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  color: var(--muted-soft);
+}
+
 /* ── Utilities ──────────────────────────────────────────────── */
 .text-balance {
   text-wrap: balance;
