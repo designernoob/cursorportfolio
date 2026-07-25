@@ -24,6 +24,9 @@ export const site = {
   currentlyAt: "Currently designing Rubrik's Security Cloud",
   // Link your resume here (a PDF in /public, or a hosted link)
   resumeUrl: "#",
+  // Contact menu (nav hover)
+  linkedinUrl: "https://www.linkedin.com/",
+  calendlyUrl: "https://calendly.com/",
   socials: [
     { label: "LinkedIn", href: "https://www.linkedin.com/" },
     { label: "Dribbble", href: "https://dribbble.com/" },
