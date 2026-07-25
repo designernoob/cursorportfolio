@@ -25,13 +25,13 @@
    Light "ink on paper" theme. Change --accent to re-skin the
    whole site in one line.                                       */
 :root {
-  --paper: #f2efe6; /* warm bone background */
+  --paper: #f3f0e8; /* warm bone background */
   --surface: #ffffff; /* raised panels */
-  --ink: #16150f; /* primary text */
-  --muted: #6f6a5c; /* secondary text */
-  --line: rgba(22, 21, 15, 0.14); /* hairline borders */
-  --accent: #2b23ff; /* electric cobalt accent */
-  --on-accent: #f2efe6; /* text sitting on the solid accent */
+  --ink: #3a382f; /* soft warm charcoal (gentler than black, à la vemula) */
+  --muted: #8a8578; /* secondary text */
+  --line: rgba(58, 56, 47, 0.16); /* hairline borders */
+  --accent: #3b3fc4; /* softened indigo-blue accent (less neon) */
+  --on-accent: #f6f4ee; /* text sitting on the solid accent */
 }
 
 * {
