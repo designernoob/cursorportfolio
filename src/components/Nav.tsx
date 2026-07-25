@@ -103,7 +103,7 @@ function ContactMenu() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 6, scale: 0.96 }}
             transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="absolute left-1/2 top-full z-50 -translate-x-1/2 pt-3"
+            className="absolute right-0 top-full z-50 pt-3"
           >
             <div className="flex items-center gap-2 rounded-full border border-line bg-paper p-1.5 shadow-[0_12px_40px_rgba(14,16,16,0.1)]">
               <ContactIconButton
@@ -254,9 +254,10 @@ export default function Nav({ ready = true }: { ready?: boolean }) {
         </button>
 
         <ul className="flex items-center gap-3 sm:gap-5 md:gap-8">
-          {navLinks.map((l) => (
-            <li key={l.label}>
-              {l.kind === "section" ? (
+          {navLinks
+            .filter((l) => l.kind === "section")
+            .map((l) => (
+              <li key={l.label}>
                 <button
                   type="button"
                   onClick={() => goToSection(l.target)}
@@ -264,7 +265,15 @@ export default function Nav({ ready = true }: { ready?: boolean }) {
                 >
                   {l.label}
                 </button>
-              ) : (
+              </li>
+            ))}
+          <li>
+            <ContactMenu />
+          </li>
+          {navLinks
+            .filter((l) => l.kind === "external")
+            .map((l) => (
+              <li key={l.label}>
                 <Magnetic strength={0.3}>
                   <a
                     href={l.href}
@@ -278,12 +287,8 @@ export default function Nav({ ready = true }: { ready?: boolean }) {
                     </span>
                   </a>
                 </Magnetic>
-              )}
-            </li>
-          ))}
-          <li>
-            <ContactMenu />
-          </li>
+              </li>
+            ))}
         </ul>
       </nav>
     </motion.header>
