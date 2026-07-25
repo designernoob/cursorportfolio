@@ -92,7 +92,7 @@ export default function Hero({ ready }: { ready: boolean }) {
 
         {/* Soft role line — duller ink, lighter optical weight */}
         <motion.p
-          className="hero-sub mt-5 max-w-[28ch] text-[6.5vw] md:mt-6 md:text-[2.6vw]"
+          className="hero-sub mt-10 max-w-[28ch] text-[6.5vw] md:mt-12 md:text-[2.6vw]"
           initial={{ opacity: 0, y: 12 }}
           animate={ready ? { opacity: 1, y: 0 } : {}}
           transition={{ delay: 0.55, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
