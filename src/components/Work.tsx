@@ -47,7 +47,7 @@ function ProjectBlock({ project, index }: { project: Project; index: number }) {
         <div className="mt-6 flex flex-col gap-6 md:mt-7 md:flex-row md:items-start md:justify-between">
           <div className="max-w-xl">
             <Link to={`/work/${project.slug}`}>
-                <h3 className="font-serif text-3xl font-normal leading-tight tracking-tight text-ink transition-colors duration-300 hover:text-muted md:text-[2.6rem]">
+                <h3 className="hero-display text-3xl leading-tight text-ink transition-colors duration-300 hover:text-muted md:text-[2.6rem]">
                   {project.title}
                 </h3>
             </Link>

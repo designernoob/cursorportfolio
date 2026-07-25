@@ -66,7 +66,7 @@ export default function CaseStudy() {
               <span>{readingTime} min read</span>
             </div>
 
-            <h1 className="max-w-5xl font-sans text-[11vw] font-medium leading-[0.95] tracking-tightest text-ink md:text-[6.5vw]">
+            <h1 className="hero-display max-w-5xl text-[11vw] leading-[0.95] text-ink md:text-[6.5vw]">
               {study.title}
             </h1>
 
