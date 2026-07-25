@@ -17,7 +17,7 @@ export default function Work() {
   };
 
   return (
-    <section id="work" className="relative px-6 py-24 md:px-10 md:py-40">
+    <section id="work" className="relative px-6 pb-24 pt-8 md:px-10 md:pb-40 md:pt-12">
       <div className="mb-14 flex items-end justify-between border-b border-line pb-6">
         <Reveal>
           <h2 className="font-sans text-sm uppercase tracking-[0.3em] text-muted">

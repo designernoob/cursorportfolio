@@ -46,7 +46,7 @@ export default function Hero({ ready }: { ready: boolean }) {
     <section
       id="top"
       ref={ref}
-      className="relative flex min-h-[72svh] flex-col justify-start px-6 pb-16 pt-24 md:px-10 md:pb-24 md:pt-32"
+      className="relative flex min-h-[56svh] flex-col justify-start px-6 pb-8 pt-24 md:px-10 md:pb-10 md:pt-32"
     >
       <div
         aria-hidden
