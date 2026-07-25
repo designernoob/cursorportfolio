@@ -56,7 +56,7 @@ export default function Hero({ ready }: { ready: boolean }) {
 
       <motion.div style={{ y, opacity }} className="relative z-10">
         <motion.h1
-          className="max-w-[15ch] font-serif text-[8.5vw] font-medium leading-[1.08] tracking-tight text-ink md:max-w-[17ch] md:text-[4.7vw]"
+          className="max-w-[16ch] font-serif text-[8.5vw] font-medium leading-[1.07] tracking-tight text-ink md:max-w-[26ch] md:text-[5.1vw]"
           variants={container}
           initial="hidden"
           animate={ready ? "show" : "hidden"}
