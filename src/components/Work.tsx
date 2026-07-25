@@ -54,16 +54,6 @@ function ProjectBlock({ project, index }: { project: Project; index: number }) {
             <p className="mt-3 font-sans text-base leading-relaxed text-muted">
               {project.description}
             </p>
-            <div className="mt-4 flex flex-wrap gap-2">
-              {project.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="rounded-full border border-line px-3 py-1 font-sans text-xs text-muted"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
           </div>
 
           <dl className="flex shrink-0 gap-10 md:flex-col md:gap-5 md:text-right">
