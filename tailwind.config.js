@@ -15,9 +15,9 @@ export default {
       fontFamily: {
         // secondary — body & UI
         sans: ["Hanken Grotesk", "ui-sans-serif", "system-ui", "sans-serif"],
-        // primary — display (Source Serif 4 = free GT Alpina alternative)
+        // primary — display (Cormorant = free, more condensed GT Alpina alternative)
         serif: [
-          "Source Serif 4",
+          "Cormorant",
           "ui-serif",
           "Georgia",
           "serif",
