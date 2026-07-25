@@ -46,14 +46,11 @@ function ProjectBlock({ project, index }: { project: Project; index: number }) {
         {/* Meta: title, description, timeline */}
         <div className="mt-6 flex flex-col gap-6 md:mt-7 md:flex-row md:items-start md:justify-between">
           <div className="max-w-xl">
-            <div className="flex items-baseline gap-3">
-              <span className="font-sans text-xs text-muted">{project.index}</span>
-              <Link to={`/work/${project.slug}`}>
-                <h3 className="font-serif text-3xl font-medium leading-tight text-ink transition-colors duration-300 hover:text-accent md:text-[2.6rem]">
-                  {project.title}
-                </h3>
-              </Link>
-            </div>
+            <Link to={`/work/${project.slug}`}>
+              <h3 className="font-serif text-3xl font-medium leading-tight text-ink transition-colors duration-300 hover:text-accent md:text-[2.6rem]">
+                {project.title}
+              </h3>
+            </Link>
             <p className="mt-3 font-sans text-base leading-relaxed text-muted">
               {project.description}
             </p>
