@@ -63,12 +63,6 @@ function ProjectBlock({ project, index }: { project: Project; index: number }) {
               </dt>
               <dd className="mt-1 font-sans text-sm text-ink">{project.period}</dd>
             </div>
-            <div>
-              <dt className="font-sans text-[11px] uppercase tracking-widest text-muted">
-                Company
-              </dt>
-              <dd className="mt-1 font-sans text-sm text-ink">{project.company}</dd>
-            </div>
           </dl>
         </div>
       </article>
