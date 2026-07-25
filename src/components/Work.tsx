@@ -45,13 +45,13 @@ function ProjectBlock({ project, index }: { project: Project; index: number }) {
 
         {/* Meta: title, description, timeline */}
         <div className="mt-6 flex flex-col gap-6 md:mt-7 md:flex-row md:items-start md:justify-between">
-          <div className="max-w-xl">
+          <div className="max-w-2xl">
             <Link to={`/work/${project.slug}`}>
                 <h3 className="hero-display text-3xl leading-tight text-ink transition-colors duration-300 hover:text-muted md:text-[2.6rem]">
                   {project.title}
                 </h3>
             </Link>
-            <p className="mt-3 font-sans text-base leading-relaxed text-muted">
+            <p className="mt-4 font-sans text-lg leading-relaxed text-muted md:text-xl md:leading-[1.55]">
               {project.description}
             </p>
           </div>
