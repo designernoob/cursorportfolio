@@ -17,7 +17,7 @@ export default {
         sans: ["Hanken Grotesk", "ui-sans-serif", "system-ui", "sans-serif"],
         // primary — display headlines. "Awesome Serif" is listed first so
         // that, if you license & add it (see @font-face in index.css), it
-        // takes over automatically. Newsreader is the free fallback.
+        // takes over automatically. Lora is the free fallback.
         serif: [
           "Awesome Serif",
           "Lora",
@@ -25,8 +25,6 @@ export default {
           "Georgia",
           "serif",
         ],
-        // labels, eyebrows, meta
-        mono: ["Space Mono", "ui-monospace", "SFMono-Regular", "monospace"],
       },
       letterSpacing: {
         tightest: "-0.045em",

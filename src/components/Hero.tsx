@@ -212,7 +212,7 @@ function HoverWord({ token }: { token: Extract<HeroToken, { type: "hover" }> }) 
                   className="flex h-full w-full items-center justify-center"
                   style={{ background: "linear-gradient(135deg,#2b23ff,#9db8ff)" }}
                 >
-                  <span className="font-mono text-[10px] uppercase tracking-widest text-white/90">
+                  <span className="font-sans text-[10px] uppercase tracking-widest text-white/90">
                     GIF / image
                   </span>
                 </span>

@@ -10,7 +10,7 @@ export default function Work() {
     <section id="work" className="relative px-6 pb-24 pt-8 md:px-10 md:pb-40 md:pt-12">
       <div className="mb-12 border-b border-line pb-6 md:mb-16">
         <Reveal>
-          <h2 className="font-mono text-sm uppercase tracking-[0.3em] text-muted">
+          <h2 className="font-sans text-sm uppercase tracking-[0.3em] text-muted">
             Selected Work
           </h2>
         </Reveal>
@@ -37,7 +37,7 @@ function ProjectBlock({ project, index }: { project: Project; index: number }) {
             aria-label={`View ${project.title} case study`}
             className="absolute inset-0 z-10 rounded-3xl"
           />
-          <span className="pointer-events-none absolute left-5 top-5 z-20 inline-flex items-center gap-2 rounded-full bg-paper/90 px-3 py-1.5 font-mono text-[11px] uppercase tracking-widest text-ink backdrop-blur transition-transform duration-500 group-hover/card:translate-x-1">
+          <span className="pointer-events-none absolute left-5 top-5 z-20 inline-flex items-center gap-2 rounded-full bg-paper/90 px-3 py-1.5 font-sans text-[11px] uppercase tracking-widest text-ink backdrop-blur transition-transform duration-500 group-hover/card:translate-x-1">
             Case study
             <span aria-hidden>↗</span>
           </span>
@@ -47,7 +47,7 @@ function ProjectBlock({ project, index }: { project: Project; index: number }) {
         <div className="mt-6 flex flex-col gap-6 md:mt-7 md:flex-row md:items-start md:justify-between">
           <div className="max-w-xl">
             <div className="flex items-baseline gap-3">
-              <span className="font-mono text-xs text-muted">{project.index}</span>
+              <span className="font-sans text-xs text-muted">{project.index}</span>
               <Link to={`/work/${project.slug}`}>
                 <h3 className="font-serif text-3xl font-medium leading-tight text-ink transition-colors duration-300 hover:text-accent md:text-[2.6rem]">
                   {project.title}
@@ -71,19 +71,19 @@ function ProjectBlock({ project, index }: { project: Project; index: number }) {
 
           <dl className="flex shrink-0 gap-10 md:flex-col md:gap-5 md:text-right">
             <div>
-              <dt className="font-mono text-[11px] uppercase tracking-widest text-muted">
+              <dt className="font-sans text-[11px] uppercase tracking-widest text-muted">
                 Timeline
               </dt>
               <dd className="mt-1 font-sans text-sm text-ink">{project.period}</dd>
             </div>
             <div>
-              <dt className="font-mono text-[11px] uppercase tracking-widest text-muted">
+              <dt className="font-sans text-[11px] uppercase tracking-widest text-muted">
                 Role
               </dt>
               <dd className="mt-1 font-sans text-sm text-ink">{project.role}</dd>
             </div>
             <div>
-              <dt className="font-mono text-[11px] uppercase tracking-widest text-muted">
+              <dt className="font-sans text-[11px] uppercase tracking-widest text-muted">
                 Company
               </dt>
               <dd className="mt-1 font-sans text-sm text-ink">{project.company}</dd>

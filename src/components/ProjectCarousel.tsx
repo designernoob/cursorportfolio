@@ -86,7 +86,7 @@ function ScreenMock({ variant, caption }: { variant: number; caption: string }) 
         <span className="h-2.5 w-2.5 rounded-full bg-black/10" />
         <span className="h-2.5 w-2.5 rounded-full bg-black/10" />
         <span className="ml-3 h-2 w-28 rounded bg-black/10" />
-        <span className="ml-auto font-mono text-[9px] uppercase tracking-widest text-black/30">
+        <span className="ml-auto font-sans text-[9px] uppercase tracking-widest text-black/30">
           {caption}
         </span>
       </div>

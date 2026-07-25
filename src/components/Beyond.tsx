@@ -7,7 +7,7 @@ export default function Beyond() {
       <div className="grid gap-12 md:grid-cols-12">
         <div className="md:col-span-6">
           <Reveal>
-            <h2 className="mb-3 font-mono text-xs uppercase tracking-[0.2em] text-muted">
+            <h2 className="mb-3 font-sans text-xs uppercase tracking-[0.2em] text-muted">
               {beyond.kicker}
             </h2>
           </Reveal>
@@ -34,7 +34,7 @@ export default function Beyond() {
                     className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-[0.06]"
                     style={{ background: "var(--accent)" }}
                   />
-                  <span className="relative z-10 font-mono text-[11px] uppercase tracking-widest text-muted">
+                  <span className="relative z-10 font-sans text-[11px] uppercase tracking-widest text-muted">
                     {String(i + 1).padStart(2, "0")}
                   </span>
                   <div className="relative z-10">
