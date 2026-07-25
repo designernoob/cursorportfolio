@@ -132,7 +132,7 @@ function ContactMenu() {
             transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
             className="absolute right-0 top-full z-50 pt-3"
           >
-            <div className="flex flex-col items-center gap-2.5 rounded-2xl border border-line bg-paper px-2.5 pb-2.5 pt-2 shadow-[0_12px_40px_rgba(14,16,16,0.1)]">
+            <div className="flex min-w-[11.5rem] flex-col items-center gap-2.5 rounded-2xl border border-line bg-paper px-3 pb-2.5 pt-2 shadow-[0_12px_40px_rgba(14,16,16,0.1)]">
               <div className="flex items-center gap-2">
                 <ContactIconButton
                   href={site.linkedinUrl}
@@ -160,7 +160,7 @@ function ContactMenu() {
                 </ContactIconButton>
               </div>
 
-              <p className="px-1 font-sans text-[11px] leading-none tracking-wide text-muted">
+              <p className="whitespace-nowrap px-1 font-sans text-[11px] leading-none tracking-wide text-muted">
                 <span className="uppercase tracking-[0.14em]">Local time</span>
                 <span className="mx-1.5 text-line">·</span>
                 <span className="tabular-nums text-ink">{localTime || "—"}</span>
