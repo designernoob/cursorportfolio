@@ -15,11 +15,9 @@ export default {
       fontFamily: {
         // secondary — body & UI
         sans: ["Hanken Grotesk", "ui-sans-serif", "system-ui", "sans-serif"],
-        // primary — display (GT Alpina Condensed, same as elvinhu.com;
-        // Lora is the free fallback if the webfont fails to load)
+        // primary — display (Source Serif 4 = free GT Alpina alternative)
         serif: [
-          "GT Alpina Condensed",
-          "Lora",
+          "Source Serif 4",
           "ui-serif",
           "Georgia",
           "serif",

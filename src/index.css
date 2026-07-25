@@ -3,23 +3,10 @@
 @tailwind utilities;
 
 /* ─────────────────────────────────────────────────────────────
-   COMPARISON BRANCH — elvinhu.com-inspired theme
-
-   Display font: GT Alpina Condensed Thin (same face Elvin uses).
-   Loaded from Framer's CDN for an accurate side-by-side preview.
-   GT Alpina is a commercial Grilli Type font — if you keep this
-   look for production, buy a licence from grillitype.com and
-   self-host the files under /public/fonts.
+   Display font: Source Serif 4 — free OFL alternative to
+   GT Alpina (the paid face used on elvinhu.com). Loaded from
+   Google Fonts. Body/UI stays Hanken Grotesk.
    ───────────────────────────────────────────────────────────── */
-
-@font-face {
-  font-family: "GT Alpina Condensed";
-  src: url("https://framerusercontent.com/assets/4xM3IVwUzTWHyy47vcduyy2JeEs.woff2")
-    format("woff2");
-  font-weight: 100 400;
-  font-style: normal;
-  font-display: swap;
-}
 
 /* ── Design tokens — pure white + elvinhu ink palette ───────── */
 :root {
@@ -106,15 +93,13 @@ a {
   }
 }
 
-/* Hero display: optically a touch heavier than raw Thin */
+/* Hero display — Source Serif 4 at medium weight for presence */
 .hero-display {
-  font-family: "GT Alpina Condensed", "Lora", ui-serif, Georgia, serif;
-  font-weight: 400;
+  font-family: "Source Serif 4", ui-serif, Georgia, serif;
+  font-weight: 500;
+  font-optical-sizing: auto;
   letter-spacing: -0.03em;
-  line-height: 1.02;
-  /* Thin cuts read fragile at large sizes — thicken slightly */
-  -webkit-text-stroke: 0.55px currentColor;
-  paint-order: stroke fill;
+  line-height: 1.05;
 }
 
 /* ── Utilities ──────────────────────────────────────────────── */
