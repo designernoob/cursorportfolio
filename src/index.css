@@ -3,9 +3,8 @@
 @tailwind utilities;
 
 /* ─────────────────────────────────────────────────────────────
-   Display font: Cormorant — free OFL alternative with a
-   narrower / more condensed feel closer to GT Alpina Condensed.
-   Body/UI stays Hanken Grotesk.
+   Display font: Instrument Serif — free Google Font with a
+   modern editorial feel. Body/UI stays Hanken Grotesk.
    ───────────────────────────────────────────────────────────── */
 
 /* ── Design tokens — pure white + elvinhu ink palette ───────── */
@@ -93,12 +92,15 @@ a {
   }
 }
 
-/* Hero display — Cormorant at medium weight for presence */
+/* Hero display — Instrument Serif, optically a touch bolder
+   than the single Regular cut Google Fonts ships. */
 .hero-display {
-  font-family: "Cormorant", ui-serif, Georgia, serif;
-  font-weight: 500;
-  letter-spacing: -0.02em;
+  font-family: "Instrument Serif", ui-serif, Georgia, serif;
+  font-weight: 400;
+  letter-spacing: -0.025em;
   line-height: 1.05;
+  -webkit-text-stroke: 0.45px currentColor;
+  paint-order: stroke fill;
 }
 
 /* ── Utilities ──────────────────────────────────────────────── */
