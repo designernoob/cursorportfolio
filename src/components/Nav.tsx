@@ -63,6 +63,33 @@ function EmailIcon({ className = "h-4 w-4" }: { className?: string }) {
 function ContactMenu() {
   const [open, setOpen] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [localTime, setLocalTime] = useState("");
+
+  useEffect(() => {
+    if (!open) return;
+    const tick = () => {
+      try {
+        setLocalTime(
+          new Intl.DateTimeFormat("en-GB", {
+            hour: "numeric",
+            minute: "2-digit",
+            hour12: true,
+            timeZone: site.timezone,
+          }).format(new Date())
+        );
+      } catch {
+        setLocalTime(
+          new Date().toLocaleTimeString([], {
+            hour: "numeric",
+            minute: "2-digit",
+          })
+        );
+      }
+    };
+    tick();
+    const id = window.setInterval(tick, 1000);
+    return () => window.clearInterval(id);
+  }, [open]);
 
   async function copyEmail() {
     try {
@@ -105,31 +132,39 @@ function ContactMenu() {
             transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
             className="absolute right-0 top-full z-50 pt-3"
           >
-            <div className="flex items-center gap-2 rounded-full border border-line bg-paper p-1.5 shadow-[0_12px_40px_rgba(14,16,16,0.1)]">
-              <ContactIconButton
-                href={site.linkedinUrl}
-                label="LinkedIn"
-                tooltip="LinkedIn"
-              >
-                <LinkedInIcon />
-              </ContactIconButton>
+            <div className="flex flex-col items-center gap-2.5 rounded-2xl border border-line bg-paper px-2.5 pb-2.5 pt-2 shadow-[0_12px_40px_rgba(14,16,16,0.1)]">
+              <div className="flex items-center gap-2">
+                <ContactIconButton
+                  href={site.linkedinUrl}
+                  label="LinkedIn"
+                  tooltip="LinkedIn"
+                >
+                  <LinkedInIcon />
+                </ContactIconButton>
 
-              <ContactIconButton
-                href={site.calendlyUrl}
-                label="Schedule a call on Calendly"
-                tooltip="Schedule call"
-              >
-                <CalendlyIcon />
-              </ContactIconButton>
+                <ContactIconButton
+                  href={site.calendlyUrl}
+                  label="Schedule a call on Calendly"
+                  tooltip="Schedule call"
+                >
+                  <CalendlyIcon />
+                </ContactIconButton>
 
-              <ContactIconButton
-                label={copied ? "Copied!" : `Copy ${site.email}`}
-                tooltip={copied ? "Copied!" : "Copy email"}
-                onClick={copyEmail}
-                active={copied}
-              >
-                <EmailIcon />
-              </ContactIconButton>
+                <ContactIconButton
+                  label={copied ? "Copied!" : `Copy ${site.email}`}
+                  tooltip={copied ? "Copied!" : "Copy email"}
+                  onClick={copyEmail}
+                  active={copied}
+                >
+                  <EmailIcon />
+                </ContactIconButton>
+              </div>
+
+              <p className="px-1 font-sans text-[11px] leading-none tracking-wide text-muted">
+                <span className="uppercase tracking-[0.14em]">Local time</span>
+                <span className="mx-1.5 text-line">·</span>
+                <span className="tabular-nums text-ink">{localTime || "—"}</span>
+              </p>
             </div>
           </motion.div>
         )}
