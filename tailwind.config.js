@@ -20,7 +20,7 @@ export default {
         // takes over automatically. Newsreader is the free fallback.
         serif: [
           "Awesome Serif",
-          "Newsreader",
+          "Lora",
           "ui-serif",
           "Georgia",
           "serif",
