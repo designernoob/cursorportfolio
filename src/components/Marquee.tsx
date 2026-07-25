@@ -40,7 +40,7 @@ export default function Marquee() {
       <motion.div className="flex shrink-0 whitespace-nowrap" style={{ x }}>
         {items.map((item, i) => (
           <span key={i} className="flex items-center">
-            <span className="px-6 font-sans text-2xl font-medium tracking-tight text-cream md:px-10 md:text-4xl">
+            <span className="px-6 font-sans text-2xl font-medium tracking-tight text-ink md:px-10 md:text-4xl">
               {item}
             </span>
             <span className="text-accent">✦</span>

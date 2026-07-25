@@ -5,6 +5,7 @@ import Hero from "../components/Hero";
 import Marquee from "../components/Marquee";
 import Work from "../components/Work";
 import About from "../components/About";
+import Beyond from "../components/Beyond";
 import Testimonials from "../components/Testimonials";
 import Footer from "../components/Footer";
 import { scrollToId } from "../lib/scroll";
@@ -29,6 +30,7 @@ export default function Home({ ready }: { ready: boolean }) {
         <Marquee />
         <Work />
         <About />
+        <Beyond />
         <Testimonials />
         <Footer />
       </main>

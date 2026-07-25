@@ -16,7 +16,7 @@ export default function Testimonials() {
         {testimonials.map((t, i) => (
           <Reveal key={t.name} delay={(i % 2) * 0.1}>
             <figure className="flex h-full flex-col justify-between gap-8">
-              <blockquote className="text-balance font-serif text-2xl leading-[1.3] text-cream md:text-3xl">
+              <blockquote className="text-balance font-serif text-2xl leading-[1.3] text-ink md:text-3xl">
                 <span className="text-accent">“</span>
                 {t.quote}
                 <span className="text-accent">”</span>
@@ -26,7 +26,7 @@ export default function Testimonials() {
                   {t.name.charAt(0)}
                 </span>
                 <div>
-                  <div className="font-sans text-sm font-medium text-cream">
+                  <div className="font-sans text-sm font-medium text-ink">
                     {t.name}
                   </div>
                   <div className="text-xs text-muted">{t.title}</div>

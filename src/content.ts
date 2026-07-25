@@ -20,6 +20,10 @@ export const site = {
   timezone: "Asia/Kolkata",
   email: "hello@pranav.design",
   availability: "Open to select projects & conversations",
+  // Shown as the status pill in the hero
+  currentlyAt: "Currently designing Rubrik's Security Cloud",
+  // Link your resume here (a PDF in /public, or a hosted link)
+  resumeUrl: "#",
   socials: [
     { label: "LinkedIn", href: "https://www.linkedin.com/" },
     { label: "Dribbble", href: "https://dribbble.com/" },
@@ -28,13 +32,87 @@ export const site = {
   ],
 };
 
-// Big statement shown in the hero. Words wrapped in *asterisks*
-// render in the editorial serif italic style for emphasis.
+/**
+ * Top navigation. The homepage is always Home / Work, so the nav
+ * only surfaces these three actions.
+ *   kind: "section"  → smoothly scrolls to a section id on the home page
+ *   kind: "external" → opens a link (e.g. your resume) in a new tab
+ */
+export type NavLink =
+  | { label: string; kind: "section"; target: string }
+  | { label: string; kind: "external"; href: string };
+
+export const navLinks: NavLink[] = [
+  { label: "About", kind: "section", target: "about" },
+  { label: "Beyond Design", kind: "section", target: "beyond" },
+  { label: "Resume", kind: "external", href: site.resumeUrl },
+];
+
+/* ─────────────────────────────────────────────────────────────
+ *  HERO
+ * ─────────────────────────────────────────────────────────────
+ *  The headline is a flow of "tokens" so we can weave images and
+ *  interactive words directly into the sentence (inspired by the
+ *  inline media on vemula.me). Types you can use:
+ *
+ *   { type: "text", text: "plain words" }
+ *   { type: "em",   text: "italic accent word" }
+ *   { type: "media", label: "alt text", shape: "rect" | "circle" | "pill",
+ *            src?: "/your-image.gif" }         ← inline image/GIF chip
+ *   { type: "hover", text: "word", label: "caption", src?: "/img.gif" }
+ *            ← a word that reveals a floating image/GIF on hover
+ *
+ *  Leave `src` empty to show a styled placeholder for now. Drop a
+ *  file in /public later and set src to swap in real media.
+ * ───────────────────────────────────────────────────────────── */
+
+export type HeroToken =
+  | { type: "text"; text: string }
+  | { type: "em"; text: string }
+  | {
+      type: "media";
+      label: string;
+      shape?: "rect" | "circle" | "pill";
+      src?: string;
+    }
+  | { type: "hover"; text: string; label: string; src?: string };
+
 export const hero = {
-  intro: "Portfolio — 2026",
-  headline: ["Design that", "makes the *complex*", "feel effortless."],
-  summary:
-    "I'm Pranav, a product designer shaping Rubrik's Security Cloud. Previously at Sprinklr, Nutanix & UpGrad. Computer Science engineer from BITS Pilani who cares as much about the last 5% of polish as the first idea.",
+  name: "Pranav",
+  status: site.currentlyAt,
+  // Read the tokens left-to-right — they form one big sentence.
+  statement: [
+    { type: "text", text: "I'm a product designer" },
+    { type: "media", label: "A portrait of Pranav", shape: "circle" },
+    { type: "text", text: "who turns" },
+    { type: "hover", text: "complex", label: "the messy middle of software" },
+    { type: "text", text: "problems into" },
+    { type: "media", label: "A calm product flow", shape: "rect" },
+    { type: "text", text: "calm," },
+    { type: "em", text: "clear" },
+    { type: "text", text: "&" },
+    { type: "hover", text: "human", label: "designed for real people" },
+    { type: "text", text: "products." },
+  ] as HeroToken[],
+  availability: "Open to select projects & conversations",
+};
+
+/* ─────────────────────────────────────────────────────────────
+ *  BEYOND DESIGN  (nav → "Beyond Design")
+ *  A light section for the things you do outside product design.
+ *  Placeholder for now — swap in your real interests later.
+ * ───────────────────────────────────────────────────────────── */
+export const beyond = {
+  kicker: "Beyond Design",
+  heading: ["Life happens", "away from the *artboard* too."],
+  intro:
+    "A placeholder for the things that shape how I think — the hobbies, side quests and curiosities beyond product design. We'll fill this with real content soon.",
+  items: [
+    { title: "Photography", note: "Chasing light on long walks." },
+    { title: "Writing", note: "Short notes on design & craft." },
+    { title: "Reading", note: "Non-fiction, slowly, with coffee." },
+    { title: "Something new", note: "Always learning one new thing." },
+  ],
 };
 
 // The scrolling ticker between hero and work.

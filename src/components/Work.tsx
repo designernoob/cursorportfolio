@@ -114,7 +114,7 @@ function Row({
             </span>
             <h3
               className={`font-sans text-4xl font-medium leading-none tracking-tightest transition-all duration-500 md:text-7xl ${
-                active ? "translate-x-2 text-ink md:translate-x-4" : "text-cream"
+                active ? "translate-x-2 text-ink md:translate-x-4" : "text-ink"
               }`}
             >
               {project.title}

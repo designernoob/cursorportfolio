@@ -66,7 +66,7 @@ export default function CaseStudy() {
               <span>{readingTime} min read</span>
             </div>
 
-            <h1 className="max-w-5xl font-sans text-[11vw] font-medium leading-[0.95] tracking-tightest text-cream md:text-[6.5vw]">
+            <h1 className="max-w-5xl font-sans text-[11vw] font-medium leading-[0.95] tracking-tightest text-ink md:text-[6.5vw]">
               {study.title}
             </h1>
 
@@ -96,7 +96,7 @@ export default function CaseStudy() {
                 </h2>
               </Reveal>
               <Reveal delay={0.05}>
-                <p className="max-w-2xl font-serif text-2xl leading-[1.35] text-cream md:text-3xl">
+                <p className="max-w-2xl font-serif text-2xl leading-[1.35] text-ink md:text-3xl">
                   {study.overview.summary}
                 </p>
               </Reveal>
@@ -109,7 +109,7 @@ export default function CaseStudy() {
                       <dt className="text-xs uppercase tracking-widest text-muted">
                         {m.label}
                       </dt>
-                      <dd className="mt-1 text-sm text-cream">{m.value}</dd>
+                      <dd className="mt-1 text-sm text-ink">{m.value}</dd>
                     </div>
                   </Reveal>
                 ))}
@@ -122,7 +122,7 @@ export default function CaseStudy() {
         <section className="px-6 md:px-10">
           <div className="grid gap-px overflow-hidden rounded-3xl border border-line bg-line sm:grid-cols-3">
             {study.overview.impact.map((m, i) => (
-              <Reveal key={i} className="bg-ink" delay={i * 0.06}>
+              <Reveal key={i} className="bg-paper" delay={i * 0.06}>
                 <div className="flex h-full flex-col gap-6 p-8 md:p-10">
                   <span className="font-sans text-5xl font-medium tracking-tight text-accent md:text-6xl">
                     {m.value}
@@ -155,7 +155,7 @@ export default function CaseStudy() {
                           data-hover
                           onClick={() => scrollToId(s.id)}
                           className={`group flex items-center gap-3 text-left text-sm transition-colors duration-300 ${
-                            active ? "text-cream" : "text-muted hover:text-cream"
+                            active ? "text-ink" : "text-muted hover:text-ink"
                           }`}
                         >
                           <span
@@ -193,7 +193,7 @@ export default function CaseStudy() {
                         <span className="font-sans text-sm text-accent">
                           {String(i + 1).padStart(2, "0")}
                         </span>
-                        <h2 className="font-sans text-3xl font-medium tracking-tight text-cream md:text-4xl">
+                        <h2 className="font-sans text-3xl font-medium tracking-tight text-ink md:text-4xl">
                           {s.heading}
                         </h2>
                       </div>
@@ -268,7 +268,7 @@ function Block({ block, accent }: { block: CaseBlock; accent: string }) {
       return (
         <Reveal>
           <figure className="max-w-3xl border-l-2 border-accent pl-6 md:pl-8">
-            <blockquote className="font-serif text-3xl leading-[1.25] text-cream md:text-4xl">
+            <blockquote className="font-serif text-3xl leading-[1.25] text-ink md:text-4xl">
               {block.text}
             </blockquote>
             {block.by && (
@@ -359,7 +359,7 @@ function Figure({
               className="absolute inset-0 opacity-[0.4]"
               style={{
                 backgroundImage:
-                  "radial-gradient(circle at 1px 1px, rgba(243,240,233,0.08) 1px, transparent 0)",
+                  "radial-gradient(circle at 1px 1px, rgba(22,21,15,0.10) 1px, transparent 0)",
                 backgroundSize: "22px 22px",
               }}
             />
@@ -367,7 +367,7 @@ function Figure({
               <span className="flex h-9 w-9 items-center justify-center rounded-full border border-line text-accent">
                 ✦
               </span>
-              <span className="max-w-sm text-sm text-cream/80">
+              <span className="max-w-sm text-sm text-ink/80">
                 {label || "Add image"}
               </span>
               <span className="text-[10px] uppercase tracking-widest text-muted">
@@ -414,7 +414,7 @@ function NextLink({
       <span className="relative z-10 text-xs uppercase tracking-[0.25em] text-muted">
         {dir === "prev" ? "← Previous" : "Next →"}
       </span>
-      <span className="relative z-10 font-sans text-3xl font-medium tracking-tight text-cream transition-colors duration-300 group-hover:text-accent md:text-5xl">
+      <span className="relative z-10 font-sans text-3xl font-medium tracking-tight text-ink transition-colors duration-300 group-hover:text-accent md:text-5xl">
         {title}
       </span>
       <span className="relative z-10 text-sm text-muted">{company}</span>

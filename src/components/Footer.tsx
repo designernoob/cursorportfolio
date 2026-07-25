@@ -55,7 +55,7 @@ export default function Footer() {
           data-cursor="Email"
           className="block"
         >
-          <h2 className="font-sans text-[15vw] font-medium leading-[0.9] tracking-tightest text-cream transition-colors duration-500 hover:text-accent md:text-[13vw]">
+          <h2 className="font-sans text-[15vw] font-medium leading-[0.9] tracking-tightest text-ink transition-colors duration-500 hover:text-accent md:text-[13vw]">
             <MaskedLines lines={["Let's build", "something *great*."]} />
           </h2>
         </a>
@@ -66,7 +66,7 @@ export default function Footer() {
               <a
                 href={`mailto:${site.email}`}
                 data-hover
-                className="inline-flex items-center gap-3 rounded-full bg-accent px-6 py-4 font-sans text-base font-medium text-ink transition-transform"
+                className="inline-flex items-center gap-3 rounded-full bg-accent px-6 py-4 font-sans text-base font-medium text-onaccent transition-transform"
               >
                 {site.email}
                 <span className="text-xl">↗</span>
@@ -90,7 +90,7 @@ export default function Footer() {
                       target="_blank"
                       rel="noreferrer"
                       data-hover
-                      className="link-underline text-sm text-cream"
+                      className="link-underline text-sm text-ink"
                     >
                       {s.label}
                     </a>
@@ -103,7 +103,7 @@ export default function Footer() {
               <h4 className="mb-4 text-xs uppercase tracking-[0.25em] text-muted">
                 Local time
               </h4>
-              <div className="font-sans text-sm tabular-nums text-cream">
+              <div className="font-sans text-sm tabular-nums text-ink">
                 {time} <span className="text-muted">IST</span>
               </div>
             </div>

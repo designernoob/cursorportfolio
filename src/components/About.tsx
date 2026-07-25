@@ -11,7 +11,7 @@ export default function About() {
               About
             </h2>
           </Reveal>
-          <h3 className="font-sans text-4xl font-medium leading-[1.02] tracking-tightest text-cream md:text-6xl">
+          <h3 className="font-sans text-4xl font-medium leading-[1.02] tracking-tightest text-ink md:text-6xl">
             <MaskedLines lines={about.heading} />
           </h3>
 
@@ -32,7 +32,7 @@ export default function About() {
               <Reveal
                 key={s.label}
                 delay={i * 0.06}
-                className="bg-ink"
+                className="bg-paper"
               >
                 <div className="flex h-full flex-col justify-between gap-8 p-6">
                   <span className="font-sans text-4xl font-medium tracking-tight text-accent md:text-5xl">
@@ -55,7 +55,7 @@ export default function About() {
             <ul className="flex flex-col">
               {about.capabilities.map((c, i) => (
                 <Reveal key={c} delay={i * 0.05}>
-                  <li className="group flex items-center justify-between border-b border-line py-3 text-sm text-cream">
+                  <li className="group flex items-center justify-between border-b border-line py-3 text-sm text-ink">
                     <span>{c}</span>
                     <span className="text-accent opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                       →

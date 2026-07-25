@@ -60,11 +60,9 @@ export default function Cursor() {
           marginLeft: label ? -42 : hovering ? -32 : -21,
           marginTop: label ? -42 : hovering ? -32 : -21,
           backgroundColor: hovering
-            ? "rgba(216,253,81,0.15)"
-            : "rgba(255,255,255,0)",
-          borderColor: hovering
-            ? "rgba(216,253,81,0.9)"
-            : "rgba(255,255,255,0.6)",
+            ? "rgba(43,35,255,0.12)"
+            : "rgba(43,35,255,0)",
+          borderColor: hovering ? "var(--accent)" : "rgba(22,21,15,0.45)",
         }}
         transition={{ type: "spring", stiffness: 400, damping: 28 }}
       >
