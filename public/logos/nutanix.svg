@@ -1,5 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
-  <!-- Nutanix-inspired geometric mark -->
-  <rect width="32" height="32" rx="7" fill="#024DA1"/>
-  <path d="M16 6.5 25 12v8l-9 5.5L7 20v-8l9-5.5zm0 3.1L10.2 13v6l5.8 3.5L21.8 19v-6L16 9.6z" fill="#fff"/>
-</svg>

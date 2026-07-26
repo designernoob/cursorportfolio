@@ -114,38 +114,31 @@ a {
 
 /* Crumpled real-paper sheet for Experience & Education */
 .experience-doc {
-  --doc-ink: #1c1914;
-  --doc-ink-soft: #6b6458;
-  --doc-rule: rgba(28, 25, 20, 0.14);
+  --doc-ink: #1a1a1a;
+  --doc-ink-soft: #6b6b6b;
+  --doc-rule: rgba(26, 26, 26, 0.12);
   border-radius: 4px;
   box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.45) inset,
-    0 22px 50px rgba(40, 30, 10, 0.14),
-    0 4px 14px rgba(40, 30, 10, 0.08);
+    0 1px 0 rgba(255, 255, 255, 0.55) inset,
+    0 22px 50px rgba(20, 20, 20, 0.1),
+    0 4px 14px rgba(20, 20, 20, 0.06);
 }
 
 .experience-doc__paper {
   position: absolute;
   inset: 0;
-  background-color: #f4efe4;
+  background-color: #f7f5f1;
   background-image: url("/textures/crumpled-paper.jpg");
   background-size: cover;
   background-position: center;
-  filter: contrast(1.08) brightness(1.05);
+  filter: contrast(1.06) brightness(1.08) saturate(0.35);
 }
 
 .experience-doc__wash {
   position: absolute;
   inset: 0;
-  /* Soft sticky-note warmth over the crumpled photo */
-  background:
-    linear-gradient(
-      135deg,
-      rgba(255, 241, 150, 0.62) 0%,
-      rgba(255, 250, 220, 0.48) 48%,
-      rgba(255, 232, 120, 0.58) 100%
-    );
-  mix-blend-mode: multiply;
+  /* Soft off-white veil — keeps paper readable vs page white */
+  background: rgba(250, 249, 246, 0.55);
 }
 
 .experience-doc__grain,

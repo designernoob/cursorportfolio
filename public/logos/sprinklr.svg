@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
-  <!-- Simplified Sprinklr-inspired mark -->
-  <rect width="32" height="32" rx="7" fill="#0A66C2"/>
-  <circle cx="11" cy="13" r="2.2" fill="#fff"/>
-  <circle cx="21" cy="13" r="2.2" fill="#fff"/>
-  <circle cx="16" cy="20.5" r="2.2" fill="#fff"/>
-  <path d="M12.4 14.5c1 .9 2.2 1.5 3.6 1.5s2.6-.6 3.6-1.5" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/>
-</svg>
