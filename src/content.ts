@@ -142,7 +142,7 @@ export const experience = {
     {
       org: "Rubrik",
       note: "Senior Product Designer",
-      duration: "2023 — Now",
+      duration: "2022 — Now",
       kind: "Full-time",
       logo: "/logos/rubrik.png",
     },
