@@ -128,10 +128,10 @@ a {
   position: absolute;
   inset: 0;
   background-color: #f4efe4;
-  background-image: url("/textures/folded-paper.jpg");
+  background-image: url("/textures/crumpled-paper.jpg");
   background-size: cover;
   background-position: center;
-  filter: contrast(1.05) saturate(0.85);
+  filter: contrast(1.08) brightness(1.05);
 }
 
 .experience-doc__wash {
@@ -141,9 +141,9 @@ a {
   background:
     linear-gradient(
       135deg,
-      rgba(255, 236, 140, 0.55) 0%,
-      rgba(255, 248, 214, 0.42) 45%,
-      rgba(255, 229, 120, 0.5) 100%
+      rgba(255, 241, 150, 0.62) 0%,
+      rgba(255, 250, 220, 0.48) 48%,
+      rgba(255, 232, 120, 0.58) 100%
     );
   mix-blend-mode: multiply;
 }
