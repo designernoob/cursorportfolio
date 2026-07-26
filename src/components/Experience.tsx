@@ -1,136 +1,99 @@
-import { useRef } from "react";
-import {
-  motion,
-  useScroll,
-  useTransform,
-  useReducedMotion,
-} from "framer-motion";
 import { experience } from "../content";
+import { Reveal } from "./Reveal";
 
 const COLS =
-  "grid-cols-1 md:grid-cols-[minmax(0,2.2fr)_minmax(0,1.1fr)_minmax(0,0.85fr)]";
+  "grid-cols-1 md:grid-cols-[minmax(0,2.4fr)_minmax(0,1.1fr)_minmax(0,0.8fr)]";
 
 /**
- * Sticky-note paper sheet: full content width, fold creases,
- * scroll-driven unfold from a single vertical fold.
+ * Real crumpled-paper document with a clean single-font table
+ * of experience + education. Logos sit beside each org name.
  */
 export default function Experience() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const reduceMotion = useReducedMotion();
-
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start 85%", "start 35%"],
-  });
-
-  // 78° → 0°: opens from a single left-edge fold
-  const fold = useTransform(scrollYProgress, [0, 1], [78, 0]);
-  const shade = useTransform(scrollYProgress, [0, 1], [0.28, 0]);
-  const lift = useTransform(scrollYProgress, [0, 1], [18, 0]);
-
   return (
-    <section
-      id="experience"
-      ref={sectionRef}
-      className="relative px-6 py-24 md:px-10 md:py-36"
-      style={{ perspective: "1400px" }}
-    >
-      <motion.div
-        className="experience-doc relative w-full origin-left will-change-transform"
-        style={
-          reduceMotion
-            ? undefined
-            : {
-                rotateY: fold,
-                y: lift,
-              }
-        }
-      >
-        {/* Folding shade that fades as the sheet opens */}
-        {!reduceMotion && (
-          <motion.div
-            aria-hidden
-            className="pointer-events-none absolute inset-0 z-20"
-            style={{
-              background:
-                "linear-gradient(90deg, rgba(40,30,10,0.22), transparent 42%)",
-              opacity: shade,
-            }}
-          />
-        )}
+    <section id="experience" className="relative px-6 py-24 md:px-10 md:py-36">
+      <Reveal>
+        <div className="experience-doc relative w-full overflow-hidden">
+          {/* Crumpled paper photo + warm sticky wash */}
+          <div aria-hidden className="experience-doc__paper" />
+          <div aria-hidden className="experience-doc__wash" />
 
-        {/* Paper fiber / grain */}
-        <div aria-hidden className="experience-doc__grain" />
+          <div className="relative z-10 px-6 py-9 md:px-10 md:py-12">
+            <header className="border-b border-[color:var(--doc-rule)] pb-5 md:pb-6">
+              <p className="font-sans text-[11px] font-medium uppercase tracking-[0.26em] text-[color:var(--doc-ink-soft)]">
+                {experience.kicker}
+              </p>
+              <h2 className="mt-3 max-w-2xl font-sans text-[1.85rem] font-semibold leading-[1.15] tracking-tight text-[color:var(--doc-ink)] md:text-[2.35rem]">
+                {experience.heading}
+              </h2>
+            </header>
 
-        {/* Remaining fold creases (cross) */}
-        <div aria-hidden className="experience-doc__crease experience-doc__crease--v" />
-        <div aria-hidden className="experience-doc__crease experience-doc__crease--h" />
-
-        <div className="relative z-10 px-6 py-8 md:px-10 md:py-12">
-          {/* Document header */}
-          <header className="border-b border-[color:var(--doc-rule)] pb-6 md:pb-8">
-            <p className="font-sans text-[11px] uppercase tracking-[0.28em] text-[color:var(--doc-ink-soft)]">
-              {experience.kicker}
-            </p>
-            <h2 className="hero-display mt-3 max-w-3xl text-[2.35rem] leading-[1.05] text-[color:var(--doc-ink)] md:text-[3rem]">
-              {experience.heading}
-            </h2>
-          </header>
-
-          {/* Aligned table */}
-          <div className="mt-6 md:mt-8" role="table" aria-label="Experience and education">
             <div
-              role="row"
-              className={`mb-2 hidden ${COLS} gap-x-6 font-sans text-[10px] uppercase tracking-[0.22em] text-[color:var(--doc-ink-soft)] md:grid`}
+              className="mt-5 md:mt-7"
+              role="table"
+              aria-label="Experience and education"
             >
-              <span role="columnheader">Company / School</span>
-              <span role="columnheader">Duration</span>
-              <span role="columnheader">Type</span>
-            </div>
+              <div
+                role="row"
+                className={`mb-1.5 hidden ${COLS} gap-x-6 font-sans text-[10px] font-medium uppercase tracking-[0.2em] text-[color:var(--doc-ink-soft)] md:grid`}
+              >
+                <span role="columnheader">Company / School</span>
+                <span role="columnheader">Duration</span>
+                <span role="columnheader">Type</span>
+              </div>
 
-            <ul className="border-t border-[color:var(--doc-rule)]">
-              {experience.entries.map((entry) => (
-                <li
-                  key={`${entry.org}-${entry.duration}`}
-                  role="row"
-                  className={`grid ${COLS} gap-x-6 gap-y-1 border-b border-[color:var(--doc-rule)] py-4 md:items-baseline md:py-5`}
-                >
-                  <div role="cell" className="min-w-0">
-                    <p className="font-sans text-[15px] font-semibold tracking-tight text-[color:var(--doc-ink)] md:text-base">
-                      {entry.org}
+              <ul className="border-t border-[color:var(--doc-rule)]">
+                {experience.entries.map((entry) => (
+                  <li
+                    key={`${entry.org}-${entry.duration}`}
+                    role="row"
+                    className={`grid ${COLS} gap-x-6 gap-y-1.5 border-b border-[color:var(--doc-rule)] py-4 md:items-center md:py-[1.15rem]`}
+                  >
+                    <div role="cell" className="flex min-w-0 items-center gap-3">
+                      <img
+                        src={entry.logo}
+                        alt=""
+                        width={28}
+                        height={28}
+                        className="h-7 w-7 shrink-0 rounded-[7px] shadow-sm ring-1 ring-black/5"
+                      />
+                      <div className="min-w-0">
+                        <p className="truncate font-sans text-[15px] font-semibold tracking-tight text-[color:var(--doc-ink)] md:text-base">
+                          {entry.org}
+                        </p>
+                        {entry.note && (
+                          <p className="mt-0.5 truncate font-sans text-[13px] font-normal text-[color:var(--doc-ink-soft)] md:text-sm">
+                            {entry.note}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+
+                    <p
+                      role="cell"
+                      className="font-sans text-[13px] font-medium tabular-nums tracking-wide text-[color:var(--doc-ink)] md:text-sm"
+                    >
+                      <span className="mr-2 font-sans text-[10px] font-medium uppercase tracking-[0.16em] text-[color:var(--doc-ink-soft)] md:hidden">
+                        Duration
+                      </span>
+                      {entry.duration}
                     </p>
-                    {entry.note && (
-                      <p className="mt-0.5 font-sans text-sm text-[color:var(--doc-ink-soft)]">
-                        {entry.note}
-                      </p>
-                    )}
-                  </div>
 
-                  <p
-                    role="cell"
-                    className="font-sans text-sm tabular-nums tracking-wide text-[color:var(--doc-ink)] md:text-[15px]"
-                  >
-                    <span className="mr-2 font-sans text-[10px] uppercase tracking-[0.18em] text-[color:var(--doc-ink-soft)] md:hidden">
-                      Duration
-                    </span>
-                    {entry.duration}
-                  </p>
-
-                  <p
-                    role="cell"
-                    className="font-sans text-sm text-[color:var(--doc-ink-soft)] md:text-[15px]"
-                  >
-                    <span className="mr-2 font-sans text-[10px] uppercase tracking-[0.18em] md:hidden">
-                      Type
-                    </span>
-                    {entry.kind}
-                  </p>
-                </li>
-              ))}
-            </ul>
+                    <p
+                      role="cell"
+                      className="font-sans text-[13px] font-medium text-[color:var(--doc-ink-soft)] md:text-sm"
+                    >
+                      <span className="mr-2 font-sans text-[10px] font-medium uppercase tracking-[0.16em] md:hidden">
+                        Type
+                      </span>
+                      {entry.kind}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
-      </motion.div>
+      </Reveal>
     </section>
   );
 }

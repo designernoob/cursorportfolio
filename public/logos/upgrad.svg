@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <!-- UpGrad-inspired mark -->
+  <rect width="32" height="32" rx="7" fill="#E31C5F"/>
+  <path d="M10 21.5 16 8.5l6 13H19.4L16 13.8 12.6 21.5H10z" fill="#fff"/>
+  <path d="M13.2 18.2h5.6" stroke="#fff" stroke-width="1.7" stroke-linecap="round"/>
+</svg>

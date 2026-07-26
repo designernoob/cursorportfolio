@@ -131,6 +131,7 @@ export type ExperienceEntry = {
   duration: string;
   kind: string;
   note?: string; // optional role / degree under the org name
+  logo: string; // path under /public
 };
 
 export const experience = {
@@ -142,30 +143,35 @@ export const experience = {
       note: "Senior Product Designer",
       duration: "2023 — Now",
       kind: "Full-time",
+      logo: "/logos/rubrik.svg",
     },
     {
       org: "Sprinklr",
       note: "UX Design Intern",
       duration: "Jan ’22 — Jul ’22",
       kind: "Intern",
+      logo: "/logos/sprinklr.svg",
     },
     {
       org: "Nutanix",
       note: "UX Design Intern",
       duration: "Sep ’21 — Dec ’21",
       kind: "Intern",
+      logo: "/logos/nutanix.svg",
     },
     {
       org: "UpGrad",
       note: "Product Design Intern",
       duration: "Jan ’21 — Aug ’21",
       kind: "Intern",
+      logo: "/logos/upgrad.svg",
     },
     {
-      org: "NID Ahmedabad",
-      note: "B.Des — Interaction Design",
+      org: "BITS Pilani",
+      note: "B.E. — Computer Science",
       duration: "2018 — 2022",
       kind: "Education",
+      logo: "/logos/bits.svg",
     },
   ] as ExperienceEntry[],
 };
