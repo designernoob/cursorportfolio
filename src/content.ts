@@ -135,8 +135,9 @@ export type ExperienceEntry = {
 };
 
 export const experience = {
-  kicker: "Experience & Education",
+  kicker: "Career",
   heading: "A short paper trail.",
+  location: "Based in Bangalore, India 🇮🇳",
   entries: [
     {
       org: "Rubrik",

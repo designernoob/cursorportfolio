@@ -17,13 +17,16 @@ export default function Experience() {
           <div aria-hidden className="experience-doc__wash" />
 
           <div className="relative z-10 px-6 py-9 md:px-12 md:py-14">
-            <header className="border-b border-[color:var(--doc-rule)] pb-6 md:pb-7">
+            <header className="pb-6 md:pb-7">
               <p className="font-sans text-xs font-medium uppercase tracking-[0.26em] text-[color:var(--doc-ink-soft)]">
                 {experience.kicker}
               </p>
               <h2 className="mt-3 max-w-3xl font-sans text-[2rem] font-semibold leading-[1.12] tracking-tight text-[color:var(--doc-ink)] md:text-[2.6rem]">
                 {experience.heading}
               </h2>
+              <p className="mt-3 font-sans text-[15px] font-medium text-[color:var(--doc-ink-soft)] md:text-base">
+                {experience.location}
+              </p>
             </header>
 
             <div
