@@ -15,34 +15,6 @@ const LETTER_LAYOUT = [
   { rotate: 2.2, x: "-3%", y: "4rem" },
 ] as const;
 
-const STAMP: Record<Testimonial["stamp"], string> = {
-  violet: "linear-gradient(145deg, #6b4cff 0%, #2a1850 100%)",
-  amber: "linear-gradient(145deg, #f0a040 0%, #7a3a10 100%)",
-  rose: "linear-gradient(145deg, #e8789a 0%, #6a2038 100%)",
-  teal: "linear-gradient(145deg, #3cb8a8 0%, #0f4a48 100%)",
-  slate: "linear-gradient(145deg, #7a8aa0 0%, #2a3448 100%)",
-  olive: "linear-gradient(145deg, #8aaa5a 0%, #2f4018 100%)",
-};
-
-function Stamp({ t }: { t: Testimonial }) {
-  const parts = t.name.split(" ");
-  const initials = t.firstName.slice(0, 1) + parts[parts.length - 1].slice(0, 1);
-  return (
-    <div
-      className="letter-stamp"
-      style={{ background: STAMP[t.stamp] }}
-      aria-hidden
-    >
-      <div className="letter-stamp__perforation" />
-      {t.photo ? (
-        <img src={t.photo} alt="" className="letter-stamp__photo" />
-      ) : (
-        <span className="letter-stamp__initials">{initials}</span>
-      )}
-    </div>
-  );
-}
-
 function FoldPanel({
   children,
   className = "",
@@ -130,7 +102,6 @@ function Letter({
               <p className="letter-face__name">{t.firstName}</p>
               <p className="letter-face__preview">{t.preview}</p>
             </div>
-            <Stamp t={t} />
           </div>
         </button>
 
