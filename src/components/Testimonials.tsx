@@ -1,9 +1,6 @@
-import { useMemo, useState, type CSSProperties } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { type CSSProperties } from "react";
 import { testimonials, type Testimonial } from "../content";
 import { Reveal } from "./Reveal";
-
-const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
 type LetterLayout = {
   rotate: number;
@@ -11,7 +8,6 @@ type LetterLayout = {
   y: string;
 };
 
-/** Soft scatter — kept light so denser board still reads as one composition */
 const LETTER_LAYOUT: readonly LetterLayout[] = [
   { rotate: -1.8, x: "-1%", y: "0rem" },
   { rotate: 1.4, x: "3%", y: "1.75rem" },
@@ -30,117 +26,58 @@ function initials(name: string) {
     .join("");
 }
 
-function Byline({ t }: { t: Testimonial }) {
-  return (
-    <footer className="letter-paper__footer">
-      <span className="letter-paper__avatar" aria-hidden>
-        {t.photo ? (
-          <img src={t.photo} alt="" width={40} height={40} />
-        ) : (
-          <span className="letter-paper__avatar-fallback">{initials(t.name)}</span>
-        )}
-      </span>
-      <span className="letter-paper__byline">
-        <span className="letter-paper__name">{t.name}</span>
-        <span className="letter-paper__role">{t.title}</span>
-      </span>
-    </footer>
-  );
-}
-
 function Letter({
   t,
-  open,
-  onToggle,
   index,
   layout,
 }: {
   t: Testimonial;
-  open: boolean;
-  onToggle: () => void;
   index: number;
   layout: LetterLayout;
 }) {
-  const reduce = useReducedMotion();
-
   return (
     <article
-      className={`letter${open ? " is-open" : " is-closed"}`}
+      className="letter"
       style={
         {
-          zIndex: open ? 12 : 2 + index,
+          zIndex: 2 + index,
           "--letter-rot": `${layout.rotate}deg`,
           "--letter-x": layout.x,
           "--letter-y": layout.y,
         } as CSSProperties
       }
     >
-      <motion.button
-        type="button"
-        className="letter-paper"
-        onClick={onToggle}
-        aria-expanded={open}
-        aria-label={`${open ? "Close" : "Open"} letter from ${t.name}`}
-        layout={!reduce}
-        transition={{ layout: { duration: 0.45, ease: EASE } }}
-      >
-        {/* Lettermonials-style trifold creases */}
-        <span className="letter-paper__crease letter-paper__crease--1" aria-hidden />
-        <span className="letter-paper__crease letter-paper__crease--2" aria-hidden />
+      <div className="letter-paper">
+        {/* One soft mid crease — lettermonials paper, not multi-fold panels */}
+        <span className="letter-paper__crease" aria-hidden />
 
-        <AnimatePresence initial={false} mode="popLayout">
-          {open ? (
-            <motion.div
-              key="open"
-              className="letter-paper__inner"
-              initial={reduce ? false : { opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={reduce ? undefined : { opacity: 0 }}
-              transition={{ duration: 0.28, ease: EASE }}
-            >
-              <p className="letter-paper__greeting">{t.greeting}</p>
-              <p className="letter-paper__quote">{t.quote}</p>
-              <p className="letter-paper__closing">{t.closing}</p>
-              <Byline t={t} />
-            </motion.div>
-          ) : (
-            <motion.div
-              key="closed"
-              className="letter-paper__inner letter-paper__inner--closed"
-              initial={reduce ? false : { opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={reduce ? undefined : { opacity: 0 }}
-              transition={{ duration: 0.22, ease: EASE }}
-            >
-              <p className="letter-paper__lead">{t.firstName}</p>
-              <p className="letter-paper__preview">{t.preview}</p>
-              <Byline t={t} />
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </motion.button>
+        <div className="letter-paper__inner">
+          <p className="letter-paper__greeting">{t.greeting}</p>
+          <p className="letter-paper__quote">{t.quote}</p>
+          <p className="letter-paper__closing">{t.closing}</p>
+
+          <footer className="letter-paper__footer">
+            <span className="letter-paper__avatar" aria-hidden>
+              {t.photo ? (
+                <img src={t.photo} alt="" width={40} height={40} />
+              ) : (
+                <span className="letter-paper__avatar-fallback">
+                  {initials(t.name)}
+                </span>
+              )}
+            </span>
+            <span className="letter-paper__byline">
+              <span className="letter-paper__name">{t.name}</span>
+              <span className="letter-paper__role">{t.title}</span>
+            </span>
+          </footer>
+        </div>
+      </div>
     </article>
   );
 }
 
 export default function Testimonials() {
-  const [openMap, setOpenMap] = useState<Record<string, boolean>>(() =>
-    Object.fromEntries(testimonials.map((t) => [t.name, true]))
-  );
-
-  const allOpen = useMemo(
-    () => testimonials.every((t) => openMap[t.name]),
-    [openMap]
-  );
-  const allClosed = useMemo(
-    () => testimonials.every((t) => !openMap[t.name]),
-    [openMap]
-  );
-
-  const setAll = (open: boolean) => {
-    setOpenMap(Object.fromEntries(testimonials.map((t) => [t.name, open])));
-  };
-
   return (
     <section id="words" className="testimonials-section relative">
       <div aria-hidden className="testimonials-section__grid" />
@@ -160,65 +97,6 @@ export default function Testimonials() {
               </h2>
             </Reveal>
           </div>
-
-          <Reveal delay={0.1}>
-            <div
-              className="letter-toggle"
-              role="group"
-              aria-label="Fold letters"
-            >
-              <button
-                type="button"
-                className="letter-toggle__btn"
-                onClick={() => setAll(true)}
-                disabled={allOpen}
-                aria-label="Open all letters"
-                title="Open all"
-              >
-                <svg
-                  width="18"
-                  height="18"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.75"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  aria-hidden
-                >
-                  <path d="M8 3H5a2 2 0 0 0-2 2v3" />
-                  <path d="M16 3h3a2 2 0 0 1 2 2v3" />
-                  <path d="M8 21H5a2 2 0 0 1-2-2v-3" />
-                  <path d="M16 21h3a2 2 0 0 0 2-2v-3" />
-                </svg>
-              </button>
-              <button
-                type="button"
-                className="letter-toggle__btn"
-                onClick={() => setAll(false)}
-                disabled={allClosed}
-                aria-label="Close all letters"
-                title="Close all"
-              >
-                <svg
-                  width="18"
-                  height="18"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.75"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  aria-hidden
-                >
-                  <path d="M5 8V5a2 2 0 0 1 2-2h3" />
-                  <path d="M19 8V5a2 2 0 0 0-2-2h-3" />
-                  <path d="M5 16v3a2 2 0 0 0 2 2h3" />
-                  <path d="M19 16v3a2 2 0 0 1-2 2h-3" />
-                </svg>
-              </button>
-            </div>
-          </Reveal>
         </div>
 
         <div className="letter-stack">
@@ -232,13 +110,6 @@ export default function Testimonials() {
                 t={t}
                 index={i}
                 layout={LETTER_LAYOUT[i] ?? LETTER_LAYOUT[0]}
-                open={!!openMap[t.name]}
-                onToggle={() =>
-                  setOpenMap((prev) => ({
-                    ...prev,
-                    [t.name]: !prev[t.name],
-                  }))
-                }
               />
             </Reveal>
           ))}
