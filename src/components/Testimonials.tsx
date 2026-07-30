@@ -5,15 +5,83 @@ import { Reveal } from "./Reveal";
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
-/** Soft scatter so letters occupy the board instead of one column. */
-const LETTER_LAYOUT = [
-  { rotate: -2.4, x: "-2%", y: "0rem" },
-  { rotate: 1.8, x: "4%", y: "3.5rem" },
-  { rotate: 2.6, x: "-6%", y: "-1.25rem" },
-  { rotate: -1.5, x: "7%", y: "2rem" },
-  { rotate: -3.1, x: "1%", y: "0.5rem" },
-  { rotate: 2.2, x: "-3%", y: "4rem" },
-] as const;
+type FoldSpec = {
+  /** Minimum panel height in px — irregular on purpose */
+  minH: number;
+  /** Crease shadow strength 0–1 */
+  shade: number;
+};
+
+type LetterLayout = {
+  rotate: number;
+  x: string;
+  y: string;
+  /** Closed-face height */
+  face: number;
+  /** 1–2 body folds with uneven sizes (never equal thirds) */
+  folds: readonly FoldSpec[];
+};
+
+/**
+ * Each letter gets its own fold recipe — fewer creases, uneven spacing —
+ * so nothing lines up like a stacked card system.
+ */
+const LETTER_LAYOUT: readonly LetterLayout[] = [
+  {
+    rotate: -2.4,
+    x: "-2%",
+    y: "0rem",
+    face: 92,
+    folds: [
+      { minH: 196, shade: 0.11 },
+      { minH: 108, shade: 0.06 },
+    ],
+  },
+  {
+    rotate: 1.8,
+    x: "4%",
+    y: "3.5rem",
+    face: 108,
+    folds: [{ minH: 248, shade: 0.09 }],
+  },
+  {
+    rotate: 2.6,
+    x: "-6%",
+    y: "-1.25rem",
+    face: 86,
+    folds: [
+      { minH: 132, shade: 0.14 },
+      { minH: 168, shade: 0.05 },
+    ],
+  },
+  {
+    rotate: -1.5,
+    x: "7%",
+    y: "2rem",
+    face: 100,
+    folds: [
+      { minH: 220, shade: 0.08 },
+      { minH: 96, shade: 0.12 },
+    ],
+  },
+  {
+    rotate: -3.1,
+    x: "1%",
+    y: "0.5rem",
+    face: 114,
+    folds: [{ minH: 268, shade: 0.1 }],
+  },
+  {
+    rotate: 2.2,
+    x: "-3%",
+    y: "4rem",
+    face: 90,
+    folds: [
+      { minH: 154, shade: 0.07 },
+      { minH: 142, shade: 0.13 },
+    ],
+  },
+];
 
 function FoldPanel({
   children,
@@ -21,16 +89,20 @@ function FoldPanel({
   delay = 0,
   open,
   reduce,
+  minH,
+  shade,
 }: {
   children: ReactNode;
   className?: string;
   delay?: number;
   open: boolean;
   reduce: boolean | null;
+  minH: number;
+  shade: number;
 }) {
   return (
     <motion.div
-      className={`letter-fold ${className}`}
+      className={`letter-fold letter-fold--panel ${className}`}
       initial={false}
       animate={
         reduce
@@ -42,9 +114,16 @@ function FoldPanel({
       transition={{
         duration: 0.7,
         ease: EASE,
-        delay: reduce ? 0 : open ? delay : (0.18 - delay) * 0.5,
+        delay: reduce ? 0 : open ? delay : Math.max(0, 0.12 - delay),
       }}
-      style={{ transformOrigin: "top center", transformStyle: "preserve-3d" }}
+      style={
+        {
+          transformOrigin: "top center",
+          transformStyle: "preserve-3d",
+          minHeight: minH,
+          "--crease": String(shade),
+        } as CSSProperties
+      }
     >
       <div className="letter-fold__shade letter-fold__shade--top" aria-hidden />
       <div
@@ -54,6 +133,72 @@ function FoldPanel({
       <div className="letter-fold__back" aria-hidden />
       <div className="letter-panel">{children}</div>
     </motion.div>
+  );
+}
+
+function LetterBody({
+  t,
+  open,
+  reduce,
+  folds,
+}: {
+  t: Testimonial;
+  open: boolean;
+  reduce: boolean | null;
+  folds: readonly FoldSpec[];
+}) {
+  const single = folds.length === 1;
+
+  if (single) {
+    const f = folds[0];
+    return (
+      <FoldPanel
+        open={open}
+        reduce={reduce}
+        delay={0.04}
+        minH={f.minH}
+        shade={f.shade}
+        className="letter-fold--last"
+      >
+        <p className="letter-panel__greeting">{t.greeting}</p>
+        <p className="letter-panel__quote">“{t.quote}”</p>
+        <div className="letter-panel--sign">
+          <p className="letter-panel__closing">{t.closing}</p>
+          <p className="letter-panel__from">{t.name}</p>
+          <p className="letter-panel__role">{t.title}</p>
+        </div>
+      </FoldPanel>
+    );
+  }
+
+  const [a, b] = folds;
+  return (
+    <>
+      <FoldPanel
+        open={open}
+        reduce={reduce}
+        delay={0.03}
+        minH={a.minH}
+        shade={a.shade}
+      >
+        <p className="letter-panel__greeting">{t.greeting}</p>
+        <p className="letter-panel__quote">“{t.quote}”</p>
+      </FoldPanel>
+      <FoldPanel
+        open={open}
+        reduce={reduce}
+        delay={0.1}
+        minH={b.minH}
+        shade={b.shade}
+        className="letter-fold--last"
+      >
+        <div className="letter-panel--sign letter-panel--sign-only">
+          <p className="letter-panel__closing">{t.closing}</p>
+          <p className="letter-panel__from">{t.name}</p>
+          <p className="letter-panel__role">{t.title}</p>
+        </div>
+      </FoldPanel>
+    </>
   );
 }
 
@@ -68,7 +213,7 @@ function Letter({
   open: boolean;
   onToggle: () => void;
   index: number;
-  layout: (typeof LETTER_LAYOUT)[number];
+  layout: LetterLayout;
 }) {
   const reduce = useReducedMotion();
 
@@ -81,11 +226,11 @@ function Letter({
           "--letter-rot": `${layout.rotate}deg`,
           "--letter-x": layout.x,
           "--letter-y": layout.y,
+          "--face-h": `${layout.face}px`,
         } as CSSProperties
       }
     >
       <div className="letter__scene">
-        {/* Fold 1 — closed face (always visible) */}
         <button
           type="button"
           className="letter-fold letter-fold--face"
@@ -105,7 +250,6 @@ function Letter({
           </div>
         </button>
 
-        {/* Folds 2–4 — letter body, height + 3D unfold */}
         <motion.div
           className="letter-body"
           initial={false}
@@ -117,26 +261,12 @@ function Letter({
           style={{ overflow: "hidden", perspective: 1200 }}
         >
           <div className="letter-body__inner">
-            <FoldPanel open={open} reduce={reduce} delay={0.02}>
-              <p className="letter-panel__greeting">{t.greeting}</p>
-            </FoldPanel>
-
-            <FoldPanel open={open} reduce={reduce} delay={0.08}>
-              <p className="letter-panel__quote">“{t.quote}”</p>
-            </FoldPanel>
-
-            <FoldPanel
+            <LetterBody
+              t={t}
               open={open}
               reduce={reduce}
-              delay={0.14}
-              className="letter-fold--last"
-            >
-              <div className="letter-panel--sign">
-                <p className="letter-panel__closing">{t.closing}</p>
-                <p className="letter-panel__from">{t.name}</p>
-                <p className="letter-panel__role">{t.title}</p>
-              </div>
-            </FoldPanel>
+              folds={layout.folds}
+            />
           </div>
         </motion.div>
       </div>
@@ -145,7 +275,6 @@ function Letter({
 }
 
 export default function Testimonials() {
-  // Open by default (Framer demo starts closed — we invert that).
   const [openMap, setOpenMap] = useState<Record<string, boolean>>(() =>
     Object.fromEntries(testimonials.map((t) => [t.name, true]))
   );

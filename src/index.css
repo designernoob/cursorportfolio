@@ -344,7 +344,7 @@ a {
   z-index: 4;
   display: block;
   width: 100%;
-  min-height: 108px;
+  min-height: var(--face-h, 100px);
   margin: 0;
   padding: 0;
   border: 0;
@@ -390,20 +390,20 @@ a {
 
 .letter-fold__shade--top {
   top: 0;
-  height: 18px;
+  height: 16px;
   background: linear-gradient(
     to bottom,
-    rgba(20, 20, 20, 0.1),
+    rgba(20, 20, 20, calc(var(--crease, 0.1) * 1.15)),
     transparent
   );
 }
 
 .letter-fold__shade--bottom {
   bottom: 0;
-  height: 22px;
+  height: 20px;
   background: linear-gradient(
     to top,
-    rgba(20, 20, 20, 0.08),
+    rgba(20, 20, 20, calc(var(--crease, 0.08) * 0.95)),
     transparent
   );
 }
@@ -437,19 +437,16 @@ a {
 }
 
 
-.letter-fold:not(.letter-fold--face) {
-  border-top: 1px solid rgba(20, 20, 20, 0.06);
-  min-height: 124px;
-}
-
-.letter-fold--last {
-  min-height: 148px;
+.letter-fold--panel {
+  border-top: 1px solid rgba(20, 20, 20, 0.05);
 }
 
 .letter-panel {
   position: relative;
   z-index: 1;
-  padding: 1.2rem 1.4rem 1.15rem;
+  box-sizing: border-box;
+  height: 100%;
+  padding: 1.15rem 1.4rem 1.2rem;
   color: #222;
 }
 
@@ -469,6 +466,7 @@ a {
 }
 
 .letter-panel__quote {
+  margin-top: 0.7rem;
   font-family: "Hanken Grotesk", system-ui, sans-serif;
   font-size: 0.98rem;
   line-height: 1.5;
@@ -478,7 +476,12 @@ a {
 }
 
 .letter-panel--sign {
-  padding-bottom: 1.4rem;
+  margin-top: 1.15rem;
+  padding-bottom: 0.15rem;
+}
+
+.letter-panel--sign-only {
+  margin-top: 0;
 }
 
 .letter-panel__closing {
