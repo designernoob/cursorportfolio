@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="160" height="160">
+  <defs>
+    <radialGradient id="g" cx="35%" cy="30%" r="75%">
+      <stop offset="0%" stop-color="#fff6e8"/>
+      <stop offset="55%" stop-color="#7a96b8"/>
+      <stop offset="100%" stop-color="#2f4a6a" stop-opacity="0.85"/>
+    </radialGradient>
+  </defs>
+  <rect width="160" height="160" fill="url(#g)"/>
+  <circle cx="80" cy="62" r="28" fill="#fff8ef" opacity="0.55"/>
+  <ellipse cx="80" cy="148" rx="48" ry="36" fill="#fff8ef" opacity="0.4"/>
+  <text x="80" y="92" text-anchor="middle" font-family="Georgia, serif" font-size="36" fill="#fffef8" opacity="0.92">JA</text>
+</svg>

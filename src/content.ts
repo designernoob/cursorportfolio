@@ -278,10 +278,22 @@ export const about = {
   ],
 };
 
+export type TestimonialTone = "yellow" | "pink" | "mint" | "blue";
+
 export type Testimonial = {
   quote: string;
   name: string;
   title: string;
+  /** Optional portrait in /public/portraits — falls back to initials */
+  photo?: string;
+  /** Sticky-note paper colour */
+  tone: TestimonialTone;
+  /** Resting rotation in degrees (organic scatter) */
+  rotate: number;
+  /** Revealed under the peel — how you know each other */
+  relationship: string;
+  /** Revealed under the peel — a short extra note about them */
+  about: string;
 };
 
 export const testimonials: Testimonial[] = [
@@ -290,24 +302,48 @@ export const testimonials: Testimonial[] = [
       "Pranav is what we call an obvious yes for a team member — meticulous, reliable, collaborative, a learning machine with an open mind to feedback and a real sense of trade-offs. You'd be lucky to have him on your team.",
     name: "Hozefa Ayyajiwala",
     title: "Sr. Design Manager, Coinbase",
+    photo: "/portraits/hozefa.svg",
+    tone: "yellow",
+    rotate: -5,
+    relationship: "Manager · Sprinklr",
+    about:
+      "Led design for enterprise messaging. Mentored Pranav through systems thinking, critique craft, and shipping under ambiguity.",
   },
   {
     quote:
       "It is commendable that his contribution improved the experience in Nutanix India's operations dashboard. He has a great sense of taking many aspects into consideration while thinking of the right solution.",
     name: "Sojan Anto",
     title: "Staff Designer, Nutanix",
+    photo: "/portraits/sojan.svg",
+    tone: "mint",
+    rotate: 3.5,
+    relationship: "Peer · Nutanix",
+    about:
+      "Partnered on operations tooling — balancing dense telemetry with calm, decision-ready interfaces for internal teams.",
   },
   {
     quote:
       "It was a pleasure to work with Pranav. He showed strong team leadership and amazing design sense along with hard work and creativity during the hackathon.",
     name: "Kadri Kõivik",
     title: "COO, Garage48",
+    photo: "/portraits/kadri.svg",
+    tone: "pink",
+    rotate: -2.5,
+    relationship: "Organiser · Garage48",
+    about:
+      "Watched Pranav rally a mixed squad through a 48-hour build — clear direction, sharp critique, and a prototype that held up.",
   },
   {
     quote:
       "Pranav is a talented designer with skills that reach beyond just design — he's always looking for ways to push the boundaries of how a product can be better.",
     name: "Joyneel Acharya",
     title: "Co-founder, NirogGyan",
+    photo: "/portraits/joyneel.svg",
+    tone: "blue",
+    rotate: 4.5,
+    relationship: "Collaborator · NirogGyan",
+    about:
+      "Worked together on health-data storytelling — Pranav kept pushing for clarity when the product wanted to show everything at once.",
   },
 ];
 
