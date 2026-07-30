@@ -11,6 +11,8 @@ export default defineConfig({
     // what causes the Browser pane to point at the wrong/empty port).
     port: 5173,
     strictPort: true,
+    // Allow any Host header through Cursor's tunnel / public preview URLs.
+    allowedHosts: true,
     // Cursor Browser reaches the agent via a localhost tunnel. Without
     // this, Vite's HMR client tries the container IP and the page can
     // sit on a spinner forever waiting for the websocket.
