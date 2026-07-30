@@ -129,7 +129,6 @@ function Letter({
           <div className="letter-body__inner">
             <FoldPanel open={open} reduce={reduce} delay={0.02}>
               <p className="letter-panel__greeting">{t.greeting}</p>
-              <p className="letter-panel__meta">{t.title}</p>
             </FoldPanel>
 
             <FoldPanel open={open} reduce={reduce} delay={0.08}>
