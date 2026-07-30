@@ -1,123 +1,234 @@
-import { useState, type CSSProperties } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+  type MutableRefObject,
+} from "react";
+import {
+  PeelBack,
+  PeelBottom,
+  PeelTop,
+  PeelWrapper,
+  usePeel,
+  type PeelRef,
+} from "react-peel";
+import { useReducedMotion } from "framer-motion";
 import { testimonials, type Testimonial } from "../content";
 import { Reveal } from "./Reveal";
 
+const NOTE_W = 360;
+const NOTE_H = 380;
+
 const TONE: Record<
   Testimonial["tone"],
-  { paper: string; adhesive: string; ink: string; shadow: string }
+  { paper: string; adhesive: string; back: string; ink: string; shadow: string }
 > = {
   yellow: {
-    paper: "#f4e7a3",
-    adhesive: "#efe08a",
-    ink: "#3d3820",
-    shadow: "rgba(90, 70, 10, 0.22)",
+    paper: "#f3e59a",
+    adhesive: "#efe07f",
+    back: "#e8d789",
+    ink: "#3a3420",
+    shadow: "rgba(78, 62, 12, 0.28)",
   },
   pink: {
-    paper: "#f3cfd8",
-    adhesive: "#eebfcb",
-    ink: "#4a2e36",
-    shadow: "rgba(90, 40, 55, 0.2)",
+    paper: "#f0c5d0",
+    adhesive: "#e9b4c2",
+    back: "#e4b6c3",
+    ink: "#432832",
+    shadow: "rgba(90, 40, 55, 0.26)",
   },
   mint: {
-    paper: "#cfe8d6",
-    adhesive: "#bdddbf",
-    ink: "#24382c",
-    shadow: "rgba(30, 70, 45, 0.2)",
+    paper: "#c8e4d0",
+    adhesive: "#b6d8bf",
+    back: "#b9d7c2",
+    ink: "#22362a",
+    shadow: "rgba(28, 70, 45, 0.26)",
   },
   blue: {
-    paper: "#cfe0f2",
-    adhesive: "#bdd3ea",
-    ink: "#243448",
-    shadow: "rgba(30, 50, 80, 0.2)",
+    paper: "#c7ddf0",
+    adhesive: "#b5d0e7",
+    back: "#b6cfe4",
+    ink: "#223446",
+    shadow: "rgba(28, 50, 80, 0.26)",
   },
 };
 
-function StickyNote({ t, index }: { t: Testimonial; index: number }) {
-  const [peeled, setPeeled] = useState(false);
-  const reduce = useReducedMotion();
-  const tone = TONE[t.tone];
+function NoteFace({
+  t,
+  tone,
+}: {
+  t: Testimonial;
+  tone: (typeof TONE)[Testimonial["tone"]];
+}) {
   const initials = t.name
     .split(" ")
     .map((p) => p[0])
     .slice(0, 2)
     .join("");
 
-  const peel = !reduce && peeled;
+  return (
+    <div className="sticky-face" style={{ color: tone.ink }}>
+      <div className="sticky-face__adhesive" aria-hidden />
+      <div className="sticky-face__fiber" aria-hidden />
+      <div className="sticky-face__sheen" aria-hidden />
+      <div className="sticky-face__edge" aria-hidden />
+
+      <div className="sticky-face__person">
+        <div className="sticky-face__photo">
+          {t.photo ? (
+            <img src={t.photo} alt="" width={44} height={44} draggable={false} />
+          ) : (
+            <span>{initials}</span>
+          )}
+        </div>
+        <div>
+          <div className="sticky-face__name">{t.name}</div>
+          <div className="sticky-face__title">{t.title}</div>
+        </div>
+      </div>
+
+      <blockquote className="sticky-face__quote">
+        <span aria-hidden>“</span>
+        {t.quote}
+        <span aria-hidden>”</span>
+      </blockquote>
+    </div>
+  );
+}
+
+function StickyNote({ t, index }: { t: Testimonial; index: number }) {
+  const { peelRef, animate, stop } = usePeel();
+  const reduce = useReducedMotion();
+  const tone = TONE[t.tone];
+  const [peeled, setPeeled] = useState(false);
+  const hovering = useRef(false);
+  const readyRef = useRef(false);
+
+  const peelOpen = useCallback(async () => {
+    if (reduce || !readyRef.current) {
+      setPeeled(true);
+      return;
+    }
+    stop();
+    setPeeled(true);
+    // Deep corner curl — Framer-style sticker peel from bottom-right.
+    await animate({
+      to: { x: NOTE_W * 0.28, y: NOTE_H * 0.26 },
+      duration: 820,
+      easing: "spring",
+    });
+  }, [animate, reduce, stop]);
+
+  const peelClose = useCallback(async () => {
+    if (reduce) {
+      setPeeled(false);
+      return;
+    }
+    stop();
+    setPeeled(false);
+    // Settle to a tiny lifted corner so notes never look glued flat.
+    await animate({
+      to: { x: NOTE_W - 28, y: NOTE_H - 28 },
+      duration: 520,
+      easing: "easeOut",
+    });
+  }, [animate, reduce, stop]);
+
+  // Idle affordance: soft corner lift once peel.js is ready.
+  useEffect(() => {
+    if (reduce) return;
+    let cancelled = false;
+    const id = window.setInterval(() => {
+      const el = (peelRef as MutableRefObject<PeelRef | null>).current;
+      if (!el?.width || cancelled) return;
+      readyRef.current = true;
+      window.clearInterval(id);
+      void animate({
+        to: { x: NOTE_W - 28, y: NOTE_H - 28 },
+        duration: 650,
+        easing: "easeOut",
+      });
+    }, 60);
+    return () => {
+      cancelled = true;
+      window.clearInterval(id);
+    };
+  }, [animate, peelRef, reduce]);
 
   return (
     <article
-      className="sticky-note"
+      className={`sticky-note${peeled ? " is-peeled" : ""}`}
       style={
         {
           "--note-rot": `${t.rotate}deg`,
           "--note-paper": tone.paper,
           "--note-adhesive": tone.adhesive,
+          "--note-back": tone.back,
           "--note-ink": tone.ink,
           "--note-shadow": tone.shadow,
-          zIndex: peel ? 20 : 1 + index,
+          zIndex: peeled ? 24 : 2 + index,
         } as CSSProperties
       }
-      onMouseEnter={() => setPeeled(true)}
-      onMouseLeave={() => setPeeled(false)}
-      onFocus={() => setPeeled(true)}
-      onBlur={() => setPeeled(false)}
+      onMouseEnter={() => {
+        hovering.current = true;
+        void peelOpen();
+      }}
+      onMouseLeave={() => {
+        hovering.current = false;
+        void peelClose();
+      }}
+      onFocus={() => void peelOpen()}
+      onBlur={() => void peelClose()}
       tabIndex={0}
       aria-label={`Testimonial from ${t.name}. Hover or focus to peel the note.`}
     >
-      {/* Surface the note is stuck to — revealed as it peels */}
-      <div className="sticky-note__surface" aria-hidden={!peel}>
-        <p className="sticky-note__surface-kicker">{t.relationship}</p>
-        <p className="sticky-note__surface-name">{t.name}</p>
-        <p className="sticky-note__surface-about">{t.about}</p>
-      </div>
+      <div className="sticky-note__cast-shadow" aria-hidden />
 
-      {/* The sticky note sheet — peels up from the adhesive top edge */}
-      <motion.div
-        className="sticky-note__sheet"
-        initial={false}
-        animate={
-          reduce
-            ? { rotateX: 0, rotateZ: 0, y: 0 }
-            : peel
-              ? { rotateX: -58, rotateZ: -2.5, y: -4 }
-              : { rotateX: 0, rotateZ: 0, y: 0 }
-        }
-        transition={{
-          type: "spring",
-          stiffness: 78,
-          damping: 15,
-          mass: 0.9,
+      <PeelWrapper
+        ref={peelRef}
+        className="sticky-note__peel"
+        preset="stickyNote"
+        width={NOTE_W}
+        height={NOTE_H}
+        corner="BOTTOM_RIGHT"
+        options={{
+          topShadow: true,
+          topShadowBlur: 4,
+          topShadowAlpha: 0.35,
+          topShadowOffsetX: 0,
+          topShadowOffsetY: 1,
+          backShadow: true,
+          backShadowSize: 0.1,
+          backShadowAlpha: 0.22,
+          bottomShadow: true,
+          bottomShadowSize: 1.1,
+          bottomShadowDarkAlpha: 0.55,
+          bottomShadowLightAlpha: 0.12,
+          setPeelOnInit: true,
         }}
-        style={{ transformPerspective: 1200, transformOrigin: "top center" }}
       >
-        <div className="sticky-note__adhesive" aria-hidden />
-        <div className="sticky-note__grain" aria-hidden />
+        <PeelTop className="sticky-note__top">
+          <NoteFace t={t} tone={tone} />
+        </PeelTop>
 
-        <div className="sticky-note__person">
-          <div className="sticky-note__photo">
-            {t.photo ? (
-              <img src={t.photo} alt="" width={48} height={48} />
-            ) : (
-              <span>{initials}</span>
-            )}
+        <PeelBack
+          className="sticky-note__back"
+          style={{ background: tone.back }}
+          aria-hidden
+        >
+          <div className="sticky-note__back-fiber" />
+        </PeelBack>
+
+        <PeelBottom className="sticky-note__bottom">
+          <div className="sticky-note__under">
+            <p className="sticky-note__under-kicker">{t.relationship}</p>
+            <p className="sticky-note__under-name">{t.name}</p>
+            <p className="sticky-note__under-about">{t.about}</p>
           </div>
-          <div>
-            <div className="sticky-note__name">{t.name}</div>
-            <div className="sticky-note__title">{t.title}</div>
-          </div>
-        </div>
-
-        <blockquote className="sticky-note__quote">
-          <span aria-hidden>“</span>
-          {t.quote}
-          <span aria-hidden>”</span>
-        </blockquote>
-
-        {/* Lit curl on the peeling edge */}
-        <div className="sticky-note__curl" aria-hidden />
-        <div className="sticky-note__backface" aria-hidden />
-      </motion.div>
+        </PeelBottom>
+      </PeelWrapper>
     </article>
   );
 }
@@ -142,15 +253,19 @@ export default function Testimonials() {
           </Reveal>
           <Reveal delay={0.1}>
             <p className="mt-4 max-w-md font-sans text-sm leading-relaxed text-muted md:text-base">
-              Hover a sticky to peel it back — a little more about who left it
-              is written underneath.
+              Hover a sticky to peel the corner — a little more about who left
+              it is written underneath.
             </p>
           </Reveal>
         </div>
 
         <div className="sticky-board">
           {testimonials.map((t, i) => (
-            <Reveal key={t.name} delay={i * 0.07} className="sticky-board__slot">
+            <Reveal
+              key={t.name}
+              delay={i * 0.07}
+              className="sticky-board__slot"
+            >
               <StickyNote t={t} index={i} />
             </Reveal>
           ))}
