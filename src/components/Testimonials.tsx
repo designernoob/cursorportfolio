@@ -9,18 +9,44 @@ type LetterLayout = {
   rotate: number;
   x: string;
   y: string;
-  /** Soft crease positions as % of letter height — uneven per card */
-  creases: readonly number[];
 };
 
+/** Soft scatter — kept light so denser board still reads as one composition */
 const LETTER_LAYOUT: readonly LetterLayout[] = [
-  { rotate: -2.2, x: "-2%", y: "0rem", creases: [38, 72] },
-  { rotate: 1.6, x: "5%", y: "3.25rem", creases: [55] },
-  { rotate: 2.4, x: "-5%", y: "-1rem", creases: [28, 64] },
-  { rotate: -1.4, x: "6%", y: "2.25rem", creases: [46] },
-  { rotate: -2.8, x: "1%", y: "0.75rem", creases: [33, 78] },
-  { rotate: 2.0, x: "-3%", y: "3.75rem", creases: [42, 68] },
+  { rotate: -1.8, x: "-1%", y: "0rem" },
+  { rotate: 1.4, x: "3%", y: "1.75rem" },
+  { rotate: 2.0, x: "-2%", y: "0.35rem" },
+  { rotate: -1.2, x: "2%", y: "2.25rem" },
+  { rotate: -2.2, x: "1%", y: "0.5rem" },
+  { rotate: 1.6, x: "-2%", y: "1.9rem" },
 ];
+
+function initials(name: string) {
+  return name
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((p) => p[0]?.toUpperCase() ?? "")
+    .join("");
+}
+
+function Byline({ t }: { t: Testimonial }) {
+  return (
+    <footer className="letter-paper__footer">
+      <span className="letter-paper__avatar" aria-hidden>
+        {t.photo ? (
+          <img src={t.photo} alt="" width={40} height={40} />
+        ) : (
+          <span className="letter-paper__avatar-fallback">{initials(t.name)}</span>
+        )}
+      </span>
+      <span className="letter-paper__byline">
+        <span className="letter-paper__name">{t.name}</span>
+        <span className="letter-paper__role">{t.title}</span>
+      </span>
+    </footer>
+  );
+}
 
 function Letter({
   t,
@@ -58,15 +84,9 @@ function Letter({
         layout={!reduce}
         transition={{ layout: { duration: 0.45, ease: EASE } }}
       >
-        {/* Soft paper creases — decorative, uneven per letter */}
-        {layout.creases.map((pct) => (
-          <span
-            key={pct}
-            className="letter-paper__crease"
-            style={{ top: `${pct}%` }}
-            aria-hidden
-          />
-        ))}
+        {/* Lettermonials-style trifold creases */}
+        <span className="letter-paper__crease letter-paper__crease--1" aria-hidden />
+        <span className="letter-paper__crease letter-paper__crease--2" aria-hidden />
 
         <AnimatePresence initial={false} mode="popLayout">
           {open ? (
@@ -79,12 +99,9 @@ function Letter({
               transition={{ duration: 0.28, ease: EASE }}
             >
               <p className="letter-paper__greeting">{t.greeting}</p>
-              <p className="letter-paper__quote">“{t.quote}”</p>
+              <p className="letter-paper__quote">{t.quote}</p>
               <p className="letter-paper__closing">{t.closing}</p>
-              <footer className="letter-paper__footer">
-                <p className="letter-paper__name">{t.name}</p>
-                <p className="letter-paper__role">{t.title}</p>
-              </footer>
+              <Byline t={t} />
             </motion.div>
           ) : (
             <motion.div
@@ -97,6 +114,7 @@ function Letter({
             >
               <p className="letter-paper__lead">{t.firstName}</p>
               <p className="letter-paper__preview">{t.preview}</p>
+              <Byline t={t} />
             </motion.div>
           )}
         </AnimatePresence>
@@ -128,7 +146,7 @@ export default function Testimonials() {
       <div aria-hidden className="testimonials-section__grid" />
       <div aria-hidden className="testimonials-section__fade" />
 
-      <div className="relative z-10 px-6 py-24 md:px-10 md:py-36">
+      <div className="relative z-10 px-6 py-24 md:px-10 md:py-32">
         <div className="letter-board__header">
           <div>
             <Reveal>
@@ -207,7 +225,7 @@ export default function Testimonials() {
           {testimonials.map((t, i) => (
             <Reveal
               key={t.name}
-              delay={i * 0.05}
+              delay={i * 0.04}
               className={`letter-slot letter-slot--${i + 1}`}
             >
               <Letter

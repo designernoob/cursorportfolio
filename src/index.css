@@ -197,8 +197,8 @@ a {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  max-width: 1180px;
-  margin: 0 auto 3rem;
+  max-width: 74rem;
+  margin: 0 auto 2.5rem;
 }
 
 @media (min-width: 768px) {
@@ -206,7 +206,7 @@ a {
     flex-direction: row;
     align-items: flex-end;
     justify-content: space-between;
-    margin-bottom: 4rem;
+    margin-bottom: 3rem;
   }
 }
 
@@ -251,11 +251,13 @@ a {
   outline-offset: 2px;
 }
 
+/* Dense board: slightly larger letters, 3-across on wide screens so
+   six open letters read in one scroll without feeling cramped. */
 .letter-stack {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 2.25rem 1.25rem;
-  max-width: 52rem;
+  gap: 1.75rem;
+  max-width: 72rem;
   margin-inline: auto;
   align-items: start;
   justify-items: center;
@@ -264,43 +266,79 @@ a {
 @media (min-width: 768px) {
   .letter-stack {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 2.75rem 2.5rem;
-    padding-inline: 0.25rem;
+    gap: 2rem 1.75rem;
+    padding-inline: 0.5rem;
   }
 
-  .letter-slot--1 {
+  .letter-slot--1,
+  .letter-slot--3,
+  .letter-slot--5 {
     justify-self: end;
+  }
+
+  .letter-slot--2,
+  .letter-slot--4,
+  .letter-slot--6 {
+    justify-self: start;
   }
 
   .letter-slot--2 {
-    justify-self: start;
-    margin-top: 3.25rem;
-  }
-
-  .letter-slot--3 {
-    justify-self: end;
-    margin-top: -0.5rem;
+    margin-top: 2rem;
   }
 
   .letter-slot--4 {
-    justify-self: start;
-    margin-top: 4rem;
-  }
-
-  .letter-slot--5 {
-    justify-self: end;
-    margin-top: 0.35rem;
+    margin-top: 2.5rem;
   }
 
   .letter-slot--6 {
-    justify-self: start;
-    margin-top: 3.5rem;
+    margin-top: 1.75rem;
+  }
+}
+
+@media (min-width: 1180px) {
+  .letter-stack {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.75rem 1.5rem;
+    max-width: 74rem;
+  }
+
+  .letter-slot--1,
+  .letter-slot--2,
+  .letter-slot--3,
+  .letter-slot--4,
+  .letter-slot--5,
+  .letter-slot--6 {
+    justify-self: center;
+  }
+
+  .letter-slot--1 {
+    margin-top: 0.25rem;
+  }
+
+  .letter-slot--2 {
+    margin-top: 2.75rem;
+  }
+
+  .letter-slot--3 {
+    margin-top: 0.85rem;
+  }
+
+  .letter-slot--4 {
+    margin-top: 0.5rem;
+  }
+
+  .letter-slot--5 {
+    margin-top: 2.35rem;
+  }
+
+  .letter-slot--6 {
+    margin-top: 1.1rem;
   }
 }
 
 .letter {
   position: relative;
-  width: min(100%, 17.25rem);
+  width: min(100%, 22rem);
   transform: translate(var(--letter-x, 0), var(--letter-y, 0))
     rotate(var(--letter-rot, 0deg));
   transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
@@ -309,7 +347,7 @@ a {
 @media (max-width: 767px) {
   .letter {
     transform: none;
-    width: min(100%, 18.5rem);
+    width: min(100%, 22.5rem);
   }
 }
 
@@ -325,21 +363,21 @@ a {
   text-align: left;
   font: inherit;
   color: inherit;
-  background: #fffef9;
-  border-radius: 1px;
+  background: #ffffff;
+  border-radius: 2px;
   overflow: hidden;
   box-shadow:
-    0 1px 1px rgba(32, 28, 22, 0.04),
-    0 6px 16px rgba(32, 28, 22, 0.07),
-    0 16px 36px rgba(32, 28, 22, 0.06);
+    0 1px 2px rgba(20, 24, 40, 0.04),
+    0 12px 28px rgba(20, 24, 40, 0.07),
+    0 28px 56px rgba(20, 24, 40, 0.06);
   transition: box-shadow 0.35s ease;
 }
 
 .letter-paper:hover {
   box-shadow:
-    0 1px 2px rgba(32, 28, 22, 0.05),
-    0 10px 24px rgba(32, 28, 22, 0.09),
-    0 22px 44px rgba(32, 28, 22, 0.07);
+    0 2px 4px rgba(20, 24, 40, 0.05),
+    0 16px 36px rgba(20, 24, 40, 0.09),
+    0 32px 64px rgba(20, 24, 40, 0.07);
 }
 
 .letter-paper:focus-visible {
@@ -347,27 +385,35 @@ a {
   outline-offset: 5px;
 }
 
-/* Soft crease bands — lettermonials-style, not hard panel folds */
+/* Lettermonials trifold — two soft crease bands at ~1/3 and ~2/3 */
 .letter-paper__crease {
   position: absolute;
   left: 0;
   right: 0;
-  height: 14px;
-  margin-top: -7px;
+  height: 18px;
+  margin-top: -9px;
   pointer-events: none;
   z-index: 2;
   background: linear-gradient(
     to bottom,
     transparent 0%,
-    rgba(40, 36, 28, 0.045) 42%,
-    rgba(40, 36, 28, 0.07) 50%,
-    rgba(255, 255, 255, 0.55) 58%,
+    rgba(30, 34, 48, 0.035) 38%,
+    rgba(30, 34, 48, 0.08) 50%,
+    rgba(255, 255, 255, 0.65) 62%,
     transparent 100%
   );
 }
 
+.letter-paper__crease--1 {
+  top: 33.333%;
+}
+
+.letter-paper__crease--2 {
+  top: 66.666%;
+}
+
 .letter.is-closed .letter-paper__crease {
-  opacity: 0.4;
+  opacity: 0.45;
 }
 
 .letter-paper__inner {
@@ -375,20 +421,24 @@ a {
   z-index: 1;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-  padding: 1.05rem 1.05rem 1rem;
+  gap: 0.95rem;
+  padding: 1.45rem 1.4rem 1.3rem;
 }
 
 .letter-paper__inner--closed {
-  gap: 0.35rem;
-  padding: 1.1rem 1.05rem 1.15rem;
-  min-height: 5.5rem;
+  gap: 0.45rem;
+  padding: 1.35rem 1.35rem 1.25rem;
+  min-height: 7.25rem;
+}
+
+.letter-paper__inner--closed .letter-paper__footer {
+  margin-top: 0.65rem;
 }
 
 .letter-paper__lead {
   margin: 0;
   font-family: "Instrument Serif", ui-serif, Georgia, serif;
-  font-size: clamp(1.45rem, 3.8vw, 1.75rem);
+  font-size: clamp(1.55rem, 3.2vw, 1.9rem);
   font-weight: 400;
   font-style: italic;
   line-height: 1.05;
@@ -399,7 +449,7 @@ a {
 .letter-paper__preview {
   margin: 0;
   font-family: "Hanken Grotesk", system-ui, sans-serif;
-  font-size: 0.78rem;
+  font-size: 0.86rem;
   font-weight: 500;
   line-height: 1.35;
   letter-spacing: -0.01em;
@@ -409,19 +459,19 @@ a {
 .letter-paper__greeting {
   margin: 0;
   font-family: "Hanken Grotesk", system-ui, sans-serif;
-  font-size: 0.78rem;
+  font-size: 0.92rem;
   font-weight: 500;
   line-height: 1.4;
   letter-spacing: -0.01em;
-  color: rgba(30, 30, 30, 0.7);
+  color: rgba(30, 30, 30, 0.72);
 }
 
 .letter-paper__quote {
   margin: 0;
   font-family: "Hanken Grotesk", system-ui, sans-serif;
-  font-size: 0.82rem;
+  font-size: 0.95rem;
   font-weight: 500;
-  line-height: 1.55;
+  line-height: 1.58;
   letter-spacing: -0.015em;
   color: #1a1a1a;
   text-wrap: pretty;
@@ -430,25 +480,61 @@ a {
 .letter-paper__closing {
   margin: 0;
   font-family: "Hanken Grotesk", system-ui, sans-serif;
-  font-size: 0.78rem;
+  font-size: 0.9rem;
   font-weight: 500;
   line-height: 1.45;
   letter-spacing: -0.01em;
-  color: rgba(30, 30, 30, 0.7);
+  color: rgba(30, 30, 30, 0.72);
 }
 
 .letter-paper__footer {
   display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-top: 0.35rem;
+  padding-top: 0.15rem;
+}
+
+.letter-paper__avatar {
+  flex: none;
+  width: 2.35rem;
+  height: 2.35rem;
+  border-radius: 999px;
+  overflow: hidden;
+  background: #eceae4;
+  box-shadow: inset 0 0 0 1px rgba(20, 20, 20, 0.06);
+}
+
+.letter-paper__avatar img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.letter-paper__avatar-fallback {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  font-family: "Hanken Grotesk", system-ui, sans-serif;
+  font-size: 0.68rem;
+  font-weight: 650;
+  letter-spacing: 0.02em;
+  color: rgba(30, 30, 30, 0.55);
+}
+
+.letter-paper__byline {
+  display: flex;
   flex-direction: column;
-  gap: 0.12rem;
-  margin-top: 0.2rem;
-  padding-top: 0.1rem;
+  gap: 0.1rem;
+  min-width: 0;
 }
 
 .letter-paper__name {
   margin: 0;
   font-family: "Hanken Grotesk", system-ui, sans-serif;
-  font-size: 0.76rem;
+  font-size: 0.84rem;
   font-weight: 650;
   letter-spacing: -0.01em;
   color: #151515;
@@ -457,7 +543,7 @@ a {
 .letter-paper__role {
   margin: 0;
   font-family: "Hanken Grotesk", system-ui, sans-serif;
-  font-size: 0.68rem;
+  font-size: 0.72rem;
   font-weight: 500;
   line-height: 1.3;
   letter-spacing: -0.01em;
