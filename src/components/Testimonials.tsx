@@ -194,16 +194,50 @@ export default function Testimonials() {
                 className="letter-toggle__btn"
                 onClick={() => setAll(true)}
                 disabled={allOpen}
+                aria-label="Open all letters"
+                title="Open all"
               >
-                Open all
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.75"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden
+                >
+                  <path d="M8 3H5a2 2 0 0 0-2 2v3" />
+                  <path d="M16 3h3a2 2 0 0 1 2 2v3" />
+                  <path d="M8 21H5a2 2 0 0 1-2-2v-3" />
+                  <path d="M16 21h3a2 2 0 0 0 2-2v-3" />
+                </svg>
               </button>
               <button
                 type="button"
                 className="letter-toggle__btn"
                 onClick={() => setAll(false)}
                 disabled={allClosed}
+                aria-label="Close all letters"
+                title="Close all"
               >
-                Close all
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.75"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden
+                >
+                  <path d="M5 8V5a2 2 0 0 1 2-2h3" />
+                  <path d="M19 8V5a2 2 0 0 0-2-2h-3" />
+                  <path d="M5 16v3a2 2 0 0 0 2 2h3" />
+                  <path d="M19 16v3a2 2 0 0 1-2 2h-3" />
+                </svg>
               </button>
             </div>
           </Reveal>
