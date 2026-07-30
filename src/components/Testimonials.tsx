@@ -145,9 +145,7 @@ function Letter({
               <div className="letter-panel--sign">
                 <p className="letter-panel__closing">{t.closing}</p>
                 <p className="letter-panel__from">{t.name}</p>
-                <p className="letter-panel__signature" aria-hidden>
-                  {t.firstName}
-                </p>
+                <p className="letter-panel__role">{t.title}</p>
               </div>
             </FoldPanel>
           </div>
