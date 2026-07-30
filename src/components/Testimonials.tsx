@@ -1,206 +1,26 @@
-import { useMemo, useState, type CSSProperties, type ReactNode } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import { useMemo, useState, type CSSProperties } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { testimonials, type Testimonial } from "../content";
 import { Reveal } from "./Reveal";
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
-type FoldSpec = {
-  /** Minimum panel height in px — irregular on purpose */
-  minH: number;
-  /** Crease shadow strength 0–1 */
-  shade: number;
-};
-
 type LetterLayout = {
   rotate: number;
   x: string;
   y: string;
-  /** Closed-face height */
-  face: number;
-  /** 1–2 body folds with uneven sizes (never equal thirds) */
-  folds: readonly FoldSpec[];
+  /** Soft crease positions as % of letter height — uneven per card */
+  creases: readonly number[];
 };
 
-/**
- * Each letter gets its own fold recipe — fewer creases, uneven spacing —
- * so nothing lines up like a stacked card system.
- */
 const LETTER_LAYOUT: readonly LetterLayout[] = [
-  {
-    rotate: -2.4,
-    x: "-2%",
-    y: "0rem",
-    face: 92,
-    folds: [
-      { minH: 196, shade: 0.11 },
-      { minH: 108, shade: 0.06 },
-    ],
-  },
-  {
-    rotate: 1.8,
-    x: "4%",
-    y: "3.5rem",
-    face: 108,
-    folds: [{ minH: 248, shade: 0.09 }],
-  },
-  {
-    rotate: 2.6,
-    x: "-6%",
-    y: "-1.25rem",
-    face: 86,
-    folds: [
-      { minH: 132, shade: 0.14 },
-      { minH: 168, shade: 0.05 },
-    ],
-  },
-  {
-    rotate: -1.5,
-    x: "7%",
-    y: "2rem",
-    face: 100,
-    folds: [
-      { minH: 220, shade: 0.08 },
-      { minH: 96, shade: 0.12 },
-    ],
-  },
-  {
-    rotate: -3.1,
-    x: "1%",
-    y: "0.5rem",
-    face: 114,
-    folds: [{ minH: 268, shade: 0.1 }],
-  },
-  {
-    rotate: 2.2,
-    x: "-3%",
-    y: "4rem",
-    face: 90,
-    folds: [
-      { minH: 154, shade: 0.07 },
-      { minH: 142, shade: 0.13 },
-    ],
-  },
+  { rotate: -2.2, x: "-2%", y: "0rem", creases: [38, 72] },
+  { rotate: 1.6, x: "5%", y: "3.25rem", creases: [55] },
+  { rotate: 2.4, x: "-5%", y: "-1rem", creases: [28, 64] },
+  { rotate: -1.4, x: "6%", y: "2.25rem", creases: [46] },
+  { rotate: -2.8, x: "1%", y: "0.75rem", creases: [33, 78] },
+  { rotate: 2.0, x: "-3%", y: "3.75rem", creases: [42, 68] },
 ];
-
-function FoldPanel({
-  children,
-  className = "",
-  delay = 0,
-  open,
-  reduce,
-  minH,
-  shade,
-}: {
-  children: ReactNode;
-  className?: string;
-  delay?: number;
-  open: boolean;
-  reduce: boolean | null;
-  minH: number;
-  shade: number;
-}) {
-  return (
-    <motion.div
-      className={`letter-fold letter-fold--panel ${className}`}
-      initial={false}
-      animate={
-        reduce
-          ? { rotateX: 0, opacity: 1 }
-          : open
-            ? { rotateX: 0, opacity: 1 }
-            : { rotateX: -88, opacity: 0.85 }
-      }
-      transition={{
-        duration: 0.7,
-        ease: EASE,
-        delay: reduce ? 0 : open ? delay : Math.max(0, 0.12 - delay),
-      }}
-      style={
-        {
-          transformOrigin: "top center",
-          transformStyle: "preserve-3d",
-          minHeight: minH,
-          "--crease": String(shade),
-        } as CSSProperties
-      }
-    >
-      <div className="letter-fold__shade letter-fold__shade--top" aria-hidden />
-      <div
-        className="letter-fold__shade letter-fold__shade--bottom"
-        aria-hidden
-      />
-      <div className="letter-fold__back" aria-hidden />
-      <div className="letter-panel">{children}</div>
-    </motion.div>
-  );
-}
-
-function LetterBody({
-  t,
-  open,
-  reduce,
-  folds,
-}: {
-  t: Testimonial;
-  open: boolean;
-  reduce: boolean | null;
-  folds: readonly FoldSpec[];
-}) {
-  const single = folds.length === 1;
-
-  if (single) {
-    const f = folds[0];
-    return (
-      <FoldPanel
-        open={open}
-        reduce={reduce}
-        delay={0.04}
-        minH={f.minH}
-        shade={f.shade}
-        className="letter-fold--last"
-      >
-        <p className="letter-panel__greeting">{t.greeting}</p>
-        <p className="letter-panel__quote">“{t.quote}”</p>
-        <div className="letter-panel--sign">
-          <p className="letter-panel__closing">{t.closing}</p>
-          <p className="letter-panel__from">{t.name}</p>
-          <p className="letter-panel__role">{t.title}</p>
-        </div>
-      </FoldPanel>
-    );
-  }
-
-  const [a, b] = folds;
-  return (
-    <>
-      <FoldPanel
-        open={open}
-        reduce={reduce}
-        delay={0.03}
-        minH={a.minH}
-        shade={a.shade}
-      >
-        <p className="letter-panel__greeting">{t.greeting}</p>
-        <p className="letter-panel__quote">“{t.quote}”</p>
-      </FoldPanel>
-      <FoldPanel
-        open={open}
-        reduce={reduce}
-        delay={0.1}
-        minH={b.minH}
-        shade={b.shade}
-        className="letter-fold--last"
-      >
-        <div className="letter-panel--sign letter-panel--sign-only">
-          <p className="letter-panel__closing">{t.closing}</p>
-          <p className="letter-panel__from">{t.name}</p>
-          <p className="letter-panel__role">{t.title}</p>
-        </div>
-      </FoldPanel>
-    </>
-  );
-}
 
 function Letter({
   t,
@@ -226,50 +46,61 @@ function Letter({
           "--letter-rot": `${layout.rotate}deg`,
           "--letter-x": layout.x,
           "--letter-y": layout.y,
-          "--face-h": `${layout.face}px`,
         } as CSSProperties
       }
     >
-      <div className="letter__scene">
-        <button
-          type="button"
-          className="letter-fold letter-fold--face"
-          onClick={onToggle}
-          aria-expanded={open}
-          aria-label={`${open ? "Close" : "Open"} letter from ${t.name}`}
-        >
-          <div
-            className="letter-fold__shade letter-fold__shade--bottom"
+      <motion.button
+        type="button"
+        className="letter-paper"
+        onClick={onToggle}
+        aria-expanded={open}
+        aria-label={`${open ? "Close" : "Open"} letter from ${t.name}`}
+        layout={!reduce}
+        transition={{ layout: { duration: 0.45, ease: EASE } }}
+      >
+        {/* Soft paper creases — decorative, uneven per letter */}
+        {layout.creases.map((pct) => (
+          <span
+            key={pct}
+            className="letter-paper__crease"
+            style={{ top: `${pct}%` }}
             aria-hidden
           />
-          <div className="letter-face">
-            <div className="letter-face__copy">
-              <p className="letter-face__name">{t.firstName}</p>
-              <p className="letter-face__preview">{t.preview}</p>
-            </div>
-          </div>
-        </button>
+        ))}
 
-        <motion.div
-          className="letter-body"
-          initial={false}
-          animate={{
-            height: open || reduce ? "auto" : 0,
-            opacity: open || reduce ? 1 : 0,
-          }}
-          transition={{ duration: 0.7, ease: EASE }}
-          style={{ overflow: "hidden", perspective: 1200 }}
-        >
-          <div className="letter-body__inner">
-            <LetterBody
-              t={t}
-              open={open}
-              reduce={reduce}
-              folds={layout.folds}
-            />
-          </div>
-        </motion.div>
-      </div>
+        <AnimatePresence initial={false} mode="popLayout">
+          {open ? (
+            <motion.div
+              key="open"
+              className="letter-paper__inner"
+              initial={reduce ? false : { opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={reduce ? undefined : { opacity: 0 }}
+              transition={{ duration: 0.28, ease: EASE }}
+            >
+              <p className="letter-paper__greeting">{t.greeting}</p>
+              <p className="letter-paper__quote">“{t.quote}”</p>
+              <p className="letter-paper__closing">{t.closing}</p>
+              <footer className="letter-paper__footer">
+                <p className="letter-paper__name">{t.name}</p>
+                <p className="letter-paper__role">{t.title}</p>
+              </footer>
+            </motion.div>
+          ) : (
+            <motion.div
+              key="closed"
+              className="letter-paper__inner letter-paper__inner--closed"
+              initial={reduce ? false : { opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={reduce ? undefined : { opacity: 0 }}
+              transition={{ duration: 0.22, ease: EASE }}
+            >
+              <p className="letter-paper__lead">{t.firstName}</p>
+              <p className="letter-paper__preview">{t.preview}</p>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.button>
     </article>
   );
 }

@@ -254,277 +254,214 @@ a {
 .letter-stack {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 2rem 1.5rem;
-  max-width: 1180px;
+  gap: 2.25rem 1.25rem;
+  max-width: 52rem;
   margin-inline: auto;
   align-items: start;
-  perspective: 1400px;
+  justify-items: center;
 }
 
-@media (min-width: 900px) {
+@media (min-width: 768px) {
   .letter-stack {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 2.75rem 3.5rem;
-    padding-inline: 0.5rem;
+    gap: 2.75rem 2.5rem;
+    padding-inline: 0.25rem;
+  }
+
+  .letter-slot--1 {
+    justify-self: end;
   }
 
   .letter-slot--2 {
-    margin-top: 4.5rem;
+    justify-self: start;
+    margin-top: 3.25rem;
   }
 
   .letter-slot--3 {
-    margin-top: -1rem;
+    justify-self: end;
+    margin-top: -0.5rem;
   }
 
   .letter-slot--4 {
-    margin-top: 5.5rem;
+    justify-self: start;
+    margin-top: 4rem;
   }
 
   .letter-slot--5 {
-    margin-top: 0.75rem;
+    justify-self: end;
+    margin-top: 0.35rem;
   }
 
   .letter-slot--6 {
-    margin-top: 3.25rem;
-  }
-}
-
-@media (min-width: 1180px) {
-  .letter-stack {
-    gap: 3rem 4.5rem;
+    justify-self: start;
+    margin-top: 3.5rem;
   }
 }
 
 .letter {
   position: relative;
-  width: min(100%, 500px);
-  margin-inline: auto;
+  width: min(100%, 17.25rem);
   transform: translate(var(--letter-x, 0), var(--letter-y, 0))
     rotate(var(--letter-rot, 0deg));
-  transform-style: preserve-3d;
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-@media (max-width: 899px) {
+@media (max-width: 767px) {
   .letter {
     transform: none;
+    width: min(100%, 18.5rem);
   }
 }
 
-.letter__scene {
+.letter-paper {
   position: relative;
-  transform-style: preserve-3d;
-  filter: drop-shadow(0 18px 30px rgba(20, 20, 20, 0.12))
-    drop-shadow(0 2px 6px rgba(20, 20, 20, 0.06));
-  transition: filter 0.45s ease;
-}
-
-.letter.is-open .letter__scene {
-  filter: drop-shadow(0 22px 36px rgba(20, 20, 20, 0.14))
-    drop-shadow(0 4px 10px rgba(20, 20, 20, 0.07));
-}
-
-.letter-body {
-  transform-style: preserve-3d;
-  will-change: height;
-}
-
-.letter-body__inner {
-  transform-style: preserve-3d;
-}
-
-.letter-fold {
-  position: relative;
-  background: #fff;
-  transform-style: preserve-3d;
-  backface-visibility: hidden;
-  will-change: transform;
-}
-
-.letter-fold--face {
-  z-index: 4;
   display: block;
   width: 100%;
-  min-height: var(--face-h, 100px);
   margin: 0;
   padding: 0;
   border: 0;
-  border-radius: 2px 2px 0 0;
-  background: #fff;
-  text-align: left;
-  cursor: pointer;
   appearance: none;
+  cursor: pointer;
+  text-align: left;
   font: inherit;
   color: inherit;
+  background: #fffef9;
+  border-radius: 1px;
+  overflow: hidden;
+  box-shadow:
+    0 1px 1px rgba(32, 28, 22, 0.04),
+    0 6px 16px rgba(32, 28, 22, 0.07),
+    0 16px 36px rgba(32, 28, 22, 0.06);
+  transition: box-shadow 0.35s ease;
 }
 
-.letter.is-closed .letter-fold--face {
-  border-radius: 2px;
+.letter-paper:hover {
+  box-shadow:
+    0 1px 2px rgba(32, 28, 22, 0.05),
+    0 10px 24px rgba(32, 28, 22, 0.09),
+    0 22px 44px rgba(32, 28, 22, 0.07);
 }
 
-.letter-fold--face:focus-visible {
-  outline: 2px solid var(--ink);
-  outline-offset: 4px;
+.letter-paper:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--ink) 40%, transparent);
+  outline-offset: 5px;
 }
 
-.letter-fold--last {
-  border-radius: 0 0 2px 2px;
-}
-
-.letter-fold__back {
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(180deg, #f3f1ec 0%, #e8e4dc 100%);
-  transform: rotateX(180deg) translateZ(0.5px);
-  backface-visibility: hidden;
-  pointer-events: none;
-}
-
-.letter-fold__shade {
+/* Soft crease lines — lettermonials-style, not hard panel folds */
+.letter-paper__crease {
   position: absolute;
   left: 0;
   right: 0;
+  height: 0;
   pointer-events: none;
   z-index: 2;
+  border-top: 1px solid rgba(40, 36, 28, 0.065);
+  box-shadow:
+    0 -5px 8px -7px rgba(40, 36, 28, 0.14),
+    0 5px 8px -7px rgba(255, 255, 255, 0.85);
 }
 
-.letter-fold__shade--top {
-  top: 0;
-  height: 16px;
-  background: linear-gradient(
-    to bottom,
-    rgba(20, 20, 20, calc(var(--crease, 0.1) * 1.15)),
-    transparent
-  );
+.letter.is-closed .letter-paper__crease {
+  opacity: 0.35;
 }
 
-.letter-fold__shade--bottom {
-  bottom: 0;
-  height: 20px;
-  background: linear-gradient(
-    to top,
-    rgba(20, 20, 20, calc(var(--crease, 0.08) * 0.95)),
-    transparent
-  );
-}
-
-.letter-face {
+.letter-paper__inner {
   position: relative;
   z-index: 1;
-  padding: 1.35rem 1.35rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.05rem 1.05rem 1rem;
 }
 
-.letter-face__copy {
-  min-width: 0;
-  padding-top: 0.15rem;
+.letter-paper__inner--closed {
+  gap: 0.35rem;
+  padding: 1.1rem 1.05rem 1.15rem;
+  min-height: 5.5rem;
 }
 
-.letter-face__name {
-  font-family: "Hanken Grotesk", system-ui, sans-serif;
-  font-size: 1.35rem;
-  font-weight: 650;
+.letter-paper__lead {
+  margin: 0;
+  font-family: "Instrument Serif", ui-serif, Georgia, serif;
+  font-size: clamp(1.45rem, 3.8vw, 1.75rem);
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.05;
   letter-spacing: -0.03em;
-  line-height: 1.1;
-  color: #1a1a1a;
+  color: #151515;
 }
 
-.letter-face__preview {
-  margin-top: 0.4rem;
-  font-family: "Hanken Grotesk", system-ui, sans-serif;
-  font-size: 0.95rem;
-  line-height: 1.35;
-  color: #5a5a5a;
-}
-
-
-.letter-fold--panel {
-  border-top: 1px solid rgba(20, 20, 20, 0.05);
-}
-
-.letter-panel {
-  position: relative;
-  z-index: 1;
-  box-sizing: border-box;
-  height: 100%;
-  padding: 1.15rem 1.4rem 1.2rem;
-  color: #222;
-}
-
-.letter-panel__greeting {
-  font-family: "Hanken Grotesk", system-ui, sans-serif;
-  font-size: 1rem;
-  font-weight: 500;
-  letter-spacing: -0.01em;
-  color: #1a1a1a;
-}
-
-.letter-panel__meta {
-  margin-top: 0.35rem;
+.letter-paper__preview {
+  margin: 0;
   font-family: "Hanken Grotesk", system-ui, sans-serif;
   font-size: 0.78rem;
-  color: #7a7a7a;
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  color: rgba(30, 30, 30, 0.52);
 }
 
-.letter-panel__quote {
-  margin-top: 0.7rem;
+.letter-paper__greeting {
+  margin: 0;
   font-family: "Hanken Grotesk", system-ui, sans-serif;
-  font-size: 0.98rem;
-  line-height: 1.5;
+  font-size: 0.78rem;
+  font-weight: 500;
+  line-height: 1.4;
   letter-spacing: -0.01em;
-  color: #2a2a2a;
+  color: rgba(30, 30, 30, 0.7);
+}
+
+.letter-paper__quote {
+  margin: 0;
+  font-family: "Hanken Grotesk", system-ui, sans-serif;
+  font-size: 0.82rem;
+  font-weight: 500;
+  line-height: 1.55;
+  letter-spacing: -0.015em;
+  color: #1a1a1a;
   text-wrap: pretty;
 }
 
-.letter-panel--sign {
-  margin-top: 1.15rem;
-  padding-bottom: 0.15rem;
-}
-
-.letter-panel--sign-only {
-  margin-top: 0;
-}
-
-.letter-panel__closing {
+.letter-paper__closing {
+  margin: 0;
   font-family: "Hanken Grotesk", system-ui, sans-serif;
-  font-size: 0.95rem;
-  line-height: 1.4;
-  color: #333;
+  font-size: 0.78rem;
+  font-weight: 500;
+  line-height: 1.45;
+  letter-spacing: -0.01em;
+  color: rgba(30, 30, 30, 0.7);
 }
 
-.letter-panel__from {
-  margin-top: 1.1rem;
+.letter-paper__footer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.12rem;
+  margin-top: 0.2rem;
+  padding-top: 0.1rem;
+}
+
+.letter-paper__name {
+  margin: 0;
   font-family: "Hanken Grotesk", system-ui, sans-serif;
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: #1a1a1a;
+  font-size: 0.76rem;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  color: #151515;
 }
 
-.letter-panel__role {
-  margin-top: 0.25rem;
+.letter-paper__role {
+  margin: 0;
   font-family: "Hanken Grotesk", system-ui, sans-serif;
-  font-size: 0.88rem;
-  line-height: 1.35;
-  color: #6a6a6a;
-}
-
-@media (max-width: 560px) {
-  .letter-face {
-    padding: 1.15rem 1.1rem 1.05rem;
-  }
-
-  .letter-face__name {
-    font-size: 1.2rem;
-  }
-
+  font-size: 0.68rem;
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  color: rgba(30, 30, 30, 0.48);
 }
 
 @media (prefers-reduced-motion: reduce) {
   .letter {
     transform: none;
-  }
-
-  .letter-fold {
-    transform: none !important;
   }
 }
 
