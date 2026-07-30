@@ -12,22 +12,37 @@ export default function Preloader({ onDone }: { onDone: () => void }) {
 
   useEffect(() => {
     let current = 0;
+    const timers: number[] = [];
+    let finished = false;
+
+    const finish = () => {
+      if (finished) return;
+      finished = true;
+      setCount(100);
+      setShow(false);
+      timers.push(window.setTimeout(onDone, 900));
+    };
+
     const tick = () => {
       // ease the counter so it slows near the end
       const step = current < 80 ? 4 : current < 95 ? 2 : 1;
       current = Math.min(100, current + step);
       setCount(current);
       if (current < 100) {
-        setTimeout(tick, current < 80 ? 28 : 60);
+        timers.push(window.setTimeout(tick, current < 80 ? 28 : 60));
       } else {
-        setTimeout(() => {
-          setShow(false);
-          setTimeout(onDone, 900);
-        }, 350);
+        timers.push(window.setTimeout(finish, 350));
       }
     };
-    const start = setTimeout(tick, 250);
-    return () => clearTimeout(start);
+
+    timers.push(window.setTimeout(tick, 250));
+    // Hard failsafe: never leave the Cursor Browser stuck on this screen.
+    timers.push(window.setTimeout(finish, 4500));
+
+    return () => {
+      finished = true;
+      timers.forEach((id) => window.clearTimeout(id));
+    };
   }, [onDone]);
 
   return (
