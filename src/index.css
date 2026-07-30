@@ -382,15 +382,7 @@ a {
   width: 64px;
   height: 64px;
   overflow: hidden;
-  /* Serrated postage-stamp edge via radial mask */
-  -webkit-mask:
-    radial-gradient(circle, #000 55%, transparent 56%) 0 0 / 8px 8px,
-    linear-gradient(#000 0 0);
-  -webkit-mask-composite: destination-in;
-  mask:
-    radial-gradient(circle, #000 55%, transparent 56%) 0 0 / 8px 8px,
-    linear-gradient(#000 0 0);
-  mask-composite: intersect;
+  border-radius: 2px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.16);
   transform: rotate(2.5deg);
 }
