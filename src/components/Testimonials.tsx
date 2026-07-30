@@ -48,8 +48,10 @@ function Letter({
       }
     >
       <div className="letter-paper">
-        {/* One soft mid crease — lettermonials paper, not multi-fold panels */}
-        <span className="letter-paper__crease" aria-hidden />
+        {/* Soft trifold lighting + two faint creases (lettermonials) */}
+        <span className="letter-paper__fold-light" aria-hidden />
+        <span className="letter-paper__crease letter-paper__crease--1" aria-hidden />
+        <span className="letter-paper__crease letter-paper__crease--2" aria-hidden />
 
         <div className="letter-paper__inner">
           <p className="letter-paper__greeting">{t.greeting}</p>
