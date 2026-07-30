@@ -1,9 +1,19 @@
-import { useMemo, useState, type ReactNode } from "react";
+import { useMemo, useState, type CSSProperties, type ReactNode } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { testimonials, type Testimonial } from "../content";
 import { Reveal } from "./Reveal";
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
+
+/** Soft scatter so letters occupy the board instead of one column. */
+const LETTER_LAYOUT = [
+  { rotate: -2.4, x: "-2%", y: "0rem" },
+  { rotate: 1.8, x: "4%", y: "3.5rem" },
+  { rotate: 2.6, x: "-6%", y: "-1.25rem" },
+  { rotate: -1.5, x: "7%", y: "2rem" },
+  { rotate: -3.1, x: "1%", y: "0.5rem" },
+  { rotate: 2.2, x: "-3%", y: "4rem" },
+] as const;
 
 const STAMP: Record<Testimonial["stamp"], string> = {
   violet: "linear-gradient(145deg, #6b4cff 0%, #2a1850 100%)",
@@ -80,18 +90,27 @@ function Letter({
   open,
   onToggle,
   index,
+  layout,
 }: {
   t: Testimonial;
   open: boolean;
   onToggle: () => void;
   index: number;
+  layout: (typeof LETTER_LAYOUT)[number];
 }) {
   const reduce = useReducedMotion();
 
   return (
     <article
       className={`letter${open ? " is-open" : " is-closed"}`}
-      style={{ zIndex: open ? 12 : 2 + index }}
+      style={
+        {
+          zIndex: open ? 12 : 2 + index,
+          "--letter-rot": `${layout.rotate}deg`,
+          "--letter-x": layout.x,
+          "--letter-y": layout.y,
+        } as CSSProperties
+      }
     >
       <div className="letter__scene">
         {/* Fold 1 — closed face (always visible) */}
@@ -179,7 +198,7 @@ export default function Testimonials() {
       <div aria-hidden className="testimonials-section__fade" />
 
       <div className="relative z-10 px-6 py-24 md:px-10 md:py-36">
-        <div className="mx-auto mb-12 flex max-w-[560px] flex-col gap-6 md:mb-16 md:flex-row md:items-end md:justify-between">
+        <div className="letter-board__header">
           <div>
             <Reveal>
               <p className="font-sans text-xs uppercase tracking-[0.28em] text-muted">
@@ -187,7 +206,7 @@ export default function Testimonials() {
               </p>
             </Reveal>
             <Reveal delay={0.06}>
-              <h2 className="mt-3 max-w-md font-serif text-4xl leading-[1.05] tracking-tighter2 text-ink md:text-5xl">
+              <h2 className="mt-3 max-w-xl font-serif text-4xl leading-[1.05] tracking-tighter2 text-ink md:text-5xl">
                 Letters from people I’ve worked with.
               </h2>
             </Reveal>
@@ -221,10 +240,15 @@ export default function Testimonials() {
 
         <div className="letter-stack">
           {testimonials.map((t, i) => (
-            <Reveal key={t.name} delay={i * 0.05}>
+            <Reveal
+              key={t.name}
+              delay={i * 0.05}
+              className={`letter-slot letter-slot--${i + 1}`}
+            >
               <Letter
                 t={t}
                 index={i}
+                layout={LETTER_LAYOUT[i] ?? LETTER_LAYOUT[0]}
                 open={!!openMap[t.name]}
                 onToggle={() =>
                   setOpenMap((prev) => ({

@@ -193,6 +193,23 @@ a {
 }
 
 
+.letter-board__header {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 1180px;
+  margin: 0 auto 3rem;
+}
+
+@media (min-width: 768px) {
+  .letter-board__header {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 4rem;
+  }
+}
+
 .letter-toggle {
   display: inline-flex;
   align-items: center;
@@ -202,6 +219,7 @@ a {
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.72);
   backdrop-filter: blur(8px);
+  flex: none;
 }
 
 .letter-toggle__btn {
@@ -231,19 +249,62 @@ a {
 }
 
 .letter-stack {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.15rem;
-  max-width: 560px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem 1.5rem;
+  max-width: 1180px;
   margin-inline: auto;
+  align-items: start;
   perspective: 1400px;
+}
+
+@media (min-width: 900px) {
+  .letter-stack {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2.75rem 3.5rem;
+    padding-inline: 0.5rem;
+  }
+
+  .letter-slot--2 {
+    margin-top: 4.5rem;
+  }
+
+  .letter-slot--3 {
+    margin-top: -1rem;
+  }
+
+  .letter-slot--4 {
+    margin-top: 5.5rem;
+  }
+
+  .letter-slot--5 {
+    margin-top: 0.75rem;
+  }
+
+  .letter-slot--6 {
+    margin-top: 3.25rem;
+  }
+}
+
+@media (min-width: 1180px) {
+  .letter-stack {
+    gap: 3rem 4.5rem;
+  }
 }
 
 .letter {
   position: relative;
-  width: min(100%, 520px);
+  width: min(100%, 500px);
+  margin-inline: auto;
+  transform: translate(var(--letter-x, 0), var(--letter-y, 0))
+    rotate(var(--letter-rot, 0deg));
   transform-style: preserve-3d;
+}
+
+@media (max-width: 899px) {
+  .letter {
+    transform: none;
+  }
 }
 
 .letter__scene {
@@ -498,6 +559,10 @@ a {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .letter {
+    transform: none;
+  }
+
   .letter-fold {
     transform: none !important;
   }
