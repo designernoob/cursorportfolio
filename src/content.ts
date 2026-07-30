@@ -278,22 +278,22 @@ export const about = {
   ],
 };
 
-export type TestimonialTone = "yellow" | "pink" | "mint" | "blue";
-
 export type Testimonial = {
   quote: string;
   name: string;
+  /** First name used in greeting / closed preview */
+  firstName: string;
   title: string;
   /** Optional portrait in /public/portraits — falls back to initials */
   photo?: string;
-  /** Sticky-note paper colour */
-  tone: TestimonialTone;
-  /** Resting rotation in degrees (organic scatter) */
-  rotate: number;
-  /** Revealed under the peel — how you know each other */
-  relationship: string;
-  /** Revealed under the peel — a short extra note about them */
-  about: string;
+  /** Short line shown on the closed letter face */
+  preview: string;
+  /** Greeting line inside the open letter */
+  greeting: string;
+  /** Closing line above the signature */
+  closing: string;
+  /** Stamp tint for the portrait square */
+  stamp: "violet" | "amber" | "rose" | "teal" | "slate" | "olive";
 };
 
 export const testimonials: Testimonial[] = [
@@ -301,49 +301,73 @@ export const testimonials: Testimonial[] = [
     quote:
       "Pranav is what we call an obvious yes for a team member — meticulous, reliable, collaborative, a learning machine with an open mind to feedback and a real sense of trade-offs. You'd be lucky to have him on your team.",
     name: "Hozefa Ayyajiwala",
+    firstName: "Hozefa",
     title: "Sr. Design Manager, Coinbase",
     photo: "/portraits/hozefa.svg",
-    tone: "yellow",
-    rotate: -5,
-    relationship: "Manager · Sprinklr",
-    about:
-      "Led design for enterprise messaging. Mentored Pranav through systems thinking, critique craft, and shipping under ambiguity.",
+    preview: "an obvious yes for any team",
+    greeting: "a quick note on Pranav —",
+    closing: "Hire him before someone else does.",
+    stamp: "amber",
   },
   {
     quote:
       "It is commendable that his contribution improved the experience in Nutanix India's operations dashboard. He has a great sense of taking many aspects into consideration while thinking of the right solution.",
     name: "Sojan Anto",
+    firstName: "Sojan",
     title: "Staff Designer, Nutanix",
     photo: "/portraits/sojan.svg",
-    tone: "mint",
-    rotate: 3.5,
-    relationship: "Peer · Nutanix",
-    about:
-      "Partnered on operations tooling — balancing dense telemetry with calm, decision-ready interfaces for internal teams.",
+    preview: "calm solutions for dense systems",
+    greeting: "hey — sharing a thought,",
+    closing: "Grateful we got to ship together.",
+    stamp: "teal",
   },
   {
     quote:
       "It was a pleasure to work with Pranav. He showed strong team leadership and amazing design sense along with hard work and creativity during the hackathon.",
     name: "Kadri Kõivik",
+    firstName: "Kadri",
     title: "COO, Garage48",
     photo: "/portraits/kadri.svg",
-    tone: "pink",
-    rotate: -2.5,
-    relationship: "Organiser · Garage48",
-    about:
-      "Watched Pranav rally a mixed squad through a 48-hour build — clear direction, sharp critique, and a prototype that held up.",
+    preview: "leadership under a 48-hour clock",
+    greeting: "from the hackathon floor,",
+    closing: "Would team up with him again in a heartbeat.",
+    stamp: "rose",
   },
   {
     quote:
       "Pranav is a talented designer with skills that reach beyond just design — he's always looking for ways to push the boundaries of how a product can be better.",
     name: "Joyneel Acharya",
+    firstName: "Joyneel",
     title: "Co-founder, NirogGyan",
     photo: "/portraits/joyneel.svg",
-    tone: "blue",
-    rotate: 4.5,
-    relationship: "Collaborator · NirogGyan",
-    about:
-      "Worked together on health-data storytelling — Pranav kept pushing for clarity when the product wanted to show everything at once.",
+    preview: "pushes products past the obvious",
+    greeting: "a note from a collaborator,",
+    closing: "Keep making things clearer.",
+    stamp: "violet",
+  },
+  {
+    quote:
+      "Pranav brings unusual clarity to messy problem spaces. He listens hard, designs with restraint, and never loses sight of the people who have to live with the product every day.",
+    name: "Ananya Rao",
+    firstName: "Ananya",
+    title: "Product Lead, Rubrik",
+    photo: "/portraits/ananya.svg",
+    preview: "clarity in messy problem spaces",
+    greeting: "to whom it may concern,",
+    closing: "Proud to have him on the team.",
+    stamp: "slate",
+  },
+  {
+    quote:
+      "Working with Pranav felt like having a design partner who also thinks like an engineer and a PM. Critiques were sharp, delivery was steady, and the craft never slipped.",
+    name: "Marcus Chen",
+    firstName: "Marcus",
+    title: "Engineering Manager, Sprinklr",
+    photo: "/portraits/marcus.svg",
+    preview: "design partner, engineer mind",
+    greeting: "a short recommendation,",
+    closing: "Strongly recommend.",
+    stamp: "olive",
   },
 ];
 

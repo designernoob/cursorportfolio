@@ -1,272 +1,241 @@
-import {
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-  type CSSProperties,
-  type MutableRefObject,
-} from "react";
-import {
-  PeelBack,
-  PeelBottom,
-  PeelTop,
-  PeelWrapper,
-  usePeel,
-  type PeelRef,
-} from "react-peel";
-import { useReducedMotion } from "framer-motion";
+import { useMemo, useState, type ReactNode } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 import { testimonials, type Testimonial } from "../content";
 import { Reveal } from "./Reveal";
 
-const NOTE_W = 360;
-const NOTE_H = 380;
+const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
-const TONE: Record<
-  Testimonial["tone"],
-  { paper: string; adhesive: string; back: string; ink: string; shadow: string }
-> = {
-  yellow: {
-    paper: "#f3e59a",
-    adhesive: "#efe07f",
-    back: "#e8d789",
-    ink: "#3a3420",
-    shadow: "rgba(78, 62, 12, 0.28)",
-  },
-  pink: {
-    paper: "#f0c5d0",
-    adhesive: "#e9b4c2",
-    back: "#e4b6c3",
-    ink: "#432832",
-    shadow: "rgba(90, 40, 55, 0.26)",
-  },
-  mint: {
-    paper: "#c8e4d0",
-    adhesive: "#b6d8bf",
-    back: "#b9d7c2",
-    ink: "#22362a",
-    shadow: "rgba(28, 70, 45, 0.26)",
-  },
-  blue: {
-    paper: "#c7ddf0",
-    adhesive: "#b5d0e7",
-    back: "#b6cfe4",
-    ink: "#223446",
-    shadow: "rgba(28, 50, 80, 0.26)",
-  },
+const STAMP: Record<Testimonial["stamp"], string> = {
+  violet: "linear-gradient(145deg, #6b4cff 0%, #2a1850 100%)",
+  amber: "linear-gradient(145deg, #f0a040 0%, #7a3a10 100%)",
+  rose: "linear-gradient(145deg, #e8789a 0%, #6a2038 100%)",
+  teal: "linear-gradient(145deg, #3cb8a8 0%, #0f4a48 100%)",
+  slate: "linear-gradient(145deg, #7a8aa0 0%, #2a3448 100%)",
+  olive: "linear-gradient(145deg, #8aaa5a 0%, #2f4018 100%)",
 };
 
-function NoteFace({
-  t,
-  tone,
-}: {
-  t: Testimonial;
-  tone: (typeof TONE)[Testimonial["tone"]];
-}) {
-  const initials = t.name
-    .split(" ")
-    .map((p) => p[0])
-    .slice(0, 2)
-    .join("");
-
+function Stamp({ t }: { t: Testimonial }) {
+  const parts = t.name.split(" ");
+  const initials = t.firstName.slice(0, 1) + parts[parts.length - 1].slice(0, 1);
   return (
-    <div className="sticky-face" style={{ color: tone.ink }}>
-      <div className="sticky-face__adhesive" aria-hidden />
-      <div className="sticky-face__fiber" aria-hidden />
-      <div className="sticky-face__sheen" aria-hidden />
-      <div className="sticky-face__edge" aria-hidden />
-
-      <div className="sticky-face__person">
-        <div className="sticky-face__photo">
-          {t.photo ? (
-            <img src={t.photo} alt="" width={44} height={44} draggable={false} />
-          ) : (
-            <span>{initials}</span>
-          )}
-        </div>
-        <div>
-          <div className="sticky-face__name">{t.name}</div>
-          <div className="sticky-face__title">{t.title}</div>
-        </div>
-      </div>
-
-      <blockquote className="sticky-face__quote">
-        <span aria-hidden>“</span>
-        {t.quote}
-        <span aria-hidden>”</span>
-      </blockquote>
+    <div
+      className="letter-stamp"
+      style={{ background: STAMP[t.stamp] }}
+      aria-hidden
+    >
+      <div className="letter-stamp__perforation" />
+      {t.photo ? (
+        <img src={t.photo} alt="" className="letter-stamp__photo" />
+      ) : (
+        <span className="letter-stamp__initials">{initials}</span>
+      )}
     </div>
   );
 }
 
-function StickyNote({ t, index }: { t: Testimonial; index: number }) {
-  const { peelRef, animate, stop } = usePeel();
+function FoldPanel({
+  children,
+  className = "",
+  delay = 0,
+  open,
+  reduce,
+}: {
+  children: ReactNode;
+  className?: string;
+  delay?: number;
+  open: boolean;
+  reduce: boolean | null;
+}) {
+  return (
+    <motion.div
+      className={`letter-fold ${className}`}
+      initial={false}
+      animate={
+        reduce
+          ? { rotateX: 0, opacity: 1 }
+          : open
+            ? { rotateX: 0, opacity: 1 }
+            : { rotateX: -88, opacity: 0.85 }
+      }
+      transition={{
+        duration: 0.7,
+        ease: EASE,
+        delay: reduce ? 0 : open ? delay : (0.18 - delay) * 0.5,
+      }}
+      style={{ transformOrigin: "top center", transformStyle: "preserve-3d" }}
+    >
+      <div className="letter-fold__shade letter-fold__shade--top" aria-hidden />
+      <div
+        className="letter-fold__shade letter-fold__shade--bottom"
+        aria-hidden
+      />
+      <div className="letter-fold__back" aria-hidden />
+      <div className="letter-panel">{children}</div>
+    </motion.div>
+  );
+}
+
+function Letter({
+  t,
+  open,
+  onToggle,
+  index,
+}: {
+  t: Testimonial;
+  open: boolean;
+  onToggle: () => void;
+  index: number;
+}) {
   const reduce = useReducedMotion();
-  const tone = TONE[t.tone];
-  const [peeled, setPeeled] = useState(false);
-  const hovering = useRef(false);
-  const readyRef = useRef(false);
-
-  const peelOpen = useCallback(async () => {
-    if (reduce || !readyRef.current) {
-      setPeeled(true);
-      return;
-    }
-    stop();
-    setPeeled(true);
-    // Deep corner curl — Framer-style sticker peel from bottom-right.
-    await animate({
-      to: { x: NOTE_W * 0.28, y: NOTE_H * 0.26 },
-      duration: 820,
-      easing: "spring",
-    });
-  }, [animate, reduce, stop]);
-
-  const peelClose = useCallback(async () => {
-    if (reduce) {
-      setPeeled(false);
-      return;
-    }
-    stop();
-    setPeeled(false);
-    // Settle to a tiny lifted corner so notes never look glued flat.
-    await animate({
-      to: { x: NOTE_W - 28, y: NOTE_H - 28 },
-      duration: 520,
-      easing: "easeOut",
-    });
-  }, [animate, reduce, stop]);
-
-  // Idle affordance: soft corner lift once peel.js is ready.
-  useEffect(() => {
-    if (reduce) return;
-    let cancelled = false;
-    const id = window.setInterval(() => {
-      const el = (peelRef as MutableRefObject<PeelRef | null>).current;
-      if (!el?.width || cancelled) return;
-      readyRef.current = true;
-      window.clearInterval(id);
-      void animate({
-        to: { x: NOTE_W - 28, y: NOTE_H - 28 },
-        duration: 650,
-        easing: "easeOut",
-      });
-    }, 60);
-    return () => {
-      cancelled = true;
-      window.clearInterval(id);
-    };
-  }, [animate, peelRef, reduce]);
 
   return (
     <article
-      className={`sticky-note${peeled ? " is-peeled" : ""}`}
-      style={
-        {
-          "--note-rot": `${t.rotate}deg`,
-          "--note-paper": tone.paper,
-          "--note-adhesive": tone.adhesive,
-          "--note-back": tone.back,
-          "--note-ink": tone.ink,
-          "--note-shadow": tone.shadow,
-          zIndex: peeled ? 24 : 2 + index,
-        } as CSSProperties
-      }
-      onMouseEnter={() => {
-        hovering.current = true;
-        void peelOpen();
-      }}
-      onMouseLeave={() => {
-        hovering.current = false;
-        void peelClose();
-      }}
-      onFocus={() => void peelOpen()}
-      onBlur={() => void peelClose()}
-      tabIndex={0}
-      aria-label={`Testimonial from ${t.name}. Hover or focus to peel the note.`}
+      className={`letter${open ? " is-open" : " is-closed"}`}
+      style={{ zIndex: open ? 12 : 2 + index }}
     >
-      <div className="sticky-note__cast-shadow" aria-hidden />
-
-      <PeelWrapper
-        ref={peelRef}
-        className="sticky-note__peel"
-        preset="stickyNote"
-        width={NOTE_W}
-        height={NOTE_H}
-        corner="BOTTOM_RIGHT"
-        options={{
-          topShadow: true,
-          topShadowBlur: 4,
-          topShadowAlpha: 0.35,
-          topShadowOffsetX: 0,
-          topShadowOffsetY: 1,
-          backShadow: true,
-          backShadowSize: 0.1,
-          backShadowAlpha: 0.22,
-          bottomShadow: true,
-          bottomShadowSize: 1.1,
-          bottomShadowDarkAlpha: 0.55,
-          bottomShadowLightAlpha: 0.12,
-          setPeelOnInit: true,
-        }}
-      >
-        <PeelTop className="sticky-note__top">
-          <NoteFace t={t} tone={tone} />
-        </PeelTop>
-
-        <PeelBack
-          className="sticky-note__back"
-          style={{ background: tone.back }}
-          aria-hidden
+      <div className="letter__scene">
+        {/* Fold 1 — closed face (always visible) */}
+        <button
+          type="button"
+          className="letter-fold letter-fold--face"
+          onClick={onToggle}
+          aria-expanded={open}
+          aria-label={`${open ? "Close" : "Open"} letter from ${t.name}`}
         >
-          <div className="sticky-note__back-fiber" />
-        </PeelBack>
-
-        <PeelBottom className="sticky-note__bottom">
-          <div className="sticky-note__under">
-            <p className="sticky-note__under-kicker">{t.relationship}</p>
-            <p className="sticky-note__under-name">{t.name}</p>
-            <p className="sticky-note__under-about">{t.about}</p>
+          <div
+            className="letter-fold__shade letter-fold__shade--bottom"
+            aria-hidden
+          />
+          <div className="letter-face">
+            <div className="letter-face__copy">
+              <p className="letter-face__name">{t.firstName}</p>
+              <p className="letter-face__preview">{t.preview}</p>
+            </div>
+            <Stamp t={t} />
           </div>
-        </PeelBottom>
-      </PeelWrapper>
+        </button>
+
+        {/* Folds 2–4 — letter body, height + 3D unfold */}
+        <motion.div
+          className="letter-body"
+          initial={false}
+          animate={{
+            height: open || reduce ? "auto" : 0,
+            opacity: open || reduce ? 1 : 0,
+          }}
+          transition={{ duration: 0.7, ease: EASE }}
+          style={{ overflow: "hidden", perspective: 1200 }}
+        >
+          <div className="letter-body__inner">
+            <FoldPanel open={open} reduce={reduce} delay={0.02}>
+              <p className="letter-panel__greeting">{t.greeting}</p>
+              <p className="letter-panel__meta">{t.title}</p>
+            </FoldPanel>
+
+            <FoldPanel open={open} reduce={reduce} delay={0.08}>
+              <p className="letter-panel__quote">“{t.quote}”</p>
+            </FoldPanel>
+
+            <FoldPanel
+              open={open}
+              reduce={reduce}
+              delay={0.14}
+              className="letter-fold--last"
+            >
+              <div className="letter-panel--sign">
+                <p className="letter-panel__closing">{t.closing}</p>
+                <p className="letter-panel__from">{t.name}</p>
+                <p className="letter-panel__signature" aria-hidden>
+                  {t.firstName}
+                </p>
+              </div>
+            </FoldPanel>
+          </div>
+        </motion.div>
+      </div>
     </article>
   );
 }
 
 export default function Testimonials() {
+  // Open by default (Framer demo starts closed — we invert that).
+  const [openMap, setOpenMap] = useState<Record<string, boolean>>(() =>
+    Object.fromEntries(testimonials.map((t) => [t.name, true]))
+  );
+
+  const allOpen = useMemo(
+    () => testimonials.every((t) => openMap[t.name]),
+    [openMap]
+  );
+  const allClosed = useMemo(
+    () => testimonials.every((t) => !openMap[t.name]),
+    [openMap]
+  );
+
+  const setAll = (open: boolean) => {
+    setOpenMap(Object.fromEntries(testimonials.map((t) => [t.name, open])));
+  };
+
   return (
     <section id="words" className="testimonials-section relative">
       <div aria-hidden className="testimonials-section__grid" />
       <div aria-hidden className="testimonials-section__fade" />
 
       <div className="relative z-10 px-6 py-24 md:px-10 md:py-36">
-        <div className="mb-12 md:mb-16">
-          <Reveal>
-            <p className="font-sans text-xs uppercase tracking-[0.28em] text-muted">
-              Kind words
-            </p>
-          </Reveal>
-          <Reveal delay={0.06}>
-            <h2 className="mt-3 max-w-xl font-serif text-4xl leading-[1.05] tracking-tighter2 text-ink md:text-5xl">
-              Notes left on the desk.
-            </h2>
-          </Reveal>
+        <div className="mx-auto mb-12 flex max-w-[560px] flex-col gap-6 md:mb-16 md:flex-row md:items-end md:justify-between">
+          <div>
+            <Reveal>
+              <p className="font-sans text-xs uppercase tracking-[0.28em] text-muted">
+                Kind words
+              </p>
+            </Reveal>
+            <Reveal delay={0.06}>
+              <h2 className="mt-3 max-w-md font-serif text-4xl leading-[1.05] tracking-tighter2 text-ink md:text-5xl">
+                Letters from people I’ve worked with.
+              </h2>
+            </Reveal>
+          </div>
+
           <Reveal delay={0.1}>
-            <p className="mt-4 max-w-md font-sans text-sm leading-relaxed text-muted md:text-base">
-              Hover a sticky to peel the corner — a little more about who left
-              it is written underneath.
-            </p>
+            <div
+              className="letter-toggle"
+              role="group"
+              aria-label="Fold letters"
+            >
+              <button
+                type="button"
+                className="letter-toggle__btn"
+                onClick={() => setAll(true)}
+                disabled={allOpen}
+              >
+                Open all
+              </button>
+              <button
+                type="button"
+                className="letter-toggle__btn"
+                onClick={() => setAll(false)}
+                disabled={allClosed}
+              >
+                Close all
+              </button>
+            </div>
           </Reveal>
         </div>
 
-        <div className="sticky-board">
+        <div className="letter-stack">
           {testimonials.map((t, i) => (
-            <Reveal
-              key={t.name}
-              delay={i * 0.07}
-              className="sticky-board__slot"
-            >
-              <StickyNote t={t} index={i} />
+            <Reveal key={t.name} delay={i * 0.05}>
+              <Letter
+                t={t}
+                index={i}
+                open={!!openMap[t.name]}
+                onToggle={() =>
+                  setOpenMap((prev) => ({
+                    ...prev,
+                    [t.name]: !prev[t.name],
+                  }))
+                }
+              />
             </Reveal>
           ))}
         </div>
