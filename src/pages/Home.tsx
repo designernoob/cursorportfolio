@@ -3,8 +3,6 @@ import { useLocation } from "react-router-dom";
 import Nav from "../components/Nav";
 import Hero from "../components/Hero";
 import Work from "../components/Work";
-import About from "../components/About";
-import Beyond from "../components/Beyond";
 import Testimonials from "../components/Testimonials";
 import Experience from "../components/Experience";
 import Footer from "../components/Footer";
@@ -28,8 +26,6 @@ export default function Home({ ready }: { ready: boolean }) {
       <main>
         <Hero ready={ready} />
         <Work />
-        <About />
-        <Beyond />
         <Testimonials />
         <Experience />
         <Footer />

@@ -46,8 +46,6 @@ export type NavLink =
   | { label: string; kind: "external"; href: string };
 
 export const navLinks: NavLink[] = [
-  { label: "About", kind: "section", target: "about" },
-  { label: "Beyond Design", kind: "section", target: "beyond" },
   { label: "Resume", kind: "external", href: site.resumeUrl },
 ];
 
