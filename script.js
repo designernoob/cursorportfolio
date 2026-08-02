@@ -97,14 +97,13 @@
 
     populateLetter();
 
-    // Staged opening: seal break → flap → letter rises → transition
-    setTimeout(() => envelope.classList.add("seal-breaking"), 80);
-    setTimeout(() => envelope.classList.add("flap-open"), 450);
-    setTimeout(() => envelope.classList.add("letter-rising"), 900);
+    setTimeout(() => envelope.classList.add("seal-breaking"), 100);
+    setTimeout(() => envelope.classList.add("flap-open"), 350);
+    setTimeout(() => envelope.classList.add("letter-rising"), 700);
 
     setTimeout(() => {
       envelopeScene.classList.add("fade-out");
-    }, 1800);
+    }, 1500);
 
     setTimeout(() => {
       envelopeScene.classList.add("hidden");
@@ -113,7 +112,7 @@
       letterScene.classList.add("visible");
       isOpening = false;
       isOpen = true;
-    }, 2600);
+    }, 2100);
   }
 
   envelopeBtn.addEventListener("click", openEnvelope);
