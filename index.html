@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#1a0f14" />
+  <meta name="description" content="You've received a letter..." />
+  <title>For You 💌</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Homemade+Apple&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="ambient">
+    <canvas id="particles" aria-hidden="true"></canvas>
+    <div class="glow glow-1" aria-hidden="true"></div>
+    <div class="glow glow-2" aria-hidden="true"></div>
+  </div>
+
+  <main class="stage" id="stage">
+    <!-- Envelope Scene -->
+    <section class="scene scene-envelope" id="envelopeScene" aria-label="A letter for you">
+      <p class="hint" id="hint">
+        <span class="hint-icon">✦</span>
+        Tap the envelope to open
+        <span class="hint-icon">✦</span>
+      </p>
+
+      <button
+        class="envelope-wrapper"
+        id="envelopeBtn"
+        type="button"
+        aria-label="Open the envelope"
+      >
+        <div class="envelope" id="envelope">
+          <div class="envelope-shadow" aria-hidden="true"></div>
+
+          <div class="letter-peek" aria-hidden="true">
+            <div class="letter-peek-inner"></div>
+          </div>
+
+          <div class="envelope-back"></div>
+          <div class="envelope-left"></div>
+          <div class="envelope-right"></div>
+          <div class="envelope-front"></div>
+
+          <div class="envelope-flap">
+            <div class="flap-inner"></div>
+          </div>
+
+          <div class="seal" aria-hidden="true"></div>
+        </div>
+      </button>
+    </section>
+
+    <!-- Letter Scene -->
+    <section class="scene scene-letter hidden" id="letterScene" aria-label="The letter">
+      <article class="letter" id="letter">
+        <div class="letter-paper">
+          <div class="letter-texture" aria-hidden="true"></div>
+          <div class="letter-grain" aria-hidden="true"></div>
+          <div class="letter-crease letter-crease-h1" aria-hidden="true"></div>
+          <div class="letter-crease letter-crease-h2" aria-hidden="true"></div>
+          <div class="letter-crease letter-crease-v" aria-hidden="true"></div>
+          <div class="letter-wear" aria-hidden="true"></div>
+          <div class="letter-content">
+            <p class="letter-date" id="letterDate"></p>
+            <p class="letter-greeting" id="letterGreeting"></p>
+            <div class="letter-body" id="letterBody"></div>
+            <p class="letter-signoff" id="letterSignoff"></p>
+            <p class="letter-signature" id="letterSignature"></p>
+          </div>
+        </div>
+
+        <div class="letter-actions" id="letterActions">
+          <button class="btn btn-yes" id="btnYes" type="button">
+            <span>I'd love to</span>
+            <span class="btn-sparkle">✦</span>
+          </button>
+          <button class="btn btn-think" id="btnThink" type="button">
+            <span>Let me think about it</span>
+          </button>
+        </div>
+
+        <div class="response hidden" id="responseYes">
+          <div class="response-hearts" aria-hidden="true"></div>
+          <p class="response-title">You just made my day</p>
+          <p class="response-text">I'll reach out soon to figure out the details. Can't wait.</p>
+        </div>
+
+        <div class="response hidden" id="responseThink">
+          <p class="response-title">No pressure at all</p>
+          <p class="response-text">Take your time. The offer stands whenever you're ready.</p>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
