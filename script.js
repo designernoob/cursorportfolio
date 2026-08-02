@@ -1,7 +1,10 @@
 (function () {
   "use strict";
 
-  const config = typeof INVITE_CONFIG !== "undefined" ? INVITE_CONFIG : {};
+  const config =
+    typeof INVITE_CONFIG !== "undefined"
+      ? INVITE_CONFIG
+      : window.INVITE_CONFIG || {};
 
   const envelopeBtn = document.getElementById("envelopeBtn");
   const envelope = document.getElementById("envelope");
