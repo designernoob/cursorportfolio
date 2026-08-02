@@ -18,8 +18,12 @@
   --envelope-shadow: rgba(20, 8, 12, 0.45);
   --text: #2c1810;
   --text-soft: #5c4038;
-  --font-display: "Playfair Display", Georgia, serif;
+  --font-display: Georgia, "Times New Roman", serif;
   --font-body: "Cormorant Garamond", Georgia, serif;
+  --font-hand: "Homemade Apple", "Caveat", cursive;
+  --ink: #1c2844;
+  --ink-light: #3a4660;
+  --ink-faded: #5a6478;
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
   --safe-top: env(safe-area-inset-top, 0px);
@@ -507,12 +511,12 @@ body {
     repeating-linear-gradient(
       0deg,
       transparent,
-      transparent 27px,
-      rgba(201, 169, 98, 0.07) 27px,
-      rgba(201, 169, 98, 0.07) 28px
+      transparent 31px,
+      rgba(201, 169, 98, 0.035) 31px,
+      rgba(201, 169, 98, 0.035) 32px
     );
   pointer-events: none;
-  opacity: 0.85;
+  opacity: 0.5;
 }
 
 /* Paper fiber grain */
@@ -617,72 +621,117 @@ body {
 .letter-content {
   position: relative;
   z-index: 7;
-  padding: clamp(2rem, 6vw, 2.75rem) clamp(1.75rem, 5vw, 2.5rem);
-  color: var(--text);
+  padding: clamp(2rem, 6vw, 2.75rem) clamp(1.5rem, 4.5vw, 2.25rem);
+  color: var(--ink);
+  font-family: var(--font-hand);
+  transform: rotate(0.35deg);
 }
 
 .letter-date {
-  font-family: var(--font-body);
-  font-size: clamp(0.85rem, 2.5vw, 0.95rem);
-  font-style: italic;
-  color: var(--text-soft);
-  margin-bottom: 1.25rem;
+  font-family: var(--font-hand);
+  font-size: clamp(1rem, 3vw, 1.15rem);
+  color: var(--ink-faded);
+  margin-bottom: 1.5rem;
+  margin-left: 4px;
+  transform: rotate(-1.2deg);
   opacity: 0;
-  animation: textReveal 0.8s var(--ease-out-expo) 0.4s forwards;
+  animation: inkFade 0.8s var(--ease-out-expo) 0.4s forwards;
 }
 
 .letter-greeting {
-  font-family: var(--font-display);
-  font-size: clamp(1.5rem, 5vw, 1.85rem);
-  font-weight: 600;
-  color: var(--wine);
-  margin-bottom: 1.25rem;
+  font-family: var(--font-hand);
+  font-size: clamp(1.75rem, 5.5vw, 2.25rem);
+  font-weight: 400;
+  color: var(--ink);
+  margin-bottom: 1.1rem;
+  margin-left: 6px;
+  transform: rotate(0.8deg);
   opacity: 0;
-  animation: textReveal 0.8s var(--ease-out-expo) 0.55s forwards;
+  animation: inkFade 0.8s var(--ease-out-expo) 0.55s forwards;
+  text-shadow: 0.4px 0.6px 0 rgba(28, 40, 68, 0.12);
 }
 
 .letter-body {
-  font-family: var(--font-body);
-  font-size: clamp(1.05rem, 3.2vw, 1.2rem);
-  line-height: 1.75;
-  color: var(--text);
+  font-family: var(--font-hand);
+  font-size: clamp(1.15rem, 3.6vw, 1.45rem);
+  line-height: 1.65;
+  letter-spacing: 0.01em;
+  color: var(--ink);
 }
 
 .letter-body p {
-  margin-bottom: 1rem;
+  margin-bottom: 0.85rem;
   opacity: 0;
-  transform: translateY(12px);
+  text-shadow:
+    0.3px 0.5px 0 rgba(28, 40, 68, 0.1),
+    -0.2px 0 rgba(28, 40, 68, 0.06);
 }
 
-.letter-body p:nth-child(1) { animation: textReveal 0.8s var(--ease-out-expo) 0.7s forwards; }
-.letter-body p:nth-child(2) { animation: textReveal 0.8s var(--ease-out-expo) 0.85s forwards; }
-.letter-body p:nth-child(3) { animation: textReveal 0.8s var(--ease-out-expo) 1s forwards; }
-.letter-body p:nth-child(4) { animation: textReveal 0.8s var(--ease-out-expo) 1.15s forwards; }
-.letter-body p:nth-child(5) { animation: textReveal 0.8s var(--ease-out-expo) 1.3s forwards; }
+.letter-body p:nth-child(1) {
+  transform: rotate(-0.6deg) translateX(-3px);
+  animation: inkFade 0.8s var(--ease-out-expo) 0.7s forwards;
+}
+
+.letter-body p:nth-child(2) {
+  transform: rotate(0.45deg) translateX(5px);
+  margin-left: 8px;
+  animation: inkFade 0.8s var(--ease-out-expo) 0.85s forwards;
+}
+
+.letter-body p:nth-child(3) {
+  transform: rotate(-0.25deg) translateX(-1px);
+  margin-left: -2px;
+  animation: inkFade 0.8s var(--ease-out-expo) 1s forwards;
+}
+
+.letter-body p:nth-child(4) {
+  transform: rotate(0.7deg) translateX(3px);
+  margin-left: 4px;
+  animation: inkFade 0.8s var(--ease-out-expo) 1.15s forwards;
+}
+
+.letter-body p:nth-child(5) {
+  transform: rotate(-0.5deg) translateX(-4px);
+  animation: inkFade 0.8s var(--ease-out-expo) 1.3s forwards;
+}
 
 .letter-body em {
-  font-style: italic;
-  color: var(--wine);
+  font-style: normal;
+  color: var(--ink-light);
+  text-decoration: underline;
+  text-decoration-style: wavy;
+  text-decoration-color: rgba(28, 40, 68, 0.25);
+  text-underline-offset: 3px;
 }
 
 .letter-signoff {
-  font-family: var(--font-body);
-  font-size: clamp(1rem, 3vw, 1.1rem);
-  font-style: italic;
-  margin-top: 1.5rem;
-  color: var(--text-soft);
+  font-family: var(--font-hand);
+  font-size: clamp(1.15rem, 3.4vw, 1.35rem);
+  margin-top: 1.75rem;
+  margin-left: 2px;
+  color: var(--ink-light);
+  transform: rotate(-0.4deg);
   opacity: 0;
-  animation: textReveal 0.8s var(--ease-out-expo) 1.45s forwards;
+  animation: inkFade 0.8s var(--ease-out-expo) 1.45s forwards;
 }
 
 .letter-signature {
-  font-family: var(--font-display);
-  font-size: clamp(1.35rem, 4vw, 1.6rem);
-  font-style: italic;
-  color: var(--wine);
-  margin-top: 0.35rem;
+  font-family: var(--font-hand);
+  font-size: clamp(1.9rem, 5.5vw, 2.4rem);
+  color: var(--ink);
+  margin-top: 0.15rem;
+  margin-left: 18px;
+  transform: rotate(-4deg) translateX(12px);
   opacity: 0;
-  animation: textReveal 0.8s var(--ease-out-expo) 1.6s forwards;
+  animation: inkFade 0.8s var(--ease-out-expo) 1.6s forwards;
+  text-shadow:
+    0.5px 0.8px 0 rgba(28, 40, 68, 0.15),
+    1px 1px 2px rgba(28, 40, 68, 0.06);
+}
+
+@keyframes inkFade {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 @keyframes textReveal {
