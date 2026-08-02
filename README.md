@@ -18,18 +18,23 @@ Edit `config.js`:
 
 ```js
 const INVITE_CONFIG = {
-  herName: "Sarah",
-  yourName: "Alex",
-  suggestedDate: "Saturday evening",
-  suggestedActivity: "coffee and a walk by the water",
-  // Or write your own paragraphs:
-  customParagraphs: [
-    "Your opening line...",
-    "Your ask...",
-    "Your closing thought...",
-  ],
+  herName: "Diya",
+  yourName: "Pranav",
+  notifyEmail: "you@gmail.com",  // ← get emailed when she taps Yes
+  customParagraphs: [ "..." ],
 };
 ```
+
+### Get notified when she taps Yes
+
+Right now the buttons only show a message on *her* screen — you won't know unless you add your email:
+
+1. Set `notifyEmail` in `config.js` to your email address
+2. Deploy the site
+3. **Important:** FormSubmit sends a one-time confirmation email the first time someone submits — click the link in it to activate
+4. After that, every time she taps **"I'd love to"**, you get an email instantly
+
+Set `notifyOnThink: true` if you also want a heads-up when she picks "Let me think about it".
 
 ## Deploy (free options)
 

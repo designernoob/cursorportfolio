@@ -1,29 +1,26 @@
 /**
  * Customize your letter here before sharing the link.
- * Edit the values below to personalize the message.
  */
 const INVITE_CONFIG = {
-  // Her name (used in greeting)
-  herName: "there",
+  herName: "Diya",
+  yourName: "Pranav",
 
-  // Your name (used in signature)
-  yourName: "Me",
+  // ⬇️ ADD YOUR EMAIL HERE to get notified when she taps "Yes"
+  // FormSubmit will send you one confirmation email first — click it once, then you're set.
+  notifyEmail: "",
 
-  // Optional: a specific date suggestion (leave empty to keep it open-ended)
-  suggestedDate: "",
+  // Optional: also notify when she taps "Let me think about it"
+  notifyOnThink: false,
 
-  // Optional: a specific activity suggestion
-  suggestedActivity: "dinner and a walk",
+  customParagraphs: [
+    `I found you really cute and my brain just went, "how can someone be so pretty?" I couldn't shake the feeling — so here I am.`,
+    `I'd love to take you out — maybe dinner and a walk? No pressure, just a chance to get to know each other over something simple and fun.`,
+    `Sorry if you think I went overboard with this — I do hope it made you smile. You seem like someone worth knowing.`,
+  ],
 
-  // Custom letter paragraphs (HTML allowed for <em> emphasis)
-  // If left empty, default paragraphs will be generated from the fields above.
-  customParagraphs: null,
-
-  // Button labels
   yesButton: "I'd love to",
   thinkButton: "Let me think about it",
 
-  // Response messages
   yesResponse: {
     title: "You just made my day",
     text: "I'll reach out soon to figure out the details. Can't wait.",

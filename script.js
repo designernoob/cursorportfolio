@@ -116,14 +116,52 @@
 
   /* ---- Response buttons ---- */
 
-  function showResponse(responseEl) {
-    letterActions.classList.add("hidden");
-    responseEl.classList.remove("hidden");
-    spawnCelebration();
+  async function notifyYou(response) {
+    const email = config.notifyEmail;
+    if (!email) return;
+
+    const herName = config.herName || "She";
+    const subject =
+      response === "yes"
+        ? `${herName} said yes! 🎉`
+        : `${herName} wants to think about it`;
+
+    try {
+      await fetch(`https://formsubmit.co/ajax/${encodeURIComponent(email)}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          _subject: subject,
+          Response: response === "yes" ? "Yes — she'd love to!" : "Maybe later",
+          From: herName,
+          Time: new Date().toLocaleString(),
+          _template: "table",
+          _captcha: "false",
+        }),
+      });
+    } catch {
+      // Fail silently — don't break her experience if notification fails
+    }
   }
 
-  btnYes.addEventListener("click", () => showResponse(responseYes));
-  btnThink.addEventListener("click", () => showResponse(responseThink));
+  function showResponse(responseEl, celebrate) {
+    letterActions.classList.add("hidden");
+    responseEl.classList.remove("hidden");
+    if (celebrate) spawnCelebration();
+  }
+
+  btnYes.addEventListener("click", () => {
+    notifyYou("yes");
+    showResponse(responseYes, true);
+  });
+
+  btnThink.addEventListener("click", () => {
+    if (config.notifyOnThink) notifyYou("think");
+    showResponse(responseThink, false);
+  });
 
   /* ---- Celebration particles ---- */
 
