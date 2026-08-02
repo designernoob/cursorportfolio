@@ -94,22 +94,23 @@
 
     populateLetter();
 
-    // Transition to letter after envelope animation
+    // Staged opening: seal break → flap → letter rises → transition
+    setTimeout(() => envelope.classList.add("seal-breaking"), 80);
+    setTimeout(() => envelope.classList.add("flap-open"), 450);
+    setTimeout(() => envelope.classList.add("letter-rising"), 900);
+
     setTimeout(() => {
       envelopeScene.classList.add("fade-out");
-    }, 900);
+    }, 1800);
 
     setTimeout(() => {
       envelopeScene.classList.add("hidden");
       letterScene.classList.remove("hidden");
-
-      // Force reflow for transition
       void letterScene.offsetWidth;
       letterScene.classList.add("visible");
-
       isOpening = false;
       isOpen = true;
-    }, 1400);
+    }, 2600);
   }
 
   envelopeBtn.addEventListener("click", openEnvelope);

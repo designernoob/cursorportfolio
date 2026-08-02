@@ -34,27 +34,34 @@
         aria-label="Open the envelope"
       >
         <div class="envelope" id="envelope">
-          <!-- Letter peeking inside -->
+          <div class="envelope-shadow" aria-hidden="true"></div>
+
           <div class="letter-peek" aria-hidden="true">
-            <div class="letter-peek-inner"></div>
+            <div class="letter-peek-inner">
+              <div class="letter-peek-lines" aria-hidden="true"></div>
+            </div>
           </div>
 
-          <!-- Envelope body -->
           <div class="envelope-back"></div>
-          <div class="envelope-front"></div>
           <div class="envelope-left"></div>
           <div class="envelope-right"></div>
+          <div class="envelope-front"></div>
+          <div class="envelope-grain" aria-hidden="true"></div>
+          <div class="envelope-wear" aria-hidden="true"></div>
+          <div class="envelope-fold-line" aria-hidden="true"></div>
 
-          <!-- Flap -->
           <div class="envelope-flap">
             <div class="flap-inner"></div>
+            <div class="flap-wear" aria-hidden="true"></div>
           </div>
 
-          <!-- Wax seal -->
           <div class="seal" aria-hidden="true">
             <div class="seal-wax">
               <span class="seal-heart">♥</span>
             </div>
+            <div class="seal-shard seal-shard-1"></div>
+            <div class="seal-shard seal-shard-2"></div>
+            <div class="seal-shard seal-shard-3"></div>
             <div class="seal-crack seal-crack-1"></div>
             <div class="seal-crack seal-crack-2"></div>
             <div class="seal-crack seal-crack-3"></div>
@@ -100,12 +107,18 @@
 
         <div class="response hidden" id="responseThink">
           <p class="response-title">No pressure at all</p>
-          <p class="response-text">Take your time — the offer stands whenever you're ready.</p>
+          <p class="response-text">Take your time. The offer stands whenever you're ready.</p>
         </div>
       </article>
     </section>
   </main>
 
+  <script>
+    (function () {
+      var variant = new URLSearchParams(location.search).get("v") || "diya";
+      document.write('<script src="variants/' + variant + '.js"><\/script>');
+    })();
+  </script>
   <script src="config.js"></script>
   <script src="script.js"></script>
 </body>
