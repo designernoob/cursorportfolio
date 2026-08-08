@@ -192,9 +192,9 @@ export default function CaseStudy() {
               </p>
             </Reveal>
 
-            <div className="mt-16 grid gap-12 md:grid-cols-12">
+            <div className="mt-16 grid gap-10 md:grid-cols-12 md:gap-8">
               {/* Table of contents */}
-              <aside className="hidden md:col-span-3 md:block">
+              <aside className="hidden md:col-span-2 md:block">
                 <nav className="sticky top-28">
                   <p className="mb-5 text-xs uppercase tracking-[0.3em] text-muted">
                     Contents
@@ -208,7 +208,7 @@ export default function CaseStudy() {
                             type="button"
                             data-hover
                             onClick={() => scrollToId(s.id)}
-                            className={`group flex items-center gap-3 text-left text-sm transition-colors duration-300 ${
+                            className={`group flex items-center gap-2.5 text-left text-sm transition-colors duration-300 ${
                               active ? "text-ink" : "text-muted hover:text-ink"
                             }`}
                           >
@@ -221,7 +221,7 @@ export default function CaseStudy() {
                             </span>
                             <span
                               className={`h-px transition-all duration-300 ${
-                                active ? "w-6 bg-accent" : "w-3 bg-line"
+                                active ? "w-5 bg-accent" : "w-2.5 bg-line"
                               }`}
                             />
                             {s.label}
@@ -234,7 +234,7 @@ export default function CaseStudy() {
               </aside>
 
               {/* Sections */}
-              <div className="md:col-span-8 md:col-start-5">
+              <div className="md:col-span-9 md:col-start-4">
                 <div className="flex flex-col gap-24">
                   {study.sections.map((s, i) => (
                     <article
