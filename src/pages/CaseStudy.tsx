@@ -482,16 +482,22 @@ function Figure({
       ? "aspect-[16/9] md:aspect-[2.2/1]"
       : "aspect-[16/10]";
 
+  const isDiagram = !!src && /\.svg($|\?)/i.test(src);
+
   return (
     <figure>
       <div
-        className={`group relative overflow-hidden rounded-2xl border border-line ${ratioClass}`}
+        className={`group relative overflow-hidden rounded-2xl border border-line ${ratioClass}${
+          isDiagram ? " bg-surface" : ""
+        }`}
       >
         {src ? (
           <img
             src={src}
             alt={caption || label || ""}
-            className="h-full w-full object-cover"
+            className={`h-full w-full ${
+              isDiagram ? "object-contain" : "object-cover"
+            }`}
           />
         ) : (
           <>
