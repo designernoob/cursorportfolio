@@ -423,9 +423,16 @@ export type CaseStudy = {
   accent: string;
   cover: string; // caption shown on the hero cover placeholder
   overview: {
+    /** Elevator pitch — 3–4 lines for a busy recruiter */
     summary: string;
     meta: CaseMeta[];
     impact: CaseMetric[];
+    /** End-to-end glimpse: problem → approach → outcome */
+    brief: {
+      problem: string;
+      approach: string;
+      outcome: string;
+    };
   };
   sections: CaseSection[];
 };
@@ -612,6 +619,14 @@ function caseFromProject(p: Project): CaseStudy {
         { value: "00%", label: "Secondary metric — errors reduced, time saved" },
         { value: "0→1", label: "Scope — features shipped or surface owned" },
       ],
+      brief: {
+        problem:
+          "One or two sentences on the user and business problem — concrete enough that a recruiter understands the stakes without reading further.",
+        approach:
+          "How you tackled it: research, framing, key decisions, and the path you chose. Keep it to a few lines of judgement, not a process dump.",
+        outcome:
+          "What shipped and what moved — metrics, qualitative proof, and the lasting change for the product or team.",
+      },
     },
     sections: templateSections(p.title),
   };

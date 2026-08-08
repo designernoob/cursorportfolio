@@ -13,8 +13,8 @@ export default {
         line: "var(--line)", // hairline borders
       },
       fontFamily: {
-        // secondary — body & UI
-        sans: ["Hanken Grotesk", "ui-sans-serif", "system-ui", "sans-serif"],
+        // secondary — body & UI (detailed content)
+        sans: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
         // primary — display (Instrument Serif)
         serif: [
           "Instrument Serif",

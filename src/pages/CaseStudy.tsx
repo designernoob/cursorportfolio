@@ -10,7 +10,6 @@ import {
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
 import { Reveal } from "../components/Reveal";
-import Magnetic from "../components/Magnetic";
 import { scrollToId } from "../lib/scroll";
 
 export default function CaseStudy() {
@@ -86,125 +85,169 @@ export default function CaseStudy() {
           </Reveal>
         </section>
 
-        {/* ── At a glance: summary + meta ───────────────────── */}
-        <section className="px-6 py-20 md:px-10 md:py-28">
-          <div className="grid gap-12 border-t border-line pt-12 md:grid-cols-12">
-            <div className="md:col-span-7">
-              <Reveal>
-                <h2 className="mb-6 text-xs uppercase tracking-[0.3em] text-muted">
-                  Overview
-                </h2>
-              </Reveal>
-              <Reveal delay={0.05}>
-                <p className="max-w-2xl font-serif text-2xl leading-[1.35] text-ink md:text-3xl">
-                  {study.overview.summary}
-                </p>
-              </Reveal>
+        {/* ── Brief overview (recruiter glimpse) ─────────────── */}
+        <section id="brief" className="scroll-mt-28 px-6 py-20 md:px-10 md:py-28">
+          <div className="border-t border-line pt-12">
+            <Reveal>
+              <p className="text-xs uppercase tracking-[0.3em] text-muted">
+                Brief overview
+              </p>
+            </Reveal>
+            <Reveal delay={0.04}>
+              <h2 className="mt-3 max-w-3xl font-serif text-3xl leading-[1.15] tracking-tighter2 text-ink md:text-5xl">
+                The whole story, at a glance.
+              </h2>
+            </Reveal>
+            <Reveal delay={0.08}>
+              <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted md:text-xl">
+                {study.overview.summary}
+              </p>
+            </Reveal>
+
+            {/* Meta */}
+            <dl className="mt-12 grid grid-cols-2 gap-x-8 gap-y-6 border-t border-line pt-8 sm:grid-cols-3 md:grid-cols-5">
+              {study.overview.meta.map((m, i) => (
+                <Reveal key={m.label} delay={i * 0.03}>
+                  <div>
+                    <dt className="text-xs uppercase tracking-widest text-muted">
+                      {m.label}
+                    </dt>
+                    <dd className="mt-1.5 text-sm leading-snug text-ink">
+                      {m.value}
+                    </dd>
+                  </div>
+                </Reveal>
+              ))}
+            </dl>
+
+            {/* End-to-end arc: problem → approach → outcome */}
+            <div className="mt-14 grid gap-10 border-t border-line pt-10 md:grid-cols-3 md:gap-12">
+              {(
+                [
+                  { label: "Problem", body: study.overview.brief.problem },
+                  { label: "Approach", body: study.overview.brief.approach },
+                  { label: "Outcome", body: study.overview.brief.outcome },
+                ] as const
+              ).map((item, i) => (
+                <Reveal key={item.label} delay={i * 0.05}>
+                  <div>
+                    <p className="text-xs uppercase tracking-[0.28em] text-muted">
+                      {item.label}
+                    </p>
+                    <p className="mt-3 text-base leading-relaxed text-ink md:text-[1.05rem]">
+                      {item.body}
+                    </p>
+                  </div>
+                </Reveal>
+              ))}
             </div>
-            <div className="md:col-span-4 md:col-start-9">
-              <dl className="grid grid-cols-2 gap-x-6 gap-y-6">
-                {study.overview.meta.map((m, i) => (
-                  <Reveal key={m.label} delay={i * 0.04}>
-                    <div className="border-t border-line pt-3">
-                      <dt className="text-xs uppercase tracking-widest text-muted">
-                        {m.label}
-                      </dt>
-                      <dd className="mt-1 text-sm text-ink">{m.value}</dd>
-                    </div>
-                  </Reveal>
-                ))}
-              </dl>
+
+            {/* Impact metrics */}
+            <div className="mt-14 grid gap-8 border-t border-line pt-10 sm:grid-cols-3">
+              {study.overview.impact.map((m, i) => (
+                <Reveal key={i} delay={i * 0.05}>
+                  <div>
+                    <p className="font-sans text-4xl font-medium tracking-tight text-ink md:text-5xl">
+                      {m.value}
+                    </p>
+                    <p className="mt-3 max-w-xs text-sm leading-snug text-muted">
+                      {m.label}
+                    </p>
+                  </div>
+                </Reveal>
+              ))}
             </div>
           </div>
         </section>
 
-        {/* ── Impact strip (outcomes first) ─────────────────── */}
-        <section className="px-6 md:px-10">
-          <div className="grid gap-px overflow-hidden rounded-3xl border border-line bg-line sm:grid-cols-3">
-            {study.overview.impact.map((m, i) => (
-              <Reveal key={i} className="bg-paper" delay={i * 0.06}>
-                <div className="flex h-full flex-col gap-6 p-8 md:p-10">
-                  <span className="font-sans text-5xl font-medium tracking-tight text-accent md:text-6xl">
-                    {m.value}
-                  </span>
-                  <span className="text-sm leading-snug text-muted">
-                    {m.label}
-                  </span>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </section>
+        {/* ── Deep dive (hiring manager / designer) ──────────── */}
+        <section className="px-6 pb-24 md:px-10 md:pb-32">
+          <div className="border-t border-line pt-16 md:pt-24">
+            <Reveal>
+              <p className="text-xs uppercase tracking-[0.3em] text-muted">
+                Deep dive
+              </p>
+            </Reveal>
+            <Reveal delay={0.04}>
+              <h2 className="mt-3 max-w-3xl font-serif text-3xl leading-[1.15] tracking-tighter2 text-ink md:text-5xl">
+                Process, decisions, and the work in detail.
+              </h2>
+            </Reveal>
+            <Reveal delay={0.08}>
+              <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted md:text-lg">
+                For hiring managers and designers who want the full narrative —
+                research, trade-offs, solution, and reflection.
+              </p>
+            </Reveal>
 
-        {/* ── Body: sticky TOC + sections ───────────────────── */}
-        <section className="px-6 py-24 md:px-10 md:py-32">
-          <div className="grid gap-12 md:grid-cols-12">
-            {/* Table of contents */}
-            <aside className="hidden md:col-span-3 md:block">
-              <nav className="sticky top-28">
-                <p className="mb-5 text-xs uppercase tracking-[0.3em] text-muted">
-                  Contents
-                </p>
-                <ul className="space-y-3">
-                  {study.sections.map((s, i) => {
-                    const active = activeId === s.id;
-                    return (
-                      <li key={s.id}>
-                        <button
-                          type="button"
-                          data-hover
-                          onClick={() => scrollToId(s.id)}
-                          className={`group flex items-center gap-3 text-left text-sm transition-colors duration-300 ${
-                            active ? "text-ink" : "text-muted hover:text-ink"
-                          }`}
-                        >
-                          <span
-                            className={`text-xs tabular-nums transition-colors ${
-                              active ? "text-accent" : "text-muted"
+            <div className="mt-16 grid gap-12 md:grid-cols-12">
+              {/* Table of contents */}
+              <aside className="hidden md:col-span-3 md:block">
+                <nav className="sticky top-28">
+                  <p className="mb-5 text-xs uppercase tracking-[0.3em] text-muted">
+                    Contents
+                  </p>
+                  <ul className="space-y-3">
+                    {study.sections.map((s, i) => {
+                      const active = activeId === s.id;
+                      return (
+                        <li key={s.id}>
+                          <button
+                            type="button"
+                            data-hover
+                            onClick={() => scrollToId(s.id)}
+                            className={`group flex items-center gap-3 text-left text-sm transition-colors duration-300 ${
+                              active ? "text-ink" : "text-muted hover:text-ink"
                             }`}
                           >
+                            <span
+                              className={`text-xs tabular-nums transition-colors ${
+                                active ? "text-accent" : "text-muted"
+                              }`}
+                            >
+                              {String(i + 1).padStart(2, "0")}
+                            </span>
+                            <span
+                              className={`h-px transition-all duration-300 ${
+                                active ? "w-6 bg-accent" : "w-3 bg-line"
+                              }`}
+                            />
+                            {s.label}
+                          </button>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </nav>
+              </aside>
+
+              {/* Sections */}
+              <div className="md:col-span-8 md:col-start-5">
+                <div className="flex flex-col gap-24">
+                  {study.sections.map((s, i) => (
+                    <article
+                      key={s.id}
+                      id={s.id}
+                      className="scroll-mt-28"
+                    >
+                      <Reveal>
+                        <div className="mb-8 flex items-baseline gap-4 border-b border-line pb-5">
+                          <span className="font-sans text-sm text-accent">
                             {String(i + 1).padStart(2, "0")}
                           </span>
-                          <span
-                            className={`h-px transition-all duration-300 ${
-                              active ? "w-6 bg-accent" : "w-3 bg-line"
-                            }`}
-                          />
-                          {s.label}
-                        </button>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </nav>
-            </aside>
-
-            {/* Sections */}
-            <div className="md:col-span-8 md:col-start-5">
-              <div className="flex flex-col gap-24">
-                {study.sections.map((s, i) => (
-                  <article
-                    key={s.id}
-                    id={s.id}
-                    className="scroll-mt-28"
-                  >
-                    <Reveal>
-                      <div className="mb-8 flex items-baseline gap-4 border-b border-line pb-5">
-                        <span className="font-sans text-sm text-accent">
-                          {String(i + 1).padStart(2, "0")}
-                        </span>
-                        <h2 className="font-sans text-3xl font-medium tracking-tight text-ink md:text-4xl">
-                          {s.heading}
-                        </h2>
+                          <h3 className="font-sans text-3xl font-medium tracking-tight text-ink md:text-4xl">
+                            {s.heading}
+                          </h3>
+                        </div>
+                      </Reveal>
+                      <div className="flex flex-col gap-8">
+                        {s.blocks.map((b, j) => (
+                          <Block key={j} block={b} accent={study.accent} />
+                        ))}
                       </div>
-                    </Reveal>
-                    <div className="flex flex-col gap-8">
-                      {s.blocks.map((b, j) => (
-                        <Block key={j} block={b} accent={study.accent} />
-                      ))}
-                    </div>
-                  </article>
-                ))}
+                    </article>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
