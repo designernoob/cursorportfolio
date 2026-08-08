@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
-import { motion, useScroll } from "framer-motion";
+import { AnimatePresence, motion, useScroll } from "framer-motion";
 import {
   getCaseStudy,
   adjacentProjects,
@@ -12,12 +12,22 @@ import Footer from "../components/Footer";
 import { Reveal } from "../components/Reveal";
 import { scrollToId } from "../lib/scroll";
 
+type SectionStop = { id: string; title: string };
+
 export default function CaseStudy() {
   const { slug } = useParams();
   const study = getCaseStudy(slug);
   const { scrollYProgress } = useScroll();
   const readingTime = useReadingTime(study);
   const activeId = useScrollSpy(study?.sections.map((s) => s.id) ?? []);
+
+  const stops = useMemo<SectionStop[]>(() => {
+    if (!study) return [];
+    return [
+      { id: "brief", title: "The whole story, at a glance." },
+      ...study.sections.map((s) => ({ id: s.id, title: s.heading })),
+    ];
+  }, [study]);
 
   if (!study) return <Navigate to="/" replace />;
 
@@ -32,6 +42,8 @@ export default function CaseStudy() {
       />
 
       <Nav />
+
+      <NextSectionPill stops={stops} />
 
       <main>
         {/* ── Hero ──────────────────────────────────────────── */}
@@ -280,6 +292,95 @@ export default function CaseStudy() {
         <Footer />
       </main>
     </>
+  );
+}
+
+/* ── Next-section pill (Tony / tongxingdesign pattern) ──────── */
+function NextSectionPill({ stops }: { stops: SectionStop[] }) {
+  const [next, setNext] = useState<SectionStop | null>(stops[0] ?? null);
+  const [visible, setVisible] = useState(true);
+
+  useEffect(() => {
+    if (!stops.length) return;
+
+    const update = () => {
+      const marker = window.innerHeight * 0.55;
+      let current = -1;
+      for (let i = 0; i < stops.length; i++) {
+        const el = document.getElementById(stops[i].id);
+        if (!el) continue;
+        if (el.getBoundingClientRect().top <= marker) current = i;
+      }
+      const upcoming = stops[current + 1] ?? null;
+      setNext(upcoming);
+
+      const doc = document.documentElement;
+      const nearEnd =
+        window.scrollY + window.innerHeight >= doc.scrollHeight - 280;
+      setVisible(!!upcoming && !nearEnd);
+    };
+
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    return () => {
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+    };
+  }, [stops]);
+
+  return (
+    <div className="pointer-events-none fixed bottom-6 left-1/2 z-30 -translate-x-1/2 sm:bottom-8">
+      <AnimatePresence>
+        {visible && next && (
+          <motion.div
+            key="pill"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 10 }}
+            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <button
+              type="button"
+              aria-label={`Skip to next section: ${next.title}`}
+              onClick={() => scrollToId(next.id)}
+              className="pointer-events-auto inline-flex items-center gap-3 rounded-full border border-black/[0.08] bg-white/70 py-2.5 pr-4 pl-5 text-sm font-medium text-black/70 shadow-[0_10px_32px_rgba(35,29,16,0.14)] backdrop-blur-xl backdrop-saturate-150 transition-colors hover:border-black/20 hover:bg-white/90 hover:text-black"
+            >
+              <span className="relative block min-w-0 overflow-hidden">
+                <AnimatePresence mode="wait" initial={false}>
+                  <motion.span
+                    key={next.id}
+                    initial={{ opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -6 }}
+                    transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+                    className="block whitespace-nowrap"
+                  >
+                    {next.title}
+                  </motion.span>
+                </AnimatePresence>
+              </span>
+              <motion.svg
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                width="14"
+                height="14"
+                aria-hidden
+                className="shrink-0"
+                animate={{ y: [0, 2.5, 0] }}
+                transition={{
+                  duration: 1.4,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+              >
+                <path d="M20 12l-1.41-1.41L13 16.17V4h-2v12.17l-5.58-5.59L4 12l8 8 8-8z" />
+              </motion.svg>
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   );
 }
 
