@@ -121,7 +121,7 @@ export default function CaseStudy() {
             </dl>
 
             {/* End-to-end arc: problem → approach → outcome */}
-            <div className="mt-14 grid gap-10 border-t border-line pt-10 md:grid-cols-3 md:gap-12">
+            <div className="mt-14 flex flex-col gap-0 border-t border-line">
               {(
                 [
                   { label: "Problem", body: study.overview.brief.problem },
@@ -130,11 +130,11 @@ export default function CaseStudy() {
                 ] as const
               ).map((item, i) => (
                 <Reveal key={item.label} delay={i * 0.05}>
-                  <div>
-                    <p className="text-xs uppercase tracking-[0.28em] text-muted">
+                  <div className="grid gap-4 border-b border-line py-10 md:grid-cols-12 md:gap-10 md:py-14">
+                    <p className="text-xs uppercase tracking-[0.28em] text-muted md:col-span-3 md:pt-2">
                       {item.label}
                     </p>
-                    <p className="mt-3 text-base leading-relaxed text-ink md:text-[1.05rem]">
+                    <p className="max-w-3xl text-lg leading-relaxed text-ink md:col-span-9 md:text-xl md:leading-[1.55]">
                       {item.body}
                     </p>
                   </div>
