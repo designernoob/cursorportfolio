@@ -632,8 +632,48 @@ function caseFromProject(p: Project): CaseStudy {
   };
 }
 
+/** Per-project section block overrides — fill these from your Notion/doc drafts. */
+const sectionBlockOverrides: Partial<Record<string, Partial<Record<string, CaseBlock[]>>>> = {
+  "security-cloud": {
+    context: [
+      {
+        type: "text",
+        text: "In 2024 Rubrik was getting ready to go public, and one of the most important prerequisites was making sure the company’s entire revenue could be recognized as SaaS revenue. To get there, the product itself needed to be fully cloud-based.",
+      },
+      {
+        type: "text",
+        text: "For a long time, customers had been using CDM (Cloud Data Management) — the legacy software Rubrik started selling when it was first founded. In 2021, Rubrik Security Cloud (RSC) launched as a fully cloud-based product.",
+      },
+      {
+        type: "figure",
+        src: "/case-studies/security-cloud/cdm-to-rsc.svg",
+        label: "CDM → RSC",
+        caption:
+          "Customers needed to move from legacy CDM onto Rubrik Security Cloud — a full product migration, not a simple upgrade.",
+        ratio: "wide",
+      },
+      {
+        type: "text",
+        text: "All customers needed to be migrated from legacy CDM to RSC, and one of the most important parts of that work was migrating SLA Domains from CDM to RSC. SLA Domains are Rubrik’s term for the service-level agreement — or backup rules — that define how we protect customer data. For example: “Back up this data every 4 hours, keep it for 30 days, then delete it.” Customers create these rules to decide how frequently they want backups and how long they want to retain them, among other things.",
+      },
+    ],
+  },
+};
+
+function applySectionOverrides(study: CaseStudy): CaseStudy {
+  const overrides = sectionBlockOverrides[study.slug];
+  if (!overrides) return study;
+  return {
+    ...study,
+    sections: study.sections.map((section) => {
+      const blocks = overrides[section.id];
+      return blocks ? { ...section, blocks } : section;
+    }),
+  };
+}
+
 export const caseStudies: Record<string, CaseStudy> = Object.fromEntries(
-  projects.map((p) => [p.slug, caseFromProject(p)])
+  projects.map((p) => [p.slug, applySectionOverrides(caseFromProject(p))])
 );
 
 export function getCaseStudy(slug?: string): CaseStudy | undefined {
