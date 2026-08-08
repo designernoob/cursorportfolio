@@ -391,6 +391,23 @@ export const testimonials: Testimonial[] = [
 export type CaseMeta = { label: string; value: string };
 export type CaseMetric = { value: string; label: string };
 
+/** Hover glossary for case study jargon — mark terms in copy with [[Term]]. */
+export type GlossaryTerm = {
+  title: string;
+  /** Optional short line under the title (e.g. expansion or category). */
+  subtitle?: string;
+  blurb: string;
+};
+
+export const glossary: Record<string, GlossaryTerm> = {
+  CDM: {
+    title: "CDM",
+    subtitle: "Cloud Data Management",
+    blurb:
+      "Rubrik’s original on‑prem backup product. Think of it as the older, appliance‑based way customers protected data — before Rubrik Security Cloud (RSC).",
+  },
+};
+
 export type CaseBlock =
   | { type: "text"; text: string }
   | { type: "bullets"; items: string[] }
@@ -642,19 +659,19 @@ const sectionBlockOverrides: Partial<Record<string, Partial<Record<string, CaseB
       },
       {
         type: "text",
-        text: "For a long time, customers had been using CDM (Cloud Data Management) — the legacy software Rubrik started selling when it was first founded. In 2021, Rubrik Security Cloud (RSC) launched as a fully cloud-based product.",
+        text: "For a long time, customers had been using [[CDM]] — the legacy software Rubrik started selling when it was first founded. In 2021, Rubrik Security Cloud (RSC) launched as a fully cloud-based product.",
       },
       {
         type: "figure",
         src: "/case-studies/security-cloud/cdm-to-rsc.svg",
         label: "CDM → RSC",
         caption:
-          "Customers needed to move from legacy CDM onto Rubrik Security Cloud — a full product migration, not a simple upgrade.",
+          "Customers needed to move from legacy [[CDM]] onto Rubrik Security Cloud — a full product migration, not a simple upgrade.",
         ratio: "wide",
       },
       {
         type: "text",
-        text: "All customers needed to be migrated from legacy CDM to RSC, and one of the most important parts of that work was migrating SLA Domains from CDM to RSC. SLA Domains are Rubrik’s term for the service-level agreement — or backup rules — that define how we protect customer data. For example: “Back up this data every 4 hours, keep it for 30 days, then delete it.” Customers create these rules to decide how frequently they want backups and how long they want to retain them, among other things.",
+        text: "All customers needed to be migrated from legacy [[CDM]] to RSC, and one of the most important parts of that work was migrating SLA Domains from [[CDM]] to RSC. SLA Domains are Rubrik’s term for the service-level agreement — or backup rules — that define how we protect customer data. For example: “Back up this data every 4 hours, keep it for 30 days, then delete it.” Customers create these rules to decide how frequently they want backups and how long they want to retain them, among other things.",
       },
     ],
   },

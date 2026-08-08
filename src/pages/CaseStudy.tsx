@@ -10,6 +10,7 @@ import {
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
 import { Reveal } from "../components/Reveal";
+import { renderRichText } from "../components/TermPopover";
 import { scrollToId } from "../lib/scroll";
 
 type SectionStop = { id: string; title: string };
@@ -391,7 +392,7 @@ function Block({ block, accent }: { block: CaseBlock; accent: string }) {
       return (
         <Reveal>
           <p className="max-w-[68ch] text-lg leading-relaxed text-muted md:text-xl">
-            {block.text}
+            {renderRichText(block.text)}
           </p>
         </Reveal>
       );
@@ -402,7 +403,7 @@ function Block({ block, accent }: { block: CaseBlock; accent: string }) {
             {block.items.map((it, i) => (
               <li key={i} className="flex gap-4 text-lg leading-relaxed text-muted">
                 <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
-                {it}
+                <span>{renderRichText(it)}</span>
               </li>
             ))}
           </ul>
@@ -413,7 +414,7 @@ function Block({ block, accent }: { block: CaseBlock; accent: string }) {
         <Reveal>
           <figure className="max-w-3xl border-l-2 border-accent pl-6 md:pl-8">
             <blockquote className="font-sans text-2xl font-medium leading-[1.35] tracking-tight text-ink md:text-3xl">
-              {block.text}
+              {renderRichText(block.text)}
             </blockquote>
             {block.by && (
               <figcaption className="mt-4 text-xs uppercase tracking-widest text-muted">
@@ -494,7 +495,7 @@ function Figure({
         {src ? (
           <img
             src={src}
-            alt={caption || label || ""}
+            alt={(caption || label || "").replace(/\[\[([^\]]+)\]\]/g, "$1")}
             className={`h-full w-full ${
               isDiagram ? "object-contain" : "object-cover"
             }`}
@@ -528,7 +529,9 @@ function Figure({
         )}
       </div>
       {caption && (
-        <figcaption className="mt-3 text-sm text-muted">{caption}</figcaption>
+        <figcaption className="mt-3 text-sm text-muted">
+          {renderRichText(caption)}
+        </figcaption>
       )}
     </figure>
   );
