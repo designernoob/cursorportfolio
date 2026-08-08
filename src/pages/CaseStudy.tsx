@@ -65,7 +65,7 @@ export default function CaseStudy() {
               <span>{readingTime} min read</span>
             </div>
 
-            <h1 className="hero-display max-w-5xl text-[11vw] leading-[0.95] text-ink md:text-[6.5vw]">
+            <h1 className="max-w-5xl font-sans text-[11vw] font-semibold leading-[0.95] tracking-tightest text-ink md:text-[6.5vw]">
               {study.title}
             </h1>
 
@@ -94,7 +94,7 @@ export default function CaseStudy() {
               </p>
             </Reveal>
             <Reveal delay={0.04}>
-              <h2 className="mt-3 max-w-3xl font-serif text-3xl leading-[1.15] tracking-tighter2 text-ink md:text-5xl">
+              <h2 className="mt-3 max-w-3xl font-sans text-3xl font-semibold leading-[1.15] tracking-tight text-ink md:text-5xl">
                 The whole story, at a glance.
               </h2>
             </Reveal>
@@ -169,7 +169,7 @@ export default function CaseStudy() {
               </p>
             </Reveal>
             <Reveal delay={0.04}>
-              <h2 className="mt-3 max-w-3xl font-serif text-3xl leading-[1.15] tracking-tighter2 text-ink md:text-5xl">
+              <h2 className="mt-3 max-w-3xl font-sans text-3xl font-semibold leading-[1.15] tracking-tight text-ink md:text-5xl">
                 Process, decisions, and the work in detail.
               </h2>
             </Reveal>
@@ -235,7 +235,7 @@ export default function CaseStudy() {
                           <span className="font-sans text-sm text-accent">
                             {String(i + 1).padStart(2, "0")}
                           </span>
-                          <h3 className="font-sans text-3xl font-medium tracking-tight text-ink md:text-4xl">
+                          <h3 className="font-sans text-3xl font-semibold tracking-tight text-ink md:text-4xl">
                             {s.heading}
                           </h3>
                         </div>
@@ -311,7 +311,7 @@ function Block({ block, accent }: { block: CaseBlock; accent: string }) {
       return (
         <Reveal>
           <figure className="max-w-3xl border-l-2 border-accent pl-6 md:pl-8">
-            <blockquote className="font-serif text-3xl leading-[1.25] text-ink md:text-4xl">
+            <blockquote className="font-sans text-2xl font-medium leading-[1.35] tracking-tight text-ink md:text-3xl">
               {block.text}
             </blockquote>
             {block.by && (
@@ -457,7 +457,7 @@ function NextLink({
       <span className="relative z-10 text-xs uppercase tracking-[0.25em] text-muted">
         {dir === "prev" ? "← Previous" : "Next →"}
       </span>
-      <span className="relative z-10 font-sans text-3xl font-medium tracking-tight text-ink transition-colors duration-300 group-hover:text-accent md:text-5xl">
+      <span className="relative z-10 font-sans text-3xl font-semibold tracking-tight text-ink transition-colors duration-300 group-hover:text-accent md:text-5xl">
         {title}
       </span>
       <span className="relative z-10 text-sm text-muted">{company}</span>
