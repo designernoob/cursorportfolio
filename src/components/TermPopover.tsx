@@ -95,7 +95,7 @@ function Term({ termKey, entry }: { termKey: string; entry: GlossaryTerm }) {
       <button
         ref={triggerRef}
         type="button"
-        className="term-trigger"
+        className={`term-trigger${open ? " is-open" : ""}`}
         aria-describedby={open ? panelId : undefined}
         aria-expanded={open}
         onMouseEnter={scheduleOpen}
@@ -122,18 +122,21 @@ function Term({ termKey, entry }: { termKey: string; entry: GlossaryTerm }) {
                 role="tooltip"
                 className="term-popover"
                 style={{ top: pos.top, left: pos.left }}
-                initial={{ opacity: 0, y: 6 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 4 }}
-                transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                initial={{ opacity: 0, y: 8, scale: 0.96, filter: "blur(4px)" }}
+                animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
+                exit={{ opacity: 0, y: 4, scale: 0.98, filter: "blur(2px)" }}
+                transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
                 onMouseEnter={scheduleOpen}
                 onMouseLeave={scheduleClose}
                 onAnimationComplete={place}
               >
+                <div className="term-popover__wash" aria-hidden />
+                <p className="term-popover__kicker">Glossary</p>
                 <p className="term-popover__title">{entry.title}</p>
                 {entry.subtitle && (
                   <p className="term-popover__subtitle">{entry.subtitle}</p>
                 )}
+                <div className="term-popover__rule" aria-hidden />
                 <p className="term-popover__blurb">{entry.blurb}</p>
               </motion.div>
             )}
