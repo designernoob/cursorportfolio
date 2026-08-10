@@ -416,8 +416,10 @@ export type CaseBlock =
       type: "figure";
       label?: string;
       caption?: string;
-      ratio?: "wide" | "square" | "tall";
+      ratio?: "wide" | "square" | "tall" | "screen";
       src?: string;
+      /** How the image fills the frame. Default: cover (photos), contain for UI screens. */
+      fit?: "cover" | "contain";
     }
   | {
       type: "gallery";
@@ -735,10 +737,12 @@ const sectionBlockOverrides: Partial<Record<string, Partial<Record<string, CaseB
       },
       {
         type: "figure",
-        label: "Final solution — coming next",
+        label: "Shipped — Login announcement",
+        src: "/case-studies/security-cloud/final-announcement.png",
         caption:
-          "The shipped announcement in color. Drop the Figma link for the final frame and we’ll swap this placeholder.",
-        ratio: "wide",
+          "The final announcement leads with security value, pairs a real countdown with a concrete switch date, and gives admins a clear primary path (Get started) plus a low-friction defer (Remind me later) — without the mixed signals of earlier explorations.",
+        ratio: "screen",
+        fit: "contain",
       },
     ],
   },

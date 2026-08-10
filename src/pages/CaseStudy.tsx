@@ -434,6 +434,7 @@ function Block({ block, accent }: { block: CaseBlock; accent: string }) {
             caption={block.caption}
             ratio={block.ratio}
             src={block.src}
+            fit={block.fit}
           />
         </Reveal>
       );
@@ -680,30 +681,36 @@ function Figure({
   ratio = "wide",
   src,
   big = false,
+  fit,
 }: {
   accent: string;
   label?: string;
   caption?: string;
-  ratio?: "wide" | "square" | "tall";
+  ratio?: "wide" | "square" | "tall" | "screen";
   src?: string;
   big?: boolean;
+  fit?: "cover" | "contain";
 }) {
   const ratioClass =
     ratio === "square"
       ? "aspect-square"
       : ratio === "tall"
       ? "aspect-[3/4]"
+      : ratio === "screen"
+      ? "aspect-[16/9]"
       : big
       ? "aspect-[16/9] md:aspect-[2.2/1]"
       : "aspect-[16/10]";
 
   const isDiagram = !!src && /\.svg($|\?)/i.test(src);
+  const objectFit = fit ?? (isDiagram ? "contain" : "cover");
+  const isContain = objectFit === "contain";
 
   return (
-    <figure>
+    <figure className="-mx-1 md:-mx-2 lg:-mx-3">
       <div
         className={`group relative overflow-hidden rounded-2xl border border-line ${ratioClass}${
-          isDiagram ? " bg-surface" : ""
+          isContain || isDiagram ? " bg-[#0b1220]" : ""
         }`}
       >
         {src ? (
@@ -711,7 +718,7 @@ function Figure({
             src={src}
             alt={(caption || label || "").replace(/\[\[([^\]]+)\]\]/g, "$1")}
             className={`h-full w-full ${
-              isDiagram ? "object-contain" : "object-cover"
+              isContain ? "object-contain" : "object-cover"
             }`}
           />
         ) : (
@@ -742,7 +749,21 @@ function Figure({
           </>
         )}
       </div>
-      {caption && (
+      {(label || caption) && src && (
+        <figcaption className="mt-4 flex flex-col gap-1.5 px-0.5">
+          {label && (
+            <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-soft">
+              {label}
+            </p>
+          )}
+          {caption && (
+            <p className="max-w-[68ch] text-sm leading-relaxed text-muted md:text-[15px]">
+              {renderRichText(caption)}
+            </p>
+          )}
+        </figcaption>
+      )}
+      {!src && caption && (
         <figcaption className="mt-3 text-sm text-muted">
           {renderRichText(caption)}
         </figcaption>
