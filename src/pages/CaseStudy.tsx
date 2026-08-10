@@ -474,7 +474,7 @@ type IterationItem = {
   src: string;
 };
 
-/** Stacked image + annotation rows, with optional expand overlay for detail. */
+/** Compact horizontal iteration strip — expand overlay for full annotation. */
 function IterationStory({
   intro,
   items,
@@ -502,58 +502,51 @@ function IterationStory({
     };
   }, [openIndex, items.length]);
 
+  const shortTitle = (label: string) =>
+    label.replace(/^Iteration 0?\d+\s*[—–-]\s*/i, "");
+
   return (
-    <div className="flex flex-col gap-10 md:gap-14">
+    <div className="flex flex-col gap-6 md:gap-8">
       {intro && (
         <p className="max-w-[68ch] text-base leading-relaxed text-muted md:text-lg">
           {renderRichText(intro)}
         </p>
       )}
 
-      <ol className="flex flex-col gap-14 md:gap-20">
+      {/* Bleed slightly within the content column for larger thumbs */}
+      <ol className="-mx-1 grid grid-cols-1 gap-4 sm:grid-cols-3 sm:gap-3 md:-mx-2 md:gap-4 lg:-mx-3 lg:gap-5">
         {items.map((it, i) => (
-          <li
-            key={i}
-            className={`grid items-start gap-6 md:grid-cols-12 md:gap-8 ${
-              i % 2 === 1 ? "md:[&>*:first-child]:order-2" : ""
-            }`}
-          >
+          <li key={i} className="min-w-0">
             <button
               type="button"
               onClick={() => setOpenIndex(i)}
-              className="group relative col-span-1 overflow-hidden rounded-2xl border border-line bg-[#1a1c1e] text-left outline-none transition-[box-shadow,transform] duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_40px_rgba(20,24,40,0.12)] focus-visible:ring-2 focus-visible:ring-ink/30 md:col-span-7"
+              className="group flex w-full flex-col gap-3 text-left outline-none"
               aria-label={`Expand ${it.label}`}
             >
-              <img
-                src={it.src}
-                alt={it.label}
-                className="aspect-[826/935] w-full object-cover object-top grayscale transition-transform duration-500 group-hover:scale-[1.015]"
-                width={826}
-                height={935}
-              />
-              <span className="pointer-events-none absolute bottom-3 right-3 rounded-full border border-white/20 bg-black/45 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-white/90 backdrop-blur-sm opacity-90 transition-opacity group-hover:opacity-100 md:opacity-0 md:group-hover:opacity-100">
-                Expand
-              </span>
+              <div className="relative overflow-hidden rounded-xl border border-line bg-[#1a1c1e] transition-[box-shadow,transform] duration-300 group-hover:-translate-y-0.5 group-hover:shadow-[0_14px_32px_rgba(20,24,40,0.12)] group-focus-visible:ring-2 group-focus-visible:ring-ink/30">
+                {/* Zoom the modal; keep a little side padding via inset scale */}
+                <div className="aspect-[4/5] overflow-hidden">
+                  <img
+                    src={it.src}
+                    alt={it.label}
+                    className="h-full w-full scale-[1.22] object-cover object-[center_12%] grayscale transition-transform duration-500 group-hover:scale-[1.26]"
+                    width={826}
+                    height={935}
+                  />
+                </div>
+                <span className="pointer-events-none absolute bottom-2.5 right-2.5 rounded-full border border-white/20 bg-black/45 px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.14em] text-white/90 backdrop-blur-sm opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
+                  Expand
+                </span>
+              </div>
+              <div className="px-0.5">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-soft">
+                  {String(i + 1).padStart(2, "0")}
+                </p>
+                <p className="mt-1 text-sm font-semibold tracking-tight text-ink">
+                  {shortTitle(it.label)}
+                </p>
+              </div>
             </button>
-
-            <div className="flex flex-col gap-3 md:col-span-5 md:pt-4 lg:pt-8">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-soft">
-                Iteration {String(i + 1).padStart(2, "0")}
-              </p>
-              <h3 className="font-sans text-xl font-semibold tracking-tight text-ink md:text-2xl">
-                {it.label.replace(/^Iteration 0?\d+\s*[—–-]\s*/i, "")}
-              </h3>
-              <p className="max-w-[42ch] text-base leading-relaxed text-muted md:text-[17px]">
-                {renderRichText(it.annotation)}
-              </p>
-              <button
-                type="button"
-                onClick={() => setOpenIndex(i)}
-                className="mt-2 w-fit text-sm font-medium text-ink underline decoration-line underline-offset-4 transition-colors hover:decoration-ink"
-              >
-                View larger
-              </button>
-            </div>
           </li>
         ))}
       </ol>
