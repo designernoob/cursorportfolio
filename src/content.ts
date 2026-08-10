@@ -674,6 +674,25 @@ const sectionBlockOverrides: Partial<Record<string, Partial<Record<string, CaseB
         text: "All customers needed to be migrated from legacy [[CDM]] to RSC, and one of the most important parts of that work was migrating SLA Domains from [[CDM]] to RSC. SLA Domains are Rubrik’s term for the service-level agreement — or backup rules — that define how we protect customer data. For example: “Back up this data every 4 hours, keep it for 30 days, then delete it.” Customers create these rules to decide how frequently they want backups and how long they want to retain them, among other things.",
       },
     ],
+    problem: [
+      {
+        type: "text",
+        text: "Despite clear long-term benefits, backup and security admins were reluctant to disrupt their established workflows. When we initially messaged customers about the benefits of migrating their SLAs, we saw low adoption, as users were hesitant to make significant changes to their daily operations.",
+      },
+      {
+        type: "quote",
+        text: "“The single sentence that framed everything we built for Rubrik Security Cloud.”",
+        by: "Framing / problem statement",
+      },
+      {
+        type: "bullets",
+        items: [
+          "Constraint one — e.g. legacy system, timeline, or platform limits you designed within.",
+          "Constraint two — e.g. accessibility, compliance, or performance bars you had to clear.",
+          "What success would look like — the measurable goal you aligned the team around.",
+        ],
+      },
+    ],
   },
 };
 
