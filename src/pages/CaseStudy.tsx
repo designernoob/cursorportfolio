@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { createPortal } from "react-dom";
 import { Link, Navigate, useParams } from "react-router-dom";
 import { AnimatePresence, motion, useScroll } from "framer-motion";
 import {
@@ -456,44 +457,225 @@ function Block({ block, accent }: { block: CaseBlock; accent: string }) {
     case "iterations":
       return (
         <Reveal>
-          <div className="flex flex-col gap-8">
-            {block.intro && (
-              <p className="max-w-[68ch] text-base leading-relaxed text-muted md:text-lg">
-                {renderRichText(block.intro)}
-              </p>
-            )}
-            <ol className="grid gap-10 md:grid-cols-3 md:gap-6">
-              {block.items.map((it, i) => (
-                <li key={i} className="flex flex-col gap-4">
-                  <div className="overflow-hidden rounded-2xl border border-line bg-surface">
-                    <img
-                      src={it.src}
-                      alt={it.label}
-                      className="aspect-[826/935] w-full object-cover object-top grayscale"
-                      width={826}
-                      height={935}
-                    />
-                  </div>
-                  <div className="flex flex-col gap-2 px-0.5">
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-soft">
-                      {String(i + 1).padStart(2, "0")}
-                    </p>
-                    <p className="text-sm font-semibold tracking-tight text-ink md:text-[15px]">
-                      {it.label}
-                    </p>
-                    <p className="text-sm leading-relaxed text-muted">
-                      {renderRichText(it.annotation)}
-                    </p>
-                  </div>
-                </li>
-              ))}
-            </ol>
-          </div>
+          <IterationStory
+            intro={block.intro}
+            items={block.items}
+          />
         </Reveal>
       );
     default:
       return null;
   }
+}
+
+type IterationItem = {
+  label: string;
+  annotation: string;
+  src: string;
+};
+
+/** Stacked image + annotation rows, with optional expand overlay for detail. */
+function IterationStory({
+  intro,
+  items,
+}: {
+  intro?: string;
+  items: IterationItem[];
+}) {
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (openIndex === null) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpenIndex(null);
+      if (e.key === "ArrowRight")
+        setOpenIndex((i) => (i === null ? i : Math.min(items.length - 1, i + 1)));
+      if (e.key === "ArrowLeft")
+        setOpenIndex((i) => (i === null ? i : Math.max(0, i - 1)));
+    };
+    window.addEventListener("keydown", onKey);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prev;
+    };
+  }, [openIndex, items.length]);
+
+  return (
+    <div className="flex flex-col gap-10 md:gap-14">
+      {intro && (
+        <p className="max-w-[68ch] text-base leading-relaxed text-muted md:text-lg">
+          {renderRichText(intro)}
+        </p>
+      )}
+
+      <ol className="flex flex-col gap-14 md:gap-20">
+        {items.map((it, i) => (
+          <li
+            key={i}
+            className={`grid items-start gap-6 md:grid-cols-12 md:gap-8 ${
+              i % 2 === 1 ? "md:[&>*:first-child]:order-2" : ""
+            }`}
+          >
+            <button
+              type="button"
+              onClick={() => setOpenIndex(i)}
+              className="group relative col-span-1 overflow-hidden rounded-2xl border border-line bg-[#1a1c1e] text-left outline-none transition-[box-shadow,transform] duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_40px_rgba(20,24,40,0.12)] focus-visible:ring-2 focus-visible:ring-ink/30 md:col-span-7"
+              aria-label={`Expand ${it.label}`}
+            >
+              <img
+                src={it.src}
+                alt={it.label}
+                className="aspect-[826/935] w-full object-cover object-top grayscale transition-transform duration-500 group-hover:scale-[1.015]"
+                width={826}
+                height={935}
+              />
+              <span className="pointer-events-none absolute bottom-3 right-3 rounded-full border border-white/20 bg-black/45 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-white/90 backdrop-blur-sm opacity-90 transition-opacity group-hover:opacity-100 md:opacity-0 md:group-hover:opacity-100">
+                Expand
+              </span>
+            </button>
+
+            <div className="flex flex-col gap-3 md:col-span-5 md:pt-4 lg:pt-8">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-soft">
+                Iteration {String(i + 1).padStart(2, "0")}
+              </p>
+              <h3 className="font-sans text-xl font-semibold tracking-tight text-ink md:text-2xl">
+                {it.label.replace(/^Iteration 0?\d+\s*[—–-]\s*/i, "")}
+              </h3>
+              <p className="max-w-[42ch] text-base leading-relaxed text-muted md:text-[17px]">
+                {renderRichText(it.annotation)}
+              </p>
+              <button
+                type="button"
+                onClick={() => setOpenIndex(i)}
+                className="mt-2 w-fit text-sm font-medium text-ink underline decoration-line underline-offset-4 transition-colors hover:decoration-ink"
+              >
+                View larger
+              </button>
+            </div>
+          </li>
+        ))}
+      </ol>
+
+      {typeof document !== "undefined" &&
+        createPortal(
+          <AnimatePresence>
+            {openIndex !== null && (
+              <IterationLightbox
+                items={items}
+                index={openIndex}
+                onClose={() => setOpenIndex(null)}
+                onPrev={() =>
+                  setOpenIndex((i) => (i === null ? i : Math.max(0, i - 1)))
+                }
+                onNext={() =>
+                  setOpenIndex((i) =>
+                    i === null ? i : Math.min(items.length - 1, i + 1)
+                  )
+                }
+              />
+            )}
+          </AnimatePresence>,
+          document.body
+        )}
+    </div>
+  );
+}
+
+function IterationLightbox({
+  items,
+  index,
+  onClose,
+  onPrev,
+  onNext,
+}: {
+  items: IterationItem[];
+  index: number;
+  onClose: () => void;
+  onPrev: () => void;
+  onNext: () => void;
+}) {
+  const it = items[index];
+
+  return (
+    <motion.div
+      className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.2 }}
+    >
+      <button
+        type="button"
+        aria-label="Close"
+        className="absolute inset-0 bg-[#12141a]/72 backdrop-blur-sm"
+        onClick={onClose}
+      />
+
+      <motion.div
+        role="dialog"
+        aria-modal="true"
+        aria-label={it.label}
+        className="relative z-[1] grid max-h-[min(92vh,920px)] w-full max-w-6xl overflow-hidden rounded-2xl border border-white/10 bg-[#0f1115] shadow-[0_30px_80px_rgba(0,0,0,0.45)] md:grid-cols-[minmax(0,1.35fr)_minmax(16rem,0.85fr)]"
+        initial={{ opacity: 0, y: 12, scale: 0.98 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        exit={{ opacity: 0, y: 8, scale: 0.98 }}
+        transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+      >
+        <div className="relative flex min-h-0 items-center justify-center bg-[#1a1c1e] p-3 md:p-5">
+          <img
+            src={it.src}
+            alt={it.label}
+            className="max-h-[min(78vh,820px)] w-full object-contain grayscale"
+          />
+        </div>
+
+        <div className="flex flex-col justify-between gap-6 border-t border-white/10 p-5 text-white md:border-l md:border-t-0 md:p-7">
+          <div className="flex flex-col gap-3">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-white/45">
+              Iteration {String(index + 1).padStart(2, "0")} of{" "}
+              {String(items.length).padStart(2, "0")}
+            </p>
+            <h3 className="text-xl font-semibold tracking-tight md:text-2xl">
+              {it.label.replace(/^Iteration 0?\d+\s*[—–-]\s*/i, "")}
+            </h3>
+            <p className="text-[15px] leading-relaxed text-white/70">
+              {it.annotation}
+            </p>
+          </div>
+
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={onPrev}
+                disabled={index === 0}
+                className="rounded-full border border-white/15 px-3 py-1.5 text-xs font-medium text-white/80 transition enabled:hover:bg-white/10 disabled:opacity-30"
+              >
+                Prev
+              </button>
+              <button
+                type="button"
+                onClick={onNext}
+                disabled={index === items.length - 1}
+                className="rounded-full border border-white/15 px-3 py-1.5 text-xs font-medium text-white/80 transition enabled:hover:bg-white/10 disabled:opacity-30"
+              >
+                Next
+              </button>
+            </div>
+            <button
+              type="button"
+              onClick={onClose}
+              className="rounded-full bg-white px-3.5 py-1.5 text-xs font-semibold text-ink"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
 }
 
 /* ── Image / placeholder figure ─────────────────────────────── */
