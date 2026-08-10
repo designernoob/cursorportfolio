@@ -422,6 +422,16 @@ export type CaseBlock =
   | {
       type: "gallery";
       items: { label?: string; caption?: string; src?: string }[];
+    }
+  | {
+      type: "iterations";
+      /** Short intro above the row of early explorations */
+      intro?: string;
+      items: {
+        label: string;
+        annotation: string;
+        src: string;
+      }[];
     };
 
 export type CaseSection = {
@@ -691,6 +701,44 @@ const sectionBlockOverrides: Partial<Record<string, Partial<Record<string, CaseB
           "Constraint two — e.g. accessibility, compliance, or performance bars you had to clear.",
           "What success would look like — the measurable goal you aligned the team around.",
         ],
+      },
+    ],
+    solution: [
+      {
+        type: "text",
+        text: "Present the shipped experience for Security Cloud. Break it into the 2–4 moments that matter most and annotate each with the decision behind it. Let the visuals carry the weight.",
+      },
+      {
+        type: "iterations",
+        intro:
+          "Before the final announcement, we explored several ways to introduce the SLA auto-migration. Early frames are shown in black and white — the color final comes next.",
+        items: [
+          {
+            label: "Iteration 01 — Optional opt-in",
+            annotation:
+              "Framed RSC management as a new capability users could turn on. Missing: urgency and the reality of a mandatory migration — it still read like a nice-to-have feature launch.",
+            src: "/case-studies/security-cloud/iteration-01.png",
+          },
+          {
+            label: "Iteration 02 — Auto, mixed signal",
+            annotation:
+              "Introduced automatic switching in the headline, but the only CTA was “Switch manually.” Missing: a clear path aligned with auto-migration, and any deadline to create action.",
+            src: "/case-studies/security-cloud/iteration-02.png",
+          },
+          {
+            label: "Iteration 03 — Countdown pressure",
+            annotation:
+              "Added a days-left countdown and a Continue path. Missing: a concrete date (still a placeholder), and the calmer guidance that later made the final announcement feel trustworthy rather than abrupt.",
+            src: "/case-studies/security-cloud/iteration-03.png",
+          },
+        ],
+      },
+      {
+        type: "figure",
+        label: "Final solution — coming next",
+        caption:
+          "The shipped announcement in color. Drop the Figma link for the final frame and we’ll swap this placeholder.",
+        ratio: "wide",
       },
     ],
   },

@@ -453,6 +453,44 @@ function Block({ block, accent }: { block: CaseBlock; accent: string }) {
           </div>
         </Reveal>
       );
+    case "iterations":
+      return (
+        <Reveal>
+          <div className="flex flex-col gap-8">
+            {block.intro && (
+              <p className="max-w-[68ch] text-base leading-relaxed text-muted md:text-lg">
+                {renderRichText(block.intro)}
+              </p>
+            )}
+            <ol className="grid gap-10 md:grid-cols-3 md:gap-6">
+              {block.items.map((it, i) => (
+                <li key={i} className="flex flex-col gap-4">
+                  <div className="overflow-hidden rounded-2xl border border-line bg-surface">
+                    <img
+                      src={it.src}
+                      alt={it.label}
+                      className="aspect-[826/935] w-full object-cover object-top grayscale"
+                      width={826}
+                      height={935}
+                    />
+                  </div>
+                  <div className="flex flex-col gap-2 px-0.5">
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-soft">
+                      {String(i + 1).padStart(2, "0")}
+                    </p>
+                    <p className="text-sm font-semibold tracking-tight text-ink md:text-[15px]">
+                      {it.label}
+                    </p>
+                    <p className="text-sm leading-relaxed text-muted">
+                      {renderRichText(it.annotation)}
+                    </p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </Reveal>
+      );
     default:
       return null;
   }
