@@ -474,7 +474,7 @@ type IterationItem = {
   src: string;
 };
 
-/** Compact horizontal iteration strip — expand overlay for full annotation. */
+/** Horizontal iteration strip — soft rejected proofs + expand for detail. */
 function IterationStory({
   intro,
   items,
@@ -513,8 +513,7 @@ function IterationStory({
         </p>
       )}
 
-      {/* Bleed slightly within the content column for larger thumbs */}
-      <ol className="-mx-1 grid grid-cols-1 gap-4 sm:grid-cols-3 sm:gap-3 md:-mx-2 md:gap-4 lg:-mx-3 lg:gap-5">
+      <ol className="-mx-1 grid grid-cols-1 gap-6 sm:grid-cols-3 sm:gap-4 md:-mx-2 md:gap-5 lg:-mx-3">
         {items.map((it, i) => (
           <li key={i} className="min-w-0">
             <button
@@ -523,27 +522,29 @@ function IterationStory({
               className="group flex w-full flex-col gap-3 text-left outline-none"
               aria-label={`Expand ${it.label}`}
             >
-              <div className="relative overflow-hidden rounded-xl border border-line bg-[#1a1c1e] transition-[box-shadow,transform] duration-300 group-hover:-translate-y-0.5 group-hover:shadow-[0_14px_32px_rgba(20,24,40,0.12)] group-focus-visible:ring-2 group-focus-visible:ring-ink/30">
-                {/* Zoom the modal; keep a little side padding via inset scale */}
-                <div className="aspect-[4/5] overflow-hidden">
+              <div className="relative overflow-hidden rounded-xl border border-line bg-[#f3f2ef] transition-[box-shadow,transform] duration-300 group-hover:-translate-y-0.5 group-hover:shadow-[0_14px_32px_rgba(20,24,40,0.1)] group-focus-visible:ring-2 group-focus-visible:ring-ink/30">
+                <div className="aspect-[826/935] p-2 sm:p-2.5">
                   <img
                     src={it.src}
                     alt={it.label}
-                    className="h-full w-full scale-[1.22] object-cover object-[center_12%] grayscale transition-transform duration-500 group-hover:scale-[1.26]"
+                    className="h-full w-full rounded-lg object-contain object-top opacity-[0.92] transition-[opacity,transform] duration-400 group-hover:opacity-100"
                     width={826}
                     height={935}
                   />
                 </div>
-                <span className="pointer-events-none absolute bottom-2.5 right-2.5 rounded-full border border-white/20 bg-black/45 px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.14em] text-white/90 backdrop-blur-sm opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
+                <span className="pointer-events-none absolute left-3 top-3 rounded-full border border-line bg-paper/90 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.12em] text-muted backdrop-blur-sm">
+                  Rejected
+                </span>
+                <span className="pointer-events-none absolute bottom-3 right-3 rounded-full border border-line bg-paper/90 px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.14em] text-ink/70 backdrop-blur-sm opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
                   Expand
                 </span>
               </div>
-              <div className="px-0.5">
+              <div className="flex flex-col gap-1.5 px-0.5">
                 <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-soft">
-                  {String(i + 1).padStart(2, "0")}
+                  {String(i + 1).padStart(2, "0")} · {shortTitle(it.label)}
                 </p>
-                <p className="mt-1 text-sm font-semibold tracking-tight text-ink">
-                  {shortTitle(it.label)}
+                <p className="text-[13px] leading-relaxed text-muted">
+                  {renderRichText(it.annotation)}
                 </p>
               </div>
             </button>
@@ -610,30 +611,30 @@ function IterationLightbox({
         role="dialog"
         aria-modal="true"
         aria-label={it.label}
-        className="relative z-[1] grid max-h-[min(92vh,920px)] w-full max-w-6xl overflow-hidden rounded-2xl border border-white/10 bg-[#0f1115] shadow-[0_30px_80px_rgba(0,0,0,0.45)] md:grid-cols-[minmax(0,1.35fr)_minmax(16rem,0.85fr)]"
+        className="relative z-[1] grid max-h-[min(92vh,920px)] w-full max-w-6xl overflow-hidden rounded-2xl border border-line bg-paper shadow-[0_30px_80px_rgba(20,24,40,0.28)] md:grid-cols-[minmax(0,1.35fr)_minmax(16rem,0.85fr)]"
         initial={{ opacity: 0, y: 12, scale: 0.98 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         exit={{ opacity: 0, y: 8, scale: 0.98 }}
         transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
       >
-        <div className="relative flex min-h-0 items-center justify-center bg-[#1a1c1e] p-3 md:p-5">
+        <div className="relative flex min-h-0 items-center justify-center bg-[#f3f2ef] p-3 md:p-5">
           <img
             src={it.src}
             alt={it.label}
-            className="max-h-[min(78vh,820px)] w-full object-contain grayscale"
+            className="max-h-[min(78vh,820px)] w-full object-contain"
           />
         </div>
 
-        <div className="flex flex-col justify-between gap-6 border-t border-white/10 p-5 text-white md:border-l md:border-t-0 md:p-7">
+        <div className="flex flex-col justify-between gap-6 border-t border-line p-5 text-ink md:border-l md:border-t-0 md:p-7">
           <div className="flex flex-col gap-3">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-white/45">
-              Iteration {String(index + 1).padStart(2, "0")} of{" "}
+            <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-soft">
+              Rejected · {String(index + 1).padStart(2, "0")} of{" "}
               {String(items.length).padStart(2, "0")}
             </p>
             <h3 className="text-xl font-semibold tracking-tight md:text-2xl">
               {it.label.replace(/^Iteration 0?\d+\s*[—–-]\s*/i, "")}
             </h3>
-            <p className="text-[15px] leading-relaxed text-white/70">
+            <p className="text-[15px] leading-relaxed text-muted">
               {it.annotation}
             </p>
           </div>
@@ -644,7 +645,7 @@ function IterationLightbox({
                 type="button"
                 onClick={onPrev}
                 disabled={index === 0}
-                className="rounded-full border border-white/15 px-3 py-1.5 text-xs font-medium text-white/80 transition enabled:hover:bg-white/10 disabled:opacity-30"
+                className="rounded-full border border-line px-3 py-1.5 text-xs font-medium text-muted transition enabled:hover:bg-surface disabled:opacity-30"
               >
                 Prev
               </button>
@@ -652,7 +653,7 @@ function IterationLightbox({
                 type="button"
                 onClick={onNext}
                 disabled={index === items.length - 1}
-                className="rounded-full border border-white/15 px-3 py-1.5 text-xs font-medium text-white/80 transition enabled:hover:bg-white/10 disabled:opacity-30"
+                className="rounded-full border border-line px-3 py-1.5 text-xs font-medium text-muted transition enabled:hover:bg-surface disabled:opacity-30"
               >
                 Next
               </button>
@@ -660,7 +661,7 @@ function IterationLightbox({
             <button
               type="button"
               onClick={onClose}
-              className="rounded-full bg-white px-3.5 py-1.5 text-xs font-semibold text-ink"
+              className="rounded-full bg-ink px-3.5 py-1.5 text-xs font-semibold text-on-accent"
             >
               Close
             </button>

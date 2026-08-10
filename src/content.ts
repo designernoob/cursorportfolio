@@ -711,7 +711,7 @@ const sectionBlockOverrides: Partial<Record<string, Partial<Record<string, CaseB
       {
         type: "iterations",
         intro:
-          "Before the final announcement, we explored several ways to introduce the SLA auto-migration. Early frames are shown in black and white — click any screen to read what was missing.",
+          "Before the final announcement, we explored — and rejected — several ways to introduce the SLA auto-migration. These soft grayscale frames are the discarded directions; the color final comes next.",
         items: [
           {
             label: "Iteration 01 — Optional opt-in",
