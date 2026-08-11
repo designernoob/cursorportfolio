@@ -25,10 +25,7 @@ export default function CaseStudy() {
 
   const stops = useMemo<SectionStop[]>(() => {
     if (!study) return [];
-    return [
-      { id: "brief", title: "The whole story, at a glance." },
-      ...study.sections.map((s) => ({ id: s.id, title: s.heading })),
-    ];
+    return study.sections.map((s) => ({ id: s.id, title: s.heading }));
   }, [study]);
 
   if (!study) return <Navigate to="/" replace />;
@@ -97,81 +94,6 @@ export default function CaseStudy() {
               big
             />
           </Reveal>
-        </section>
-
-        {/* ── Brief overview (recruiter glimpse) ─────────────── */}
-        <section id="brief" className="scroll-mt-28 px-6 py-20 md:px-10 md:py-28">
-          <div className="border-t border-line pt-12">
-            <Reveal>
-              <p className="text-xs uppercase tracking-[0.3em] text-muted">
-                Brief overview
-              </p>
-            </Reveal>
-            <Reveal delay={0.04}>
-              <h2 className="mt-3 max-w-3xl font-sans text-3xl font-semibold leading-[1.15] tracking-tight text-ink md:text-5xl">
-                The whole story, at a glance.
-              </h2>
-            </Reveal>
-            <Reveal delay={0.08}>
-              <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted md:text-xl">
-                {study.overview.summary}
-              </p>
-            </Reveal>
-
-            {/* Meta */}
-            <dl className="mt-12 grid grid-cols-2 gap-x-8 gap-y-6 border-t border-line pt-8 sm:grid-cols-3 md:grid-cols-5">
-              {study.overview.meta.map((m, i) => (
-                <Reveal key={m.label} delay={i * 0.03}>
-                  <div>
-                    <dt className="text-xs uppercase tracking-widest text-muted">
-                      {m.label}
-                    </dt>
-                    <dd className="mt-1.5 text-sm leading-snug text-ink">
-                      {m.value}
-                    </dd>
-                  </div>
-                </Reveal>
-              ))}
-            </dl>
-
-            {/* End-to-end arc: problem → approach → outcome */}
-            <div className="mt-14 flex flex-col gap-0 border-t border-line">
-              {(
-                [
-                  { label: "Problem", body: study.overview.brief.problem },
-                  { label: "Approach", body: study.overview.brief.approach },
-                  { label: "Outcome", body: study.overview.brief.outcome },
-                ] as const
-              ).map((item, i) => (
-                <Reveal key={item.label} delay={i * 0.05}>
-                  <div className="grid gap-4 border-b border-line py-10 md:grid-cols-12 md:gap-10 md:py-14">
-                    <p className="text-xs uppercase tracking-[0.28em] text-muted md:col-span-3 md:pt-2">
-                      {item.label}
-                    </p>
-                    <p className="max-w-3xl text-lg leading-relaxed text-ink md:col-span-9 md:text-xl md:leading-[1.55]">
-                      {item.body}
-                    </p>
-                  </div>
-                </Reveal>
-              ))}
-            </div>
-
-            {/* Impact metrics */}
-            <div className="mt-14 grid gap-8 border-t border-line pt-10 sm:grid-cols-3">
-              {study.overview.impact.map((m, i) => (
-                <Reveal key={i} delay={i * 0.05}>
-                  <div>
-                    <p className="font-sans text-4xl font-medium tracking-tight text-ink md:text-5xl">
-                      {m.value}
-                    </p>
-                    <p className="mt-3 max-w-xs text-sm leading-snug text-muted">
-                      {m.label}
-                    </p>
-                  </div>
-                </Reveal>
-              ))}
-            </div>
-          </div>
         </section>
 
         {/* ── Deep dive (hiring manager / designer) ──────────── */}
