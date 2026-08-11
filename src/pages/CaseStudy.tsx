@@ -621,7 +621,7 @@ function Figure({
       : ratio === "screen"
       ? "aspect-[16/9]"
       : ratio === "diagram"
-      ? "aspect-[3/1]"
+      ? "" // natural SVG height — don’t shrink into a short fixed frame
       : big
       ? "aspect-[16/9] md:aspect-[2.2/1]"
       : "aspect-[16/10]";
@@ -629,15 +629,16 @@ function Figure({
   const isDiagram = !!src && /\.svg($|\?)/i.test(src);
   const objectFit = fit ?? (isDiagram ? "contain" : "cover");
   const isContain = objectFit === "contain";
+  const isNaturalDiagram = ratio === "diagram";
 
   return (
     <figure className="-mx-1 md:-mx-2 lg:-mx-3">
       <div
         className={`group relative overflow-hidden rounded-2xl border border-line ${ratioClass}${
-          isContain || isDiagram
-            ? ratio === "diagram"
-              ? " bg-[#eef2f5]"
-              : " bg-[#0b1220]"
+          isNaturalDiagram
+            ? " bg-[#eef2f5]"
+            : isContain || isDiagram
+            ? " bg-[#0b1220]"
             : ""
         }`}
       >
@@ -645,9 +646,11 @@ function Figure({
           <img
             src={src}
             alt={(caption || label || "").replace(/\[\[([^\]]+)\]\]/g, "$1")}
-            className={`h-full w-full ${
-              isContain ? "object-contain" : "object-cover"
-            }`}
+            className={
+              isNaturalDiagram
+                ? "block h-auto w-full"
+                : `h-full w-full ${isContain ? "object-contain" : "object-cover"}`
+            }
           />
         ) : (
           <>
