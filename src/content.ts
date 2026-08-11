@@ -416,7 +416,7 @@ export type CaseBlock =
       type: "figure";
       label?: string;
       caption?: string;
-      ratio?: "wide" | "square" | "tall" | "screen";
+      ratio?: "wide" | "square" | "tall" | "screen" | "diagram";
       src?: string;
       /** How the image fills the frame. Default: cover (photos), contain for UI screens. */
       fit?: "cover" | "contain";
@@ -679,7 +679,8 @@ const sectionBlockOverrides: Partial<Record<string, Partial<Record<string, CaseB
         label: "CDM → RSC",
         caption:
           "Customers needed to move from legacy [[CDM]] onto Rubrik Security Cloud — a full product migration, not a simple upgrade.",
-        ratio: "wide",
+        ratio: "diagram",
+        fit: "contain",
       },
       {
         type: "text",

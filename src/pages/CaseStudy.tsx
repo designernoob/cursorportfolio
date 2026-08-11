@@ -686,7 +686,7 @@ function Figure({
   accent: string;
   label?: string;
   caption?: string;
-  ratio?: "wide" | "square" | "tall" | "screen";
+  ratio?: "wide" | "square" | "tall" | "screen" | "diagram";
   src?: string;
   big?: boolean;
   fit?: "cover" | "contain";
@@ -698,6 +698,8 @@ function Figure({
       ? "aspect-[3/4]"
       : ratio === "screen"
       ? "aspect-[16/9]"
+      : ratio === "diagram"
+      ? "aspect-[3/1]"
       : big
       ? "aspect-[16/9] md:aspect-[2.2/1]"
       : "aspect-[16/10]";
@@ -710,7 +712,11 @@ function Figure({
     <figure className="-mx-1 md:-mx-2 lg:-mx-3">
       <div
         className={`group relative overflow-hidden rounded-2xl border border-line ${ratioClass}${
-          isContain || isDiagram ? " bg-[#0b1220]" : ""
+          isContain || isDiagram
+            ? ratio === "diagram"
+              ? " bg-[#eef2f5]"
+              : " bg-[#0b1220]"
+            : ""
         }`}
       >
         {src ? (
