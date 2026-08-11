@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 300" width="960" height="300" role="img" aria-label="Migrating from CDM to Rubrik Security Cloud">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f4f6f8"/>
+      <stop offset="100%" stop-color="#e8eef3"/>
+    </linearGradient>
+    <linearGradient id="cdm" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#dfe4ea"/>
+      <stop offset="100%" stop-color="#c5ccd6"/>
+    </linearGradient>
+    <linearGradient id="rsc" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4e6b8a"/>
+      <stop offset="100%" stop-color="#2f455c"/>
+    </linearGradient>
+  </defs>
+  <rect width="960" height="300" fill="url(#bg)"/>
+
+  <!-- Cards fill nearly the full height (16px inset) -->
+  <rect x="28" y="16" width="392" height="268" rx="20" fill="url(#cdm)"/>
+  <text x="224" y="98" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="17" font-weight="600" letter-spacing="0.18em" fill="#4a5560">CDM</text>
+  <text x="224" y="148" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="25" font-weight="600" fill="#1f2933">Cloud Data Management</text>
+  <text x="224" y="190" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="15" fill="#5b6670">Legacy · on-prem / appliance era</text>
+  <text x="224" y="220" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="15" fill="#5b6670">Where customers started</text>
+
+  <path d="M444 150 H516" stroke="#6b7785" stroke-width="3" stroke-linecap="round"/>
+  <path d="M498 132 L524 150 L498 168" fill="none" stroke="#6b7785" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="480" y="122" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="12" font-weight="600" letter-spacing="0.14em" fill="#6b7785">MIGRATE</text>
+
+  <rect x="540" y="16" width="392" height="268" rx="20" fill="url(#rsc)"/>
+  <text x="736" y="98" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="17" font-weight="600" letter-spacing="0.18em" fill="#d7e2ee">RSC</text>
+  <text x="736" y="148" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="25" font-weight="600" fill="#ffffff">Rubrik Security Cloud</text>
+  <text x="736" y="190" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="15" fill="#c5d3e0">Fully cloud-based SaaS</text>
+  <text x="736" y="220" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="15" fill="#c5d3e0">Where customers needed to go</text>
+</svg>

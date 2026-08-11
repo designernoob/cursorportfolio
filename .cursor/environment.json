@@ -1,0 +1,16 @@
+{
+  "install": "npm install",
+  "terminals": [
+    {
+      "name": "Vite Dev Server",
+      "command": "npm run dev -- --host 0.0.0.0 --port 5173",
+      "description": "Serves the portfolio at http://localhost:5173 for the Cursor Browser pane."
+    }
+  ],
+  "ports": [
+    {
+      "name": "Portfolio preview",
+      "port": 5173
+    }
+  ]
+}
